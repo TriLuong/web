@@ -1,0 +1,9 @@
+{
+  "javascript.validate.enable": false,
+  "editor.tabSize": 2,
+  "prettier.eslintIntegration": true,
+  "eslint.autoFixOnSave": true,
+  "prettier.semi": true,
+  "emmet.showSuggestionsAsSnippets": true,
+  "editor.quickSuggestionsDelay": 0
+}
