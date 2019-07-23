@@ -1,0 +1,80 @@
+$colorLoginTitle: #05486c;
+$colorLoginTitle_sub: #a5a7aa;
+$colorFocusInput: #11a6b0;
+
+.login {
+  .loginLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    min-height: 600px;
+    padding: 0;
+    .loginContent {
+      width: 70%;
+      .loginHeader {
+        text-align: left;
+        .loginTitle {
+          h1 {
+            margin: 0;
+            font-size: 36px;
+            color: $colorLoginTitle;
+          }
+          p {
+            margin: 0;
+            font-size: 17px;
+            color: $colorLoginTitle_sub;
+          }
+        }
+      }
+      .loginInput {
+        margin-top: 30px;
+        .inputText {
+          margin-bottom: 10px;
+          box-shadow: none;
+          font-size: 19px;
+          transition: border 0.4s;
+          &:hover {
+            border: 1px solid $colorFocusInput;
+          }
+          &:focus {
+            border: 2px solid $colorFocusInput;
+            border-left: 6px solid $colorFocusInput;
+          }
+        }
+        .loginControl {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 30px;
+          a {
+            color: $colorLoginTitle;
+            &:hover {
+              color: $colorLoginTitle_sub;
+            }
+          }
+          button {
+            background-color: $colorLoginTitle_sub;
+            border: none;
+            width: 120px;
+            transition: background-color 0.4s;
+            &:hover {
+              background-color: $colorLoginTitle;
+            }
+            &:focus {
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .loginRight {
+    padding: 0;
+    img {
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+    }
+  }
+}
