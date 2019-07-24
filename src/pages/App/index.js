@@ -24,6 +24,7 @@ const App = () => (
       <meta name="description" content="DesignCafe" />
     </Helmet>
     <Switch>
+      <Route exact path="/" component={Login} />
       <Route exact path="/login" component={Login} />
       <Route path="/user" component={ManageUser} />
       <Route path="/lead" component={ManageLead} />
