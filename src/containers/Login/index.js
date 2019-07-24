@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import images from '../../assets';
 import './Login.scss';
+import store from '../../redux/store';
+import { doSignIn } from '../../redux/actions';
 
 class Login extends Component {
   state = {};
@@ -12,8 +16,9 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    localStorage.setItem('userInfo', JSON.stringify(this.state));
-    console.log(this.state);
+    /* eslint react/prop-types: 0 react/destructuring-assignment: 0 */
+    this.props.requestLogin(this.state);
+    console.log(this.state, store.getState());
   };
 
   render() {
@@ -70,4 +75,15 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => ({
+  requestLogin: evt => dispatch(doSignIn(evt)),
+});
+
+const mapStateToProps = () => ({});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(Login);
