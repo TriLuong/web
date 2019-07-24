@@ -16,6 +16,13 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  },
   "rules": {
     "quotes": [1, "single", { "avoidEscape": true }],
     "no-use-before-define": 0,
