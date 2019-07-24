@@ -3,9 +3,11 @@
  */
 
 import { createStore, applyMiddleware, compose } from 'redux';
+/* eslint-disable no-unused-vars */
 import { fromJS } from 'immutable';
 import { routerMiddleware } from 'connected-react-router/immutable';
 import createSagaMiddleware from 'redux-saga';
+
 import createReducer from './reducers';
 
 export default function configureStore(initialState = {}, history) {
@@ -16,7 +18,9 @@ export default function configureStore(initialState = {}, history) {
   /* istanbul ignore next */
   if (process.env.NODE_ENV !== 'production' && typeof window === 'object') {
     /* eslint-disable no-underscore-dangle */
-    if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) { composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}); }
+    if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+      composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({});
+    }
 
     // NOTE: Uncomment the code below to restore support for Redux Saga
     // Dev Tools once it supports redux-saga version 1.x.x
@@ -36,10 +40,7 @@ export default function configureStore(initialState = {}, history) {
 
   const enhancers = [applyMiddleware(...middlewares)];
 
-  const store = createStore(
-    createReducer(),
-    composeEnhancers(...enhancers),
-  );
+  const store = createStore(createReducer(), composeEnhancers(...enhancers));
 
   // Extensions
   store.runSaga = sagaMiddleware.run;
