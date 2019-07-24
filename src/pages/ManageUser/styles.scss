@@ -1,0 +1,29 @@
+.top-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  &__header {
+    font-size: 22px;
+    font-weight: bold;
+    color: #282828;
+    margin-bottom: 0;
+  }
+  &__search {
+    position: relative;
+    .form-control {
+      border-radius: 20px;
+      padding-left: 30px;
+      &::placeholder {
+        color: #a5a7aa;
+        font-size: 16px;
+      }
+    }
+    .top-control__search__icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

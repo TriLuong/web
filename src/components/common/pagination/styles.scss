@@ -1,0 +1,16 @@
+.page-item {
+  .page-link {
+    border-color: #bbb;
+    color: #8e8e93;
+    &:hover {
+      color: #11a6b0;
+    }
+  }
+  &.active {
+    .page-link {
+      background: #efefef;
+      color: #11a6b0;
+      border-color: #bbb;
+    }
+  }
+}

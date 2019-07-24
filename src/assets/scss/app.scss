@@ -1,0 +1,43 @@
+@import './custom_bootstrap';
+@import '~bootstrap/scss/bootstrap';
+@font-face {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: normal;
+  src:  url('../fonts/Helvetica.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: bold;
+  src: url('../fonts/Helvetica-Bold.ttf') format('ttf');
+}
+
+
+@import './table';
+@import './dropdown';
+@import './modal';
+@import './form';
+@import './footer';
+body {
+  font-family: 'Helvetica', sans-serif;
+  background: #efefef;
+  color: #282828;
+  height: 100%;
+}
+input:focus,
+button:focus {
+  box-shadow: none !important;
+  outline-color: #11a6b0;
+}
+.load {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  z-index: 99;
+}

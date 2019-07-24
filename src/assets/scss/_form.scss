@@ -1,0 +1,95 @@
+.form-custom {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  .form-control:not([type='checkbox']):not([type='radio']) {
+    border-radius: 4px;
+    height: auto;
+    padding-top: 30px;
+    transition: all 0.2s ease-in;
+    color: #282828;
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+      border-left-width: 4px;
+      border-color: #11a6b0;
+      & + label {
+        top: 20px;
+        font-size: 12px;
+        left: 18px;
+      }
+    }
+  }
+  .form-control[type='radio'],
+  .form-control[type='checkbox'] {
+    height: auto;
+    & + label {
+      margin-left: 8px;
+      margin-bottom: 0;
+    }
+  }
+  &.hasValue {
+    label {
+      top: 20px;
+      font-size: 12px;
+      left: 15px;
+    }
+  }
+  label {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #a5a7aa;
+    transition: all 0.2s ease-in;
+  }
+}
+
+.group-select {
+  position: relative;
+  &__menu {
+    z-index: 9 !important;
+  }
+  &__control {
+    &:focus,
+    &:hover {
+      border-color: #11a6b0 !important;
+      box-shadow: none;
+    }
+  }
+  label {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 1;
+    transition: all 0.3s;
+    color: #a5a7aa;
+  }
+  &__single-value {
+    transition: all 0.3s;
+  }
+  &.hasValue {
+    label {
+      top: 20px;
+      font-size: 12px;
+      left: 15px;
+    }
+    .group-select__single-value {
+      margin-top: 10px;
+    }
+  }
+  &__value-container {
+    padding: 25px 12px 5px !important;
+  }
+  &__indicator-separator {
+    display: none;
+  }
+  svg {
+    path {
+      fill: #11a6b0;
+    }
+  }
+}

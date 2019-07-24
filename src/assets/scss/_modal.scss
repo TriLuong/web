@@ -1,0 +1,49 @@
+.modal-user {
+  padding: 30px 40px 40px;
+  .close {
+    opacity: 1;
+  }
+  .modal-title {
+    font-size: 24px;
+  }
+  .form-group {
+    position: relative;
+    .form-control {
+      padding: 25px 15px 10px;
+      height: auto;
+      &::placeholder {
+        color: #a5a7aa;
+      }
+      &:focus {
+        border-color: #11a6b0;
+        border-left-width: 4px;
+        outline: 0;
+        box-shadow: none;
+        & + label {
+          top: 20px;
+          left: 23px;
+          font-size: 12px;
+          color: #a5a7aa;
+        }
+      }
+    }
+    label {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transition: all 0.3s;
+      transform: translateY(-50%);
+      color: #a5a7aa;
+    }
+  }
+  .wrap-select {
+    margin-right: 0;
+  }
+  .wrap-select__value-container {
+    justify-content: flex-start;
+    height: 59px;
+  }
+  .modal-body {
+    padding: 30px 0 10px;
+  }
+}

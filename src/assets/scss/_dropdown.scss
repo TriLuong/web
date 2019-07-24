@@ -1,0 +1,32 @@
+.dropdown {
+  button {
+    padding-right: 30px;
+  }
+  &__icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.wrap-select {
+  min-width: 140px;
+  margin-right: 10px;
+  &__indicator-separator {
+    display: none;
+  }
+  &__value-container {
+    justify-content: center;
+    width: 130px;
+  }
+  &__dropdown-indicator {
+    svg {
+      path {
+        fill: #11a6b0;
+      }
+    }
+  }
+  &__placeholder{
+    white-space: nowrap;
+  }
+}
