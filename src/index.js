@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import { ConnectedRouter } from 'connected-react-router/immutable';
 import 'assets/scss/app.scss';
 import App from 'pages/App';
 import history from 'utils/history';
