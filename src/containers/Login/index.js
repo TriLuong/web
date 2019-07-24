@@ -12,6 +12,7 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    localStorage.setItem('userInfo', JSON.stringify(this.state));
     console.log(this.state);
   };
 
