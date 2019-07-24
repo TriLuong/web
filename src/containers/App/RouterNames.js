@@ -3,6 +3,6 @@ export default {
     path: '/login',
   },
   manageUser: {
-    path: '/manageUsers',
+    path: '/',
   },
 };
