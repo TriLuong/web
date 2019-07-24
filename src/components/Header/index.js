@@ -1,24 +1,41 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Form, FormGroup } from 'reactstrap';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Form,
+  FormGroup,
+} from 'reactstrap';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import images from '../../assets';
 import './Header.scss';
+import { doEditProfile } from '../../redux/actions';
+// import store from '../../redux/store';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isShow: false, modal: false, firstName: '', lastName: '', email: 'admin@designcafe.com' };
-  }
+  state = {};
 
   showMenu = () => {
     const { isShow } = this.state;
     this.setState({ isShow: !isShow });
-    console.log(this.state);
+    // console.log(this.state);
+    // console.log(store.getState());
     // console.log(this.props);
   };
 
-  toggle = state => {
+  toggleEditProfile = state => {
     this.setState({
-      modal: !state.modal,
+      modalEditProfile: !state.modalEditProfile,
+    });
+  };
+
+  toggleChangePassword = state => {
+    this.setState({
+      modalChangePassword: !state.modalChangePassword,
     });
   };
 
@@ -30,24 +47,41 @@ class Header extends Component {
 
   update = event => {
     event.preventDefault();
-    const { modal } = this.state;
-    this.setState({ modal: !modal });
+    /* eslint react/destructuring-assignment: 0 react/no-access-state-in-setstate: 0  */
+    this.setState({ modalEditProfile: !this.state.modalEditProfile });
+    /* eslint react/prop-types: 0 react/destructuring-assignment: 0 */
+    this.props.requestEditProFile(this.state);
     // console.log(this.state);
   };
 
-  modalEditProfile = modal => (
-    <Modal isOpen={modal} toggle={this.toggle}>
-      <ModalHeader toggle={this.toggle}>Edit Profile</ModalHeader>
+  modalEditProfile = () => (
+    /* eslint react/prop-types: 0 react/destructuring-assignment: 0 */
+    <Modal isOpen={this.state.modalEditProfile} toggle={this.toggleEditProfile}>
+      <ModalHeader toggle={this.toggletoggleEditProfile}>
+        Edit Profile
+      </ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
-            <Input placeholder="Firstname" name="firstName" onChange={this.handleOnChange} />
+            <Input
+              placeholder="Firstname"
+              name="firstName"
+              onChange={this.handleOnChange}
+            />
           </FormGroup>
           <FormGroup>
-            <Input placeholder="Lastname" name="lastName" onChange={this.handleOnChange} />
+            <Input
+              placeholder="Lastname"
+              name="lastName"
+              onChange={this.handleOnChange}
+            />
           </FormGroup>
           <FormGroup>
-            <Input placeholder="Email" name="email" onChange={this.handleOnChange} />
+            <Input
+              placeholder="Email"
+              name="email"
+              onChange={this.handleOnChange}
+            />
           </FormGroup>
           <Button color="primary" onClick={this.update}>
             Update
@@ -58,8 +92,49 @@ class Header extends Component {
     </Modal>
   );
 
+  modalChangePassword = () => (
+    /* eslint react/prop-types: 0 react/destructuring-assignment: 0 */
+    <Modal
+      isOpen={this.state.modalChangePassword}
+      toggle={this.toggleChangePassword}
+    >
+      <ModalHeader toggle={this.toggleChangePassword}>Edit Profile</ModalHeader>
+      <ModalBody>
+        <Form>
+          <FormGroup>
+            <Input
+              placeholder="Enter Old Password"
+              name="oldPassword"
+              type="password"
+              onChange={this.handleOnChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Input
+              placeholder="Enter New Password"
+              name="newPassword"
+              type="password"
+              onChange={this.handleOnChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Input
+              placeholder="Re-enter New Password"
+              name="preNewPassowrd"
+              type="password"
+              onChange={this.handleOnChange}
+            />
+          </FormGroup>
+          <Button color="primary" onClick={this.update}>
+            CHANGE PASSWORD
+          </Button>
+        </Form>
+      </ModalBody>
+      <ModalFooter />
+    </Modal>
+  );
+
   render() {
-    const { email, modal, isShow } = this.state;
     return (
       <div className="header">
         <div className="headerLeft">
@@ -71,21 +146,30 @@ class Header extends Component {
         </div>
         <div className="headerRight">
           <div className="userMenu">
-            <button className="btn btn-secondary" onClick={this.showMenu} type="button">
+            <button
+              className="btn btn-secondary"
+              onClick={this.showMenu}
+              type="button"
+            >
               AD
             </button>
-            <div className={`menuDropdown ${isShow ? 'show' : ''}`}>
+            <div className={`menuDropdown ${this.state.isShow ? 'show' : ''}`}>
               <div className="menuGroup menuGroupUser">
                 <h3>AD</h3>
-                <p>{email}</p>
+                <p>{this.props.email}</p>
                 <hr />
-                <a className="dropdown-item" href="#/" onClick={this.toggle}>
+                <a
+                  className="dropdown-item"
+                  href="#/"
+                  onClick={this.toggleEditProfile}
+                >
                   Edit Profile
                 </a>
-                {this.modalEditProfile(modal)}
-                <a className="dropdown-item" href="#/">
+                {this.modalEditProfile()}
+                <a className="dropdown-item" href="#/" onClick={this.toggle}>
                   Change Password
                 </a>
+                {this.modalChangePassword()}
                 <a className="dropdown-item" href="#/">
                   Logout
                 </a>
@@ -109,4 +193,19 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => ({
+  firstName: state.userInfoReducer.payload.firstName,
+  lastName: state.userInfoReducer.payload.lastName,
+  email: state.userInfoReducer.payload.email,
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestEditProFile: evt => dispatch(doEditProfile(evt)),
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(Header);

@@ -18,7 +18,8 @@ class Login extends Component {
     event.preventDefault();
     /* eslint react/prop-types: 0 react/destructuring-assignment: 0 */
     this.props.requestLogin(this.state);
-    console.log(this.state, store.getState());
+    console.log(store.getState());
+    // console.log(users.this.state.username.email, users[this.state.username]);
   };
 
   render() {
