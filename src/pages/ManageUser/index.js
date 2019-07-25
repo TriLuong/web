@@ -9,6 +9,8 @@ import GroupSelectField from 'components/common/form/GroupSelect';
 import DatatablePage from './DatatablePage';
 import './styles.scss';
 
+/* eslint react/destructuring-assignment: 0 */
+
 const optionsUser = [
   { value: 'all', label: 'All Users' },
   { value: 'Name', label: 'Name' },
@@ -57,39 +59,19 @@ class DashBoard extends Component {
         <div className="container">
           <div className="top-control">
             <h1 className="top-control__header">Manage Users</h1>
-            <div
-              className="btn-toolbar ml-auto"
-              role="toolbar"
-              aria-label="Toolbar with button groups"
-            >
+            <div className="btn-toolbar ml-auto" role="toolbar" aria-label="Toolbar with button groups">
               <div className="top-control__search mr-2">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="form-control"
-                />
+                <input type="text" placeholder="Search" className="form-control" />
                 <IconSearch className="top-control__search__icon" />
               </div>
-              <SelectField
-                className="mr-2"
-                options={optionsUser}
-                placeholder="All Users"
-              />
-              <div
-                className="btn-group mr-2"
-                role="group"
-                aria-label="Second group"
-              >
+              <SelectField className="mr-2" options={optionsUser} placeholder="All Users" />
+              <div className="btn-group mr-2" role="group" aria-label="Second group">
                 <button type="button" className="btn btn-primary">
                   BULK UPLOAD
                 </button>
               </div>
               <div className="btn-group" role="group" aria-label="Third group">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={this.openModal}
-                >
+                <button type="button" className="btn btn-primary" onClick={this.openModal}>
                   ADD NEW
                 </button>
                 <Modal
@@ -116,47 +98,31 @@ class DashBoard extends Component {
                     <div className="modal-body">
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <InputGroup name="FirstName" label="First Name" />
+                          <InputGroup name="FirstName" label="First Name" onChange={this.handleOnChange} />
                         </div>
                         <div className="form-group col-md-6">
-                          <InputGroup name="LastName" label="Last Name" />
-                        </div>
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <InputGroup
-                            name="EmailAddress"
-                            label="Email Address"
-                          />
-                        </div>
-                        <div className="form-group col-md-6">
-                          <GroupSelectField
-                            label="Select Branch"
-                            options={optionsUser}
-                          />
+                          <InputGroup name="LastName" label="Last Name" onChange={this.handleOnChange} />
                         </div>
                       </div>
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <GroupSelectField
-                            options={optionsUser}
-                            label="User Type"
-                          />
+                          <InputGroup name="EmailAddress" label="Email Address" onChange={this.handleOnChange} />
                         </div>
                         <div className="form-group col-md-6">
-                          <GroupSelectField
-                            label="Type of Designer"
-                            options={optionsUser}
-                          />
+                          <GroupSelectField label="Select Branch" options={optionsUser} />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="form-group col-md-6">
+                          <GroupSelectField options={optionsUser} label="User Type" />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <GroupSelectField label="Type of Designer" options={optionsUser} />
                         </div>
                       </div>
                     </div>
                     <div className="modal-footer border-0 justify-content-center">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        disabled
-                      >
+                      <button type="button" className="btn btn-primary" disabled>
                         ADD USER
                       </button>
                     </div>

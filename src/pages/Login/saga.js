@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0 */
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import API from 'api';
@@ -14,7 +15,7 @@ function* signInSaga(action) {
       res = { data: { access_token: 'tester' } };
     } else {
       // CALL API
-      res = yield call(API.callAPI.login, { username, password });
+      // res = yield call(API.callAPI.login, { username, password });
     }
     // console.log(res);
     if (res.data && res.data.result === 'error') {

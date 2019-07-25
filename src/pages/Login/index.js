@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import InputGroup from 'components/common/form/GroupInput';
 import logo from 'assets/images/login/logo.svg';
 import './styles.scss';
 import injectSaga from 'utils/injectSaga';
@@ -13,21 +14,10 @@ class LoginPage extends Component {
   handleOnChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-    if (value) {
-      this.setState({
-        isSelect: true,
-      });
-    } else {
-      this.setState({
-        isSelect: false,
-      });
-    }
-    console.log(this.state);
   };
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
     /* eslint  react/destructuring-assignment: 0 react/prop-types: 0 */
     this.props.requestLogin(this.state);
   };
@@ -44,33 +34,13 @@ class LoginPage extends Component {
             <p className="text-subheader">Please login to your account.</p>
             <form onSubmit={this.handleOnSubmit}>
               <div className="form-group">
-                <div className={`form-custom ${this.state.isSelect ? 'form-custom hasValue' : ''}`}>
-                  <input
-                    name="username"
-                    type="text"
-                    id="username"
-                    onChange={this.handleOnChange}
-                    className="form-control"
-                  />
-                  {/* eslint jsx-a11y/label-has-associated-control: 0 jsx-a11y/label-has-for: 0 */}
-                  <label htmlFor="Email address">Email address</label>
-                </div>
+                <InputGroup name="username" label="Email address" onChange={this.handleOnChange} />
               </div>
               <div className="form-group">
-                <div className={`form-custom ${this.state.isSelect ? 'form-custom hasValue' : ''}`}>
-                  <input
-                    name="password"
-                    type="password"
-                    id="password"
-                    onChange={this.handleOnChange}
-                    className="form-control"
-                  />
-                  {/* eslint jsx-a11y/label-has-associated-control: 0 jsx-a11y/label-has-for: 0 */}
-                  <label htmlFor="Password">Password</label>
-                </div>
+                <InputGroup type="password" name="password" label="Password" onChange={this.handleOnChange} />
               </div>
               <div className="list-button">
-                <button type="button" className="btn btn-link" onClick={this.handleOnclick}>
+                <button type="button" className="btn btn-link">
                   Reset Password
                 </button>
                 <button type="submit" className="btn btn-primary btn-login">
