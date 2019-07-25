@@ -16,7 +16,7 @@ import Request from 'api/request';
 import reducer from './reducer';
 import saga from './saga';
 import { getUsers } from './actions';
-// import { getFetchingState, getUsersState } from './selectors';
+import { getFetchingState, getUsersState } from './selectors';
 import DatatablePage from './DatatablePage';
 
 
@@ -203,10 +203,8 @@ class DashBoard extends Component {
 }
 
 const mapStateToProps = store => ({
-  isFetching: store.get('manageUserReducer').get('isFetching'),
-  users: store.get('manageUserReducer').get('users'),
-  // isFetching: getFetchingState(store),
-  // users: getUsersState(store),
+  isFetching: getFetchingState(store),
+  users: getUsersState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
