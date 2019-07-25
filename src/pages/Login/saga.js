@@ -2,6 +2,7 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import API from 'api';
+import { saveState, saveData } from '../../localStorage';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './constants';
 
 function* signInSaga(action) {
@@ -9,22 +10,27 @@ function* signInSaga(action) {
     payload: { username, password },
   } = action;
   try {
-    let res = null;
-    if (username === 'tester' && password === 'tester') {
-      res = { data: { result: 'success' } };
-      res = { data: { access_token: 'tester' } };
+    let res = { result: null, token: 'failed' };
+    console.log(res);
+    if (username === 'tester@designcafe.com' && password === 'tester') {
+      res = { result: 'success' };
+      res = { token: 'tester' };
     } else {
+      console.log(res);
       // CALL API
-      // res = yield call(API.callAPI.login, { username, password });
+      res = yield call(API.callAPI.login, { username, password });
+      console.log(res);
     }
-    // console.log(res);
-    if (res.data && res.data.result === 'error') {
-      throw new Error('email or password is incorrect');
+
+    console.log(res);
+    if (res && res.status === 'falied') {
+      throw new Error(res.message);
     }
-    yield put({ type: LOGIN_SUCCESS, payload: { access_token: 'loginSuccess' } });
+    yield put({ type: LOGIN_SUCCESS, payload: { access_token: res.token } });
     yield put(push('/lead'));
   } catch (err) {
-    yield put({ type: LOGIN_FAILURE });
+    console.info('err', err);
+    yield put({ type: LOGIN_FAILURE, error: err.message });
   }
 }
 
