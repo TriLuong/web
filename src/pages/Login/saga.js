@@ -11,25 +11,20 @@ function* signInSaga(action) {
   } = action;
   try {
     let res = { result: null, token: 'failed' };
-    console.log(res);
     if (username === 'tester@designcafe.com' && password === 'tester') {
-      res = { result: 'success' };
-      res = { token: 'tester' };
+      res = { data: { result: 'success', token: 'tester' } };
     } else {
-      console.log(res);
       // CALL API
-      res = yield call(API.callAPI.login, { username, password });
-      console.log(res);
+      res = yield call(API.callAPI.login, { email: username, password });
     }
 
-    console.log(res);
-    if (res && res.status === 'falied') {
+    // console.log("res");
+    if (res.data.status === 'failed') {
       throw new Error(res.message);
     }
-    yield put({ type: LOGIN_SUCCESS, payload: { access_token: res.token } });
+    yield put({ type: LOGIN_SUCCESS, payload: { access_token: res.data.token } });
     yield put(push('/lead'));
   } catch (err) {
-    console.info('err', err);
     yield put({ type: LOGIN_FAILURE, error: err.message });
   }
 }

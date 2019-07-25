@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const ROOT_API_URL = process.env.REACT_APP_REST_API_API || 'http://10.0.2.202:8080';
+const ROOT_API_URL = process.env.REACT_APP_REST_API_API || 'https://designcafe-backend.herokuapp.com/api/v1';
+// const ROOT_API_URL = process.env.REACT_APP_REST_API_API || 'http://10.0.0.25:3009/api/v1';
 
 const constructUrlEndPoint = api => `${ROOT_API_URL}/${api}`;
 const formatStringUrl = (...args) => {
