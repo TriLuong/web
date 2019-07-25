@@ -1,5 +1,6 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
+import API from 'api';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './constants';
 
 function* signInSaga(action) {
@@ -12,7 +13,8 @@ function* signInSaga(action) {
       res = { data: { result: 'success' } };
       res = { data: { access_token: 'tester' } };
     } else {
-      // res = yield call(Api.callapi.login, { username, password });
+      // CALL API
+      res = yield call(API.callAPI.login, { username, password });
     }
     // console.log(res);
     if (res.data && res.data.result === 'error') {
