@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
+/* eslint-disable */
 class GroupSelectField extends PureComponent {
   constructor(props) {
     super(props);
@@ -10,13 +11,16 @@ class GroupSelectField extends PureComponent {
   }
 
   handleChange = event => {
+    // const { onChange } = this.props;
+    // console.log(event);
     if (event.value) {
       this.setState({
-        isSelect: true
+        isSelect: true,
       });
+      // onChange(event);
     } else {
       this.setState({
-        isSelect: false
+        isSelect: false,
       });
     }
   };

@@ -2,6 +2,7 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import API from 'api';
+import Request from 'api/request';
 import { saveState, saveData } from '../../localStorage';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './constants';
 
@@ -17,14 +18,14 @@ function* signInSaga(action) {
       // CALL API
       res = yield call(API.callAPI.login, { email: username, password });
     }
-
-    // console.log("res");
     if (res.data.status === 'failed') {
       throw new Error(res.message);
     }
     yield put({ type: LOGIN_SUCCESS, payload: { access_token: res.data.token } });
-    yield put(push('/lead'));
+    Request.setToken(res.data.token);
+    yield put(push('/user'));
   } catch (err) {
+    console.log(err);
     yield put({ type: LOGIN_FAILURE, error: err.message });
   }
 }

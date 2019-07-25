@@ -6,8 +6,10 @@ import IconCancel from 'components/common/icon/IconCancel';
 import SelectField from 'components/common/form/Select';
 import InputGroup from 'components/common/form/GroupInput';
 import GroupSelectField from 'components/common/form/GroupSelect';
-import DatatablePage from './DatatablePage';
 import './styles.scss';
+// import { loadState } from 'localStorage';
+import API from 'api';
+import DatatablePage from './DatatablePage';
 
 /* eslint react/destructuring-assignment: 0 */
 
@@ -44,6 +46,20 @@ class DashBoard extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
+  handleOnChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  handleOnClick = () => {
+    // console.info(this.state);
+
+    // console.log(`Bearer + ${tokenUser.token}`);
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${tokenUser.token}`;
+    const data = API.get('users');
+    console.log(data);
+  };
+
   openModal() {
     this.setState({ modalIsOpen: true });
   }
@@ -59,14 +75,18 @@ class DashBoard extends Component {
         <div className="container">
           <div className="top-control">
             <h1 className="top-control__header">Manage Users</h1>
-            <div className="btn-toolbar ml-auto" role="toolbar" aria-label="Toolbar with button groups">
+            <div
+              className="btn-toolbar ml-auto"
+              role="toolbar"
+              aria-label="Toolbar with button groups"
+            >
               <div className="top-control__search mr-2">
                 <input type="text" placeholder="Search" className="form-control" />
                 <IconSearch className="top-control__search__icon" />
               </div>
               <SelectField className="mr-2" options={optionsUser} placeholder="All Users" />
               <div className="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={this.handleOnClick}>
                   BULK UPLOAD
                 </button>
               </div>
@@ -98,31 +118,55 @@ class DashBoard extends Component {
                     <div className="modal-body">
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <InputGroup name="FirstName" label="First Name" onChange={this.handleOnChange} />
+                          <InputGroup
+                            name="FirstName"
+                            label="First Name"
+                            onChange={this.handleOnChange}
+                          />
                         </div>
                         <div className="form-group col-md-6">
-                          <InputGroup name="LastName" label="Last Name" onChange={this.handleOnChange} />
+                          <InputGroup
+                            name="LastName"
+                            label="Last Name"
+                            onChange={this.handleOnChange}
+                          />
                         </div>
                       </div>
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <InputGroup name="EmailAddress" label="Email Address" onChange={this.handleOnChange} />
+                          <InputGroup
+                            name="EmailAddress"
+                            label="Email Address"
+                            onChange={this.handleOnChange}
+                          />
                         </div>
                         <div className="form-group col-md-6">
-                          <GroupSelectField label="Select Branch" options={optionsUser} />
+                          <GroupSelectField
+                            label="Select Branch"
+                            options={optionsUser}
+                            // onChange={this.handleOnChange}
+                          />
                         </div>
                       </div>
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <GroupSelectField options={optionsUser} label="User Type" />
+                          <GroupSelectField
+                            options={optionsUser}
+                            label="User Type"
+                            // onChange={this.handleOnChange}
+                          />
                         </div>
                         <div className="form-group col-md-6">
-                          <GroupSelectField label="Type of Designer" options={optionsUser} />
+                          <GroupSelectField
+                            label="Type of Designer"
+                            options={optionsUser}
+                            // onChange={this.handleOnChange}
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="modal-footer border-0 justify-content-center">
-                      <button type="button" className="btn btn-primary" disabled>
+                      <button type="button" className="btn btn-primary">
                         ADD USER
                       </button>
                     </div>
