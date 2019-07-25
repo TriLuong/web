@@ -25,7 +25,7 @@ class InputGroup extends PureComponent {
   };
 
   render() {
-    const { label, name, type, id, value } = this.props;
+    const { label, name, type, id, value, required } = this.props;
     const { isSelect } = this.state;
     return (
       <div className={`form-custom ${isSelect ? 'form-custom hasValue' : ''}`}>
@@ -35,6 +35,7 @@ class InputGroup extends PureComponent {
           id={id || name}
           onChange={this.handleChange}
           value={value}
+          required={required}
           className="form-control"
         />
         <label htmlFor={id || name}>{label}</label>

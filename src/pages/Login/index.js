@@ -38,6 +38,7 @@ class LoginPage extends Component {
                   type="email"
                   name="username"
                   label="Email address"
+                  required
                   onChange={this.handleOnChange}
                 />
               </div>
@@ -46,6 +47,7 @@ class LoginPage extends Component {
                   type="password"
                   name="password"
                   label="Password"
+                  required
                   onChange={this.handleOnChange}
                 />
               </div>
