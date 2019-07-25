@@ -1,10 +1,12 @@
 import { fromJS } from 'immutable';
+import { loadState } from 'localStorage';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../Login/constants';
 
+const persistedState = loadState() || {};
 // The initial state of the App
 export const initialState = fromJS({
   isFetching: false,
-  token: null,
+  token: persistedState.token,
   user: null,
   error: null,
   notifications: [],
