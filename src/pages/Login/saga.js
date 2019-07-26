@@ -1,11 +1,9 @@
-/* eslint no-unused-vars: 0 */
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { Auth } from 'api';
 import axios from 'axios';
-import { saveState, saveData } from '../../localStorage';
 import { loginSuccess, loginFail } from './actions';
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './constants';
+import { LOGIN_REQUEST, LOGOUT_REQUEST } from './constants';
 
 function* signInSaga(action) {
   const {
@@ -25,6 +23,11 @@ function* signInSaga(action) {
   }
 }
 
+function* signOutSaga() {
+  yield put(push('/login'));
+}
+
 export default function* loginWatcher() {
   yield takeLatest(LOGIN_REQUEST, signInSaga);
+  yield takeLatest(LOGOUT_REQUEST, signOutSaga);
 }

@@ -31,7 +31,7 @@ class Header extends PureComponent {
       <div className="header">
         <nav className="navbar">
           <a className="navbar-logo" href="/dashboard">
-            <img src={logo} alt="Design Cafe" />
+            <img src={logo} alt="Design Cafe" style={{ width: '37px' }} />
             <span className="navbar-brand">
               <strong>DESIGN</strong>
               CAFE

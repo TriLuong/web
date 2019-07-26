@@ -18,7 +18,7 @@ type Props = {
   history: any,
 };
 class LoginPage extends Component<Props> {
-  state = { isSelect: false };
+  state = { isFilled: false };
 
   componentDidMount() {
     const { token, history } = this.props;
@@ -30,6 +30,12 @@ class LoginPage extends Component<Props> {
   handleOnChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+    const { username, password } = this.state;
+    if (username && password) {
+      this.setState({ isFilled: true });
+    } else {
+      this.setState({ isFilled: false });
+    }
   };
 
   handleOnSubmit = e => {
@@ -39,6 +45,7 @@ class LoginPage extends Component<Props> {
   };
 
   render() {
+    const { isFilled } = this.state;
     return (
       <div className="page-login">
         <div className="page-login__content">
@@ -65,7 +72,7 @@ class LoginPage extends Component<Props> {
                 <button type="button" className="btn btn-link">
                   Reset Password
                 </button>
-                <button type="submit" className="btn btn-primary btn-login">
+                <button type="submit" className="btn btn-primary btn-login" disabled={!isFilled}>
                   LOGIN
                 </button>
               </div>

@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import axios from 'axios';
 import { loadState } from 'localStorage';
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../Login/constants';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST } from '../Login/constants';
 // The initial state of the App
 const persitedState = loadState();
 const { token } = persitedState;
@@ -30,6 +30,8 @@ function authReducer(state = initialState, action) {
         .set('isFetching', false)
         .set('token', null)
         .set('error', action.payload);
+    case LOGOUT_REQUEST:
+      return initialState;
     default:
       return state;
   }

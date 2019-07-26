@@ -1,9 +1,7 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
 import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
-
+import IconSort from 'components/common/icon/IconSort';
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
 const DatatablePage = ({ data, gotoPage }) => {
   if (!data || !data.users) {
@@ -35,19 +33,19 @@ const DatatablePage = ({ data, gotoPage }) => {
           <tr>
             <th className="sorting">
               Name (A-Z)
-              <FontAwesomeIcon color="#fff" icon={faSort} />
+              <IconSort className="ml-2" />
             </th>
             <th className="sorting">
               Branch (A-Z)
-              <FontAwesomeIcon color="#fff" icon={faSort} />
+              <IconSort className="ml-2" />
             </th>
             <th className="sorting">
               Email
-              <FontAwesomeIcon color="#fff" icon={faSort} />
+              <IconSort className="ml-2" />
             </th>
             <th className="sorting">
               Type
-              <FontAwesomeIcon color="#fff" icon={faSort} />
+              <IconSort className="ml-2" />
             </th>
             <th className="sorting" style={{ width: '150px' }} />
           </tr>
