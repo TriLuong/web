@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { LayoutBlank } from 'layouts';
+import PrivateRoute from 'components/privateRoute';
 import Login from 'pages/Login';
 import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
@@ -24,11 +25,11 @@ const App = () => (
       <meta name="description" content="DesignCafe" />
     </Helmet>
     <Switch>
-      <Route exact path="/" component={Login} />
+      <PrivateRoute exact path="/" component={ManageUser} />
       <Route exact path="/login" component={Login} />
-      <Route path="/user" component={ManageUser} />
-      <Route path="/lead" component={ManageLead} />
-      <Route path="/lead-detail" component={LeadDetail} />
+      <PrivateRoute path="/users" component={ManageUser} />
+      <PrivateRoute path="/leads" component={ManageLead} />
+      <PrivateRoute path="/lead-detail" component={LeadDetail} />
       {/* <Route path="" component={NotFoundPage} /> */}
     </Switch>
   </LayoutBlank>
@@ -36,6 +37,4 @@ const App = () => (
 
 const withReducer = injectReducer({ key: 'rootReducer', reducer });
 
-export default compose(
-  withReducer,
-)(App);
+export default compose(withReducer)(App);
