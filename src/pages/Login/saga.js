@@ -2,6 +2,7 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { Auth } from 'api';
+import axios from 'axios';
 import { saveState, saveData } from '../../localStorage';
 import { loginSuccess, loginFail } from './actions';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './constants';
@@ -16,6 +17,7 @@ function* signInSaga(action) {
     if (res.data.status === 'failed') {
       yield put(loginFail(res.message));
     }
+    axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
     yield put(loginSuccess({ token: res.data.token }));
     yield put(push('/'));
   } catch (err) {

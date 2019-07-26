@@ -1,8 +1,13 @@
 import { fromJS } from 'immutable';
+import axios from 'axios';
 import { loadState } from 'localStorage';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '../Login/constants';
 // The initial state of the App
 const persitedState = loadState();
+const { token } = persitedState;
+if (token) {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+}
 export const initialState = fromJS({
   isFetching: false,
   user: null,
