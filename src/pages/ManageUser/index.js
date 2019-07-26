@@ -48,7 +48,7 @@ class DashBoard extends Component {
   }
 
   componentDidMount() {
-    this.props.doGetUsers({ page: 1, limit: 1 });
+    this.props.doGetUsers({ page: 1 });
   }
 
   openModal() {
@@ -60,10 +60,11 @@ class DashBoard extends Component {
   }
 
   gotoPage = page => {
-    this.props.doGetUsers({ page, limit: 1 });
+    this.props.doGetUsers({ page });
   };
 
   render() {
+    const { user } = this.props;
     return (
       <div className="document">
         <Header />

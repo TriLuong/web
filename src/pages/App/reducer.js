@@ -24,6 +24,7 @@ function authReducer(state = initialState, action) {
       return state
         .set('isFetching', false)
         .set('token', action.payload.token)
+        .set('user', action.payload.user)
         .set('error', false);
     case LOGIN_FAILURE:
       return state
@@ -31,7 +32,11 @@ function authReducer(state = initialState, action) {
         .set('token', null)
         .set('error', action.payload);
     case LOGOUT_REQUEST:
-      return initialState;
+      return state
+        .set('isFetching', false)
+        .set('user', null)
+        .set('token', null)
+        .set('error', null);
     default:
       return state;
   }

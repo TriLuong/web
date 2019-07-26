@@ -1,6 +1,6 @@
 export const loadState = () => getData('redux-persist') || {};
 
-const whiteList = ['token'];
+const whiteList = ['token', 'user'];
 export const saveState = state => {
   if (!state) return;
   try {

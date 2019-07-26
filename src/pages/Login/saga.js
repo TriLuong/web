@@ -15,8 +15,9 @@ function* signInSaga(action) {
     if (res.data.status === 'failed') {
       yield put(loginFail(res.message));
     }
-    axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
-    yield put(loginSuccess({ token: res.data.token }));
+    const { token, user } = res.data;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    yield put(loginSuccess({ token, user }));
     yield put(push('/'));
   } catch (err) {
     yield put(loginFail(err.response.data.message));
@@ -24,6 +25,7 @@ function* signInSaga(action) {
 }
 
 function* signOutSaga() {
+  axios.defaults.headers.common.Authorization = '';
   yield put(push('/login'));
 }
 

@@ -30,8 +30,8 @@ class LoginPage extends Component<Props> {
   handleOnChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-    const { username, password } = this.state;
-    if (username && password) {
+    const { username } = this.state;
+    if (username) {
       this.setState({ isFilled: true });
     } else {
       this.setState({ isFilled: false });
