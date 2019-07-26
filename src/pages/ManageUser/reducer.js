@@ -1,13 +1,9 @@
 import { fromJS } from 'immutable';
-import {
-  GET_USERS_REQUEST,
-  GET_USERS_SUCCESS,
-  GET_USERS_FAILURE,
-} from './constants';
+import { GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE } from './constants';
 
 const initialState = fromJS({
   isFetching: false,
-  users: [],
+  dataUsers: {},
   error: null,
 });
 
@@ -18,7 +14,7 @@ export default function manageUserReducer(state = initialState, action) {
     case GET_USERS_SUCCESS:
       return state
         .set('isFetching', false)
-        .set('users', action.payload)
+        .set('dataUsers', action.payload)
         .set('error', false);
     case GET_USERS_FAILURE:
       return state

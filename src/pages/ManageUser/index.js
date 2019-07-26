@@ -11,8 +11,6 @@ import GroupSelectField from 'components/common/form/GroupSelect';
 import './styles.scss';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
-import { loadState } from 'localStorage';
-import Request from 'api/request';
 import reducer from './reducer';
 import saga from './saga';
 import { getUsers } from './actions';
@@ -57,7 +55,6 @@ class DashBoard extends Component {
   }
 
   componentDidMount() {
-    Request.getToken(loadState().token);
     this.props.getUsers();
   }
 
@@ -193,9 +190,7 @@ class DashBoard extends Component {
               </div>
             </div>
           </div>
-          {this.props.isFetching ? null : (
-            <DatatablePage data={this.props.users} />
-          )}
+          <DatatablePage data={this.props.dataUsers} />
         </div>
       </div>
     );
@@ -204,7 +199,7 @@ class DashBoard extends Component {
 
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
-  users: getUsersState(store),
+  dataUsers: getUsersState(store),
 });
 
 const mapDispatchToProps = dispatch => ({

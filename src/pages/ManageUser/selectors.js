@@ -10,5 +10,5 @@ export const getFetchingState = createSelector(
 
 export const getUsersState = createSelector(
   [rootState],
-  users => users.get('users'),
+  dataUsers => dataUsers.get('dataUsers'),
 );

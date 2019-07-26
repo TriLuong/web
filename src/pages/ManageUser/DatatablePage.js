@@ -5,8 +5,12 @@ import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
 
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
-const DatatablePage = props => {
-  const elemtUser = props.data.map(user => (
+const DatatablePage = ({ data }) => {
+  if (!data || !data.users) {
+    return null;
+  }
+  console.log(data);
+  const elemtUser = data.users.map(user => (
     <tr key={user.id}>
       <td>{user.firstName}</td>
       <td>{user.branch}</td>
@@ -53,7 +57,7 @@ const DatatablePage = props => {
         <tbody>{elemtUser}</tbody>
       </table>
       <div className="table-sort__paginate">
-        <Pagination />
+        <Pagination pages={data.pages} />
       </div>
     </div>
   );

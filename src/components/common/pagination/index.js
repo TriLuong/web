@@ -10,34 +10,37 @@ class Pagination extends PureComponent {
   }
 
   render() {
+    /* eslint react/prop-types:0 */
+    const { pages } = this.props;
+    const pageArr = Array.from(Array(pages).keys());
+
+    const elemtPages = pageArr.map(page => (
+      <li className="page-item active">
+        <button className="page-link" type="button">
+          {page + 1}
+        </button>
+      </li>
+    ));
+
     return (
       <nav className="pagination-wrap">
-        <button className="page-link" tabIndex="-1">
+        <button className="page-link" tabIndex="-1" type="button">
           First
         </button>
         <ul className="pagination">
           <li className="page-item">
-            <button className="page-link" tabIndex="-1">
+            <button className="page-link" tabIndex="-1" type="button">
               <FontAwesomeIcon color="#11a6b0" icon={faCaretLeft} />
             </button>
           </li>
-          <li className="page-item active">
-            <button className="page-link">1</button>
-          </li>
+          {elemtPages}
           <li className="page-item">
-            <button className="page-link">2</button>
-          </li>
-          <li className="page-item">
-            <button className="page-link">3</button>
-          </li>
-          <li className="page-item">
-            <button className="page-link">4</button>
-          </li>
-          <li className="page-item">
-            <button className="page-link"><FontAwesomeIcon color="#11a6b0" icon={faCaretRight} /></button>
+            <button className="page-link" type="button">
+              <FontAwesomeIcon color="#11a6b0" icon={faCaretRight} />
+            </button>
           </li>
         </ul>
-        <button className="page-link" tabIndex="-1">
+        <button className="page-link" tabIndex="-1" type="button">
           Last
         </button>
       </nav>
