@@ -7,7 +7,7 @@ import IconEdit from 'components/common/icon/IconEdit';
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
 const DatatablePage = props => {
   const elemtUser = props.data.map(user => (
-    <tr>
+    <tr key={user.id}>
       <td>{user.firstName}</td>
       <td>{user.branch}</td>
       <td>{user.email}</td>
