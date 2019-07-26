@@ -23,7 +23,13 @@
 .dropdown-user {
   padding: 20px;
   border: 0;
+  background: #fff;
+  border-radius: 4px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  &--role {
+    margin-top: 20px;
+    background: #f9f9f9;
+  }
   &__name {
     font-size: 20px;
     font-weight: bold;
@@ -39,4 +45,9 @@
     padding: 10px 0;
     color: #282828;
   }
+}
+
+.dropdown-menu--user {
+  border: 0;
+  background: transparent;
 }

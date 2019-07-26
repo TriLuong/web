@@ -5,11 +5,10 @@ import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
 
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
-const DatatablePage = ({ data }) => {
+const DatatablePage = ({ data, gotoPage }) => {
   if (!data || !data.users) {
     return null;
   }
-  console.log(data);
   const elemtUser = data.users.map(user => (
     <tr key={user.id}>
       <td>{user.firstName}</td>
@@ -17,14 +16,14 @@ const DatatablePage = ({ data }) => {
       <td>{user.email}</td>
       <td>{user.typeDesigner}</td>
       <td>
-        <button type="button" className="btn btn-primary">
-          EDIT
-        </button>
-      </td>
-      <td>
-        <button type="button" className="btn btn-outline-secondary">
-          <IconEdit />
-        </button>
+        <div className="d-flex">
+          <button type="button" className="btn btn-primary">
+            EDIT
+          </button>
+          <button type="button" className="btn btn-outline-secondary" style={{ marginLeft: '10px' }}>
+            <IconEdit />
+          </button>
+        </div>
       </td>
     </tr>
   ));
@@ -50,14 +49,13 @@ const DatatablePage = ({ data }) => {
               Type
               <FontAwesomeIcon color="#fff" icon={faSort} />
             </th>
-            <th className="sorting" />
-            <th className="sorting" />
+            <th className="sorting" style={{ width: '150px' }} />
           </tr>
         </thead>
         <tbody>{elemtUser}</tbody>
       </table>
       <div className="table-sort__paginate">
-        <Pagination pages={data.pages} />
+        <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
       </div>
     </div>
   );

@@ -1,14 +1,13 @@
 import { createSelector } from 'reselect';
 
-const rootState = state => state.get('manageUserReducer');
+const manageUserReducer = state => state.get('manageUserReducer');
 
-/* eslint import/prefer-default-export:0 */
 export const getFetchingState = createSelector(
-  [rootState],
+  manageUserReducer,
   fetching => fetching.get('isFetching'),
 );
 
 export const getUsersState = createSelector(
-  [rootState],
+  manageUserReducer,
   dataUsers => dataUsers.get('dataUsers'),
 );

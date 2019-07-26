@@ -4,7 +4,7 @@
   font-family: 'Helvetica';
   font-style: normal;
   font-weight: normal;
-  src:  url('../fonts/Helvetica.ttf') format('ttf');
+  src: url('../fonts/Helvetica.ttf') format('ttf');
 }
 
 @font-face {
@@ -14,7 +14,6 @@
   src: url('../fonts/Helvetica-Bold.ttf') format('ttf');
 }
 
-
 @import './table';
 @import './dropdown';
 @import './modal';
@@ -22,7 +21,7 @@
 @import './footer';
 body {
   font-family: 'Helvetica', sans-serif;
-  background: #efefef;
+  background: #f4f4f5;
   color: #282828;
   height: 100%;
 }
@@ -40,4 +39,7 @@ button:focus {
   justify-content: center;
   background: #fff;
   z-index: 99;
+}
+.ff14 {
+  font-size: 14px;
 }

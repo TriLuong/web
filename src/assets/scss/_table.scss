@@ -1,5 +1,7 @@
 .table-sort {
   padding-bottom: 70px;
+  border-radius: 4px;
+  overflow: hidden;
   table {
     margin-bottom: 0;
     th,
@@ -11,6 +13,8 @@
         background: #11a6b0;
         color: #fff;
         padding: 15px 20px;
+        border-bottom: 0;
+        font-weight: normal;
       }
     }
     tbody {
@@ -24,6 +28,7 @@
         td {
           color: #3f3f3f;
           padding: 20px;
+          border-top: 0;
         }
       }
     }
@@ -33,6 +38,7 @@
     justify-content: center;
     padding: 10px 0;
     background: #e5e5ea;
+    border-radius: 0 0 4px 4px;
     .pagination {
       margin-bottom: 0;
       margin: 0 10px;
