@@ -17,6 +17,7 @@ import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
 import LeadDetail from 'pages/LeadDetail';
 import injectReducer from 'utils/injectReducer';
+import Loading from 'pages/Loading';
 import reducer from './reducer';
 
 const App = () => (
@@ -32,6 +33,7 @@ const App = () => (
       <PrivateRoute path="/lead-detail" component={LeadDetail} />
       {/* <Route path="" component={NotFoundPage} /> */}
     </Switch>
+    <Loading />
   </LayoutBlank>
 );
 
