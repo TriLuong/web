@@ -6,7 +6,7 @@ class InputGroup extends PureComponent {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = { isSelect: false };
+    this.state = { isSelect: props.value || false };
   }
 
   /* eslint react/prop-types: 0 */
@@ -25,19 +25,11 @@ class InputGroup extends PureComponent {
   };
 
   render() {
-    const { label, name, type, id, value, required } = this.props;
+    const { label, name, id, ...rest } = this.props;
     const { isSelect } = this.state;
     return (
       <div className={`form-custom ${isSelect ? 'form-custom hasValue' : ''}`}>
-        <input
-          name={name}
-          type={type || 'text'}
-          id={id || name}
-          onChange={this.handleChange}
-          value={value}
-          required={required}
-          className="form-control"
-        />
+        <input {...rest} name={name} id={id || name} onChange={this.handleChange} className="form-control" />
         <label htmlFor={id || name}>{label}</label>
       </div>
     );

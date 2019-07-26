@@ -1,38 +1,31 @@
 import React, { PureComponent } from 'react';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
 
 class GroupSelectField extends PureComponent {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = { isSelect: false };
+    this.state = { isSelect: (props.value && props.value.value) || false };
   }
 
   handleChange = event => {
-    if (event.value) {
-      this.setState({
-        isSelect: true
-      });
-    } else {
-      this.setState({
-        isSelect: false
-      });
-    }
+    const { onChange, name } = this.props;
+    this.setState({
+      isSelect: event.value || false,
+    });
+    onChange(name, event.value);
   };
 
   render() {
-    const { value, name, label } = this.props;
+    const { value, label, options } = this.props;
     const { isSelect } = this.state;
 
     return (
       <div className={`group-select ${isSelect ? 'group-select hasValue' : ''}`}>
         <label>{label}</label>
         <Select
-          name={name}
           value={value}
           onChange={this.handleChange}
-          options={this.props.options}
+          options={options}
           clearable={false}
           className="group-select__inner"
           placeholder={null}

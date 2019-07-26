@@ -3,7 +3,7 @@ import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
-const DatatablePage = ({ data, gotoPage }) => {
+const DatatablePage = ({ data, gotoPage, onEdit }) => {
   if (!data || !data.users) {
     return null;
   }
@@ -15,7 +15,7 @@ const DatatablePage = ({ data, gotoPage }) => {
       <td>{user.typeDesigner}</td>
       <td>
         <div className="d-flex">
-          <button type="button" className="btn btn-primary">
+          <button type="button" className="btn btn-primary" onClick={() => onEdit(user)}>
             EDIT
           </button>
           <button type="button" className="btn btn-outline-secondary" style={{ marginLeft: '10px' }}>
