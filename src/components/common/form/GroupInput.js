@@ -11,12 +11,13 @@ class InputGroup extends PureComponent {
 
   /* eslint react/prop-types: 0 */
   handleChange = event => {
-    const { onChange } = this.props;
+    const { onChange, name } = this.props;
+    const { value } = event.target;
     if (event.target.value) {
       this.setState({
         isSelect: true,
       });
-      onChange(event);
+      onChange({ name, value });
     } else {
       this.setState({
         isSelect: false,

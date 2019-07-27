@@ -13,9 +13,9 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers } from './actions';
-import { USER_FILTER } from './constants';
-import { getFetchingState, getUsersState } from './selectors';
+import { getUsers, addUsers } from './actions';
+import { USER_FILTER, TYPE_DESIGNER, USER_TYPE, USER_BRANCH } from './constants';
+import { getUsersState } from './selectors';
 import DatatablePage from './DatatablePage';
 
 const customStyles = {
@@ -35,7 +35,12 @@ const customStyles = {
   },
 };
 
-class DashBoard extends Component {
+type Props = {
+  doGetUsers: () => {},
+  doAddUsers: () => {},
+  dataUsers: {},
+}
+class DashBoard extends Component<Props> {
   constructor() {
     super();
 
@@ -48,8 +53,32 @@ class DashBoard extends Component {
   }
 
   componentDidMount() {
-    this.props.doGetUsers({ page: 1, limit: 1 });
+    this.gotoPage(1);
   }
+
+  gotoPage = page => {
+    const { doGetUsers } = this.props;
+    doGetUsers({ page });
+  };
+
+  handleOnChange = event => {
+    const { name, value } = event;
+    const { addUser } = this.state;
+    this.setState({ addUser: { ...addUser, [name]: value } });
+  };
+
+  handleOnClick = () => {
+    const { doAddUsers } = this.props;
+    const { addUser } = this.state;
+    doAddUsers({
+      form: { data: addUser },
+      cb: status => {
+        if (status) {
+          this.closeModal();
+        }
+      },
+    });
+  };
 
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -59,11 +88,9 @@ class DashBoard extends Component {
     this.setState({ modalIsOpen: false });
   }
 
-  gotoPage = page => {
-    this.props.doGetUsers({ page, limit: 1 });
-  };
-
   render() {
+    const { dataUsers } = this.props;
+    const { modalIsOpen } = this.state;
     return (
       <div className="document">
         <Header />
@@ -86,7 +113,7 @@ class DashBoard extends Component {
                   ADD NEW
                 </button>
                 <Modal
-                  isOpen={this.state.modalIsOpen}
+                  isOpen={modalIsOpen}
                   onAfterOpen={this.afterOpenModal}
                   onRequestClose={this.closeModal}
                   style={customStyles}
@@ -109,31 +136,46 @@ class DashBoard extends Component {
                     <div className="modal-body">
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <InputGroup name="FirstName" label="First Name" onChange={this.handleOnChange} />
+                          <InputGroup name="firstName" label="First Name" onChange={this.handleOnChange} />
                         </div>
                         <div className="form-group col-md-6">
-                          <InputGroup name="LastName" label="Last Name" onChange={this.handleOnChange} />
-                        </div>
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <InputGroup name="EmailAddress" label="Email Address" onChange={this.handleOnChange} />
-                        </div>
-                        <div className="form-group col-md-6">
-                          <GroupSelectField label="Select Branch" options={USER_FILTER} />
+                          <InputGroup name="lastName" label="Last Name" onChange={this.handleOnChange} />
                         </div>
                       </div>
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <GroupSelectField options={USER_FILTER} label="User Type" />
+                          <InputGroup name="email" label="Email Address" onChange={this.handleOnChange} />
                         </div>
                         <div className="form-group col-md-6">
-                          <GroupSelectField label="Type of Designer" options={USER_FILTER} />
+                          <GroupSelectField
+                            name="branch"
+                            label="branch"
+                            options={USER_BRANCH}
+                            onChange={this.handleOnChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-row">
+                        <div className="form-group col-md-6">
+                          <GroupSelectField
+                            name="role"
+                            options={USER_TYPE}
+                            label="User Type"
+                            onChange={this.handleOnChange}
+                          />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <GroupSelectField
+                            name="typeDesigner"
+                            label="Type of Designer"
+                            options={TYPE_DESIGNER}
+                            onChange={this.handleOnChange}
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="modal-footer border-0 justify-content-center">
-                      <button type="button" className="btn btn-primary" disabled>
+                      <button type="button" className="btn btn-primary" onClick={this.handleOnClick}>
                         ADD USER
                       </button>
                     </div>
@@ -142,7 +184,7 @@ class DashBoard extends Component {
               </div>
             </div>
           </div>
-          <DatatablePage data={this.props.dataUsers} gotoPage={this.gotoPage} />
+          <DatatablePage data={dataUsers} gotoPage={this.gotoPage} />
         </div>
       </div>
     );
@@ -150,12 +192,12 @@ class DashBoard extends Component {
 }
 
 const mapStateToProps = store => ({
-  isFetching: getFetchingState(store),
   dataUsers: getUsersState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
+  doAddUsers: evt => dispatch(addUsers(evt)),
 });
 
 const withConnect = connect(

@@ -28,7 +28,7 @@ class LoginPage extends Component<Props> {
   }
 
   handleOnChange = event => {
-    const { name, value } = event.target;
+    const { name, value } = event;
     this.setState({ [name]: value });
   };
 
