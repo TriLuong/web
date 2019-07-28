@@ -1,7 +1,13 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { Users } from 'api';
-import { GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAILURE, ADD_USERS_REQUEST } from './constants';
-import { adddUsersSuccess, addUsersFail } from './actions';
+import {
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAILURE,
+  ADD_USERS_REQUEST,
+  UPDATE_USERS_REQUEST,
+} from './constants';
+import { adddUsersSuccess, addUsersFail, updateUserSuccess, updateUserFailure } from './actions';
 
 function* getUsersSaga({ payload }) {
   try {
@@ -31,7 +37,22 @@ function* addUsersSaga({ payload }) {
   }
 }
 
+function* updateUserSaga({ payload }) {
+  try {
+    const { form, cb } = payload;
+    const res = yield call(Users.updateUser, form);
+    if (res.data.status === 'failed') {
+      throw new Error(res.message);
+    }
+    yield put(updateUserSuccess(res.data.user));
+    cb(true);
+  } catch (error) {
+    yield put(updateUserFailure(error));
+  }
+}
+
 export default function* getUsersWatcher() {
   yield takeLatest(GET_USERS_REQUEST, getUsersSaga);
   yield takeLatest(ADD_USERS_REQUEST, addUsersSaga);
+  yield takeLatest(UPDATE_USERS_REQUEST, updateUserSaga);
 }

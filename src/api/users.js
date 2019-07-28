@@ -8,5 +8,6 @@ export const getUsers = params => Request.get(URL_API_USERS, {
 });
 
 export const addUsers = params => Request.post(URL_API_USERS, params);
+export const updateUser = params => Request.patch(`${URL_API_USERS}/${params.data.id}`, params);
 
-export default { getUsers, addUsers };
+export default { getUsers, addUsers, updateUser };

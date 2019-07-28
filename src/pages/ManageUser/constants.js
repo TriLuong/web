@@ -6,6 +6,10 @@ export const ADD_USERS_REQUEST = 'ADD_USERS/REQUEST';
 export const ADD_USERS_SUCCESS = 'ADD_USERS/SUCCESS';
 export const ADD_USERS_FAILURE = 'ADD_USERS/FAILURE';
 
+export const UPDATE_USERS_REQUEST = 'UPDATE_USERS/REQUEST';
+export const UPDATE_USERS_SUCCESS = 'UPDATE_USERS/SUCCESS';
+export const UPDATE_USERS_FAILURE = 'UPDATE_USERS/FAILURE';
+
 export const USER_FILTER = [
   { value: 'all', label: 'All Users' },
   { value: 'Name', label: 'Name' },

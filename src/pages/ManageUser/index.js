@@ -13,7 +13,7 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUsers } from './actions';
+import { getUsers, addUsers, updateUser } from './actions';
 import { USER_FILTER, TYPE_DESIGNER, USER_TYPE, USER_BRANCH } from './constants';
 import { getUsersState } from './selectors';
 import DatatablePage from './DatatablePage';
@@ -38,8 +38,9 @@ const customStyles = {
 type Props = {
   doGetUsers: () => {},
   doAddUsers: () => {},
+  doUpdateUser: () => {},
   dataUsers: {},
-}
+};
 class DashBoard extends Component<Props> {
   constructor() {
     super();
@@ -68,16 +69,33 @@ class DashBoard extends Component<Props> {
   };
 
   handleOnClick = () => {
-    const { doAddUsers } = this.props;
+    const { doAddUsers, doUpdateUser } = this.props;
     const { addUser } = this.state;
-    doAddUsers({
-      form: { data: addUser },
-      cb: status => {
-        if (status) {
-          this.closeModal();
-        }
-      },
-    });
+    if (this.userEdit) {
+      doUpdateUser({
+        form: { data: { ...this.userEdit, ...addUser } },
+        cb: status => {
+          if (status) {
+            this.closeModal();
+            this.userEdit = null;
+          }
+        },
+      });
+    } else {
+      doAddUsers({
+        form: { data: addUser },
+        cb: status => {
+          if (status) {
+            this.closeModal();
+          }
+        },
+      });
+    }
+  };
+
+  onEdit = user => {
+    this.openModal();
+    this.userEdit = user;
   };
 
   openModal() {
@@ -184,7 +202,7 @@ class DashBoard extends Component<Props> {
               </div>
             </div>
           </div>
-          <DatatablePage data={dataUsers} gotoPage={this.gotoPage} />
+          <DatatablePage data={dataUsers} gotoPage={this.gotoPage} onEdit={this.onEdit} />
         </div>
       </div>
     );
@@ -198,6 +216,7 @@ const mapStateToProps = store => ({
 const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
   doAddUsers: evt => dispatch(addUsers(evt)),
+  doUpdateUser: evt => dispatch(updateUser(evt)),
 });
 
 const withConnect = connect(
