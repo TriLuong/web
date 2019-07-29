@@ -14,6 +14,10 @@ export const EDIT_PROFILE_REQUEST = 'EDIT_PROFILE/REQUEST';
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE/SUCCESS';
 export const EDIT_PROFILE_FAILURE = 'EDIT_PROFILE/FAILURE';
 
+export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD/REQUEST';
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD/SUCCESS';
+export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD/FAILURE';
+
 export const USER_FILTER = [
   { value: '', label: 'All Users' },
   { value: 'role=designer&typeDesigner=Freelancer', label: 'Freelancer designer' },

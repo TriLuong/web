@@ -10,6 +10,9 @@ import {
   EDIT_PROFILE_REQUEST,
   EDIT_PROFILE_SUCCESS,
   EDIT_PROFILE_FAILURE,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PASSWORD_FAILURE,
 } from './constants';
 
 export const getUsers = createAction(GET_USERS_REQUEST);
@@ -22,3 +25,6 @@ export const updateUserFail = createAction(UPDATE_USERS_FAILURE);
 export const editProfile = createAction(EDIT_PROFILE_REQUEST);
 export const editProfileSuccess = createAction(EDIT_PROFILE_SUCCESS);
 export const editProfileFailure = createAction(EDIT_PROFILE_FAILURE);
+export const changePassword = createAction(CHANGE_PASSWORD_REQUEST);
+export const changePasswordSuccess = createAction(CHANGE_PASSWORD_SUCCESS);
+export const changePasswordFailure = createAction(CHANGE_PASSWORD_FAILURE);

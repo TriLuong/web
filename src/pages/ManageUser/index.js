@@ -10,7 +10,7 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUser, updateUser, editProfile } from './actions';
+import { getUsers, addUser, updateUser, editProfile, changePassword } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
 
@@ -18,16 +18,18 @@ import { getFetchingState, getUsersState } from './selectors';
 import DatatablePage from './DatatablePage';
 
 type Props = {
+  dataUsers: {},
   doGetUsers: () => {};
   doAddUser: () => {},
   doUpdateUser: () => {},
   doEditProfile: () => {},
-  dataUsers: {},
+  doChangePassword: () => {},
 }
 class DashBoard extends Component<Props> {
   state = {
     modalIsOpen: false,
     modalIsOpenEditProfile: false,
+    modalIsOpenChangePassword: false,
   };
 
   componentDidMount() {
@@ -46,6 +48,12 @@ class DashBoard extends Component<Props> {
   toggleModalEditProfile = () => {
     this.setState(prevState => ({
       modalIsOpenEditProfile: !prevState.modalIsOpenEditProfile,
+    }));
+  };
+
+  toggleModalChangePassword = () => {
+    this.setState(prevState => ({
+      modalIsOpenChangePassword: !prevState.modalIsOpenChangePassword,
     }));
   };
 
@@ -83,7 +91,20 @@ class DashBoard extends Component<Props> {
       form: { data: values },
       cb: status => {
         if (status) {
-          this.toggleModalEditProfile({});
+          this.toggleModalEditProfile();
+        }
+      },
+    });
+  }
+
+  onSubmitChangePassword = values => {
+    console.info('onSubmitChangePassword', values);
+    const { doChangePassword } = this.props;
+    doChangePassword({
+      form: { data: values },
+      cb: status => {
+        if (status) {
+          this.toggleModalChangePassword();
         }
       },
     });
@@ -99,9 +120,14 @@ class DashBoard extends Component<Props> {
     this.toggleModalEditProfile();
   }
 
+  onChangePassword = userInfo => {
+    this.userEditProfile = userInfo;
+    this.toggleModalChangePassword();
+  }
+
   render() {
     const { dataUsers } = this.props;
-    const { modalIsOpen, modalIsOpenEditProfile } = this.state;
+    const { modalIsOpen, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
     return (
       <div className="document">
         <Header
@@ -111,6 +137,13 @@ class DashBoard extends Component<Props> {
           toggleEditProfile={this.toggleModalEditProfile}
           onSubmitEditProfile={this.onSubmitEditProfile}
           user={this.userEditProfile}
+
+          userChangePassword={this.userChangePassword}
+          onChangePassword={this.onChangePassword}
+          titleChangePassword="Change Password"
+          isOpenChangePassword={modalIsOpenChangePassword}
+          toggleChangePassword={this.toggleModalChangePassword}
+          onSubmitChangePassword={this.onSubmitChangePassword}
         />
         <div className="container">
           <div className="top-control">
@@ -157,6 +190,7 @@ const mapDispatchToProps = dispatch => ({
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
   doEditProfile: evt => dispatch(editProfile(evt)),
+  doChangePassword: evt => dispatch(changePassword(evt)),
 });
 
 const withConnect = connect(

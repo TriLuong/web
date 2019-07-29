@@ -5,17 +5,24 @@ import { makeGetUser } from 'pages/App/selectors';
 import { requestLogout } from 'pages/Login/actions';
 import { createStructuredSelector } from 'reselect';
 import './styles.scss';
-import ModalEditProfile from 'components/modal/ModalEditProfile';
+import { ModalEditProfile, ModalChangePassword } from 'components/modal';
 
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 type Props = {
-  doRequestLogout: () => {},
   user: {},
-  onEditProfile: () => {},
   titleEditProfile: String,
   isOpenEditProfile: Boolean,
+  onEditProfile: () => {},
   toggleEditProfile: () => {},
   onSubmitEditProfile: () => {},
+
+  titleChangePassword: String,
+  isOpenChangePassword: Boolean,
+  onChangePassword: () => {},
+  toggleChangePassword: () => {},
+  onSubmitChangePassword: () => {},
+
+  doRequestLogout: () => {},
 };
 class Header extends PureComponent<Props> {
   constructor() {
@@ -54,6 +61,12 @@ class Header extends PureComponent<Props> {
       isOpenEditProfile,
       toggleEditProfile,
       onSubmitEditProfile,
+
+      onChangePassword,
+      titleChangePassword,
+      isOpenChangePassword,
+      toggleChangePassword,
+      onSubmitChangePassword,
     } = this.props;
     const userInfo = user || {};
     const { showMenu } = this.state;
@@ -93,12 +106,20 @@ class Header extends PureComponent<Props> {
                   onSubmit={onSubmitEditProfile}
                   user={userInfo}
                 />
-                <a className="dropdown-item" href="#">
+                <button className="dropdown-item" onClick={() => onChangePassword(userInfo)} type="button">
                   Change Password
-                </a>
-                <div role="button" className="dropdown-item" onClick={() => {}} onKeyUp={this.logout} tabIndex={0}>
+                </button>
+                <ModalChangePassword
+                  title={titleChangePassword}
+                  isOpen={isOpenChangePassword}
+                  toggle={toggleChangePassword}
+                  onSubmit={onSubmitChangePassword}
+                  user={userInfo}
+                />
+                <button className="dropdown-item" onClick={this.logout} type="button">
                   Logout
-                </div>
+                </button>
+
               </div>
               <div className="dropdown-user dropdown-user--role">
                 <a className="dropdown-item" href="#">
