@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { Users } from 'api';
+import { Users, User } from 'api';
 import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
@@ -20,6 +20,7 @@ import {
   changePasswordFailure,
 } from './actions';
 
+/* FOR USERS */
 function* getUsersSaga({ payload }) {
   try {
     const res = yield call(Users.getUsers, payload);
@@ -46,6 +47,7 @@ function* addUsersSaga({ payload }) {
   }
 }
 
+/* FOR USER */
 function* updateUsersSaga({ payload }) {
   try {
     const { form, cb } = payload;
@@ -63,7 +65,7 @@ function* updateUsersSaga({ payload }) {
 function* editProfileSaga({ payload }) {
   try {
     const { form, cb } = payload;
-    const res = yield call(Users.updateUser, form);
+    const res = yield call(User.updateUser, form);
     if (res.data.status === 'failed') {
       throw new Error(res.message);
     }
@@ -77,7 +79,7 @@ function* editProfileSaga({ payload }) {
 function* changePasswordSaga({ payload }) {
   try {
     const { form, cb } = payload;
-    const res = yield call(Users, form);
+    const res = yield call(User.changePassword, form);
     if (res.data.status === 'failed') {
       throw new Error(res.message);
     }
