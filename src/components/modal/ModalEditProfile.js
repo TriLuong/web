@@ -30,7 +30,7 @@ class ModalEditProfile extends PureComponent<Props> {
                 </div>
               </div>
               <div className="d-flex my-4 border-0 justify-content-center">
-                <button type="submit" className="btn btn-primary">
+                <button className="btn btn-primary" type="submit">
                   UPDATE
                 </button>
               </div>

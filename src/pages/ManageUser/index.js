@@ -98,16 +98,18 @@ class DashBoard extends Component<Props> {
   }
 
   onSubmitChangePassword = values => {
-    console.info('onSubmitChangePassword', values);
+    // console.info('onSubmitChangePassword', values);
     const { doChangePassword } = this.props;
-    doChangePassword({
-      form: { data: values },
-      cb: status => {
-        if (status) {
-          this.toggleModalChangePassword();
-        }
-      },
-    });
+    if (values.newPassword === values.reNewPassword) {
+      doChangePassword({
+        form: { data: values },
+        cb: status => {
+          if (status) {
+            this.toggleModalChangePassword();
+          }
+        },
+      });
+    }
   }
 
   onEdit = user => {
