@@ -29,6 +29,7 @@ export default function manageUserReducer(state = initialState, action) {
         .set('error', action.error);
     case ADD_USERS_SUCCESS: {
       const users = state.getIn(['dataUsers', 'users']);
+      users.pop();
       return state.setIn(['dataUsers', 'users'], [action.payload, ...users]);
     }
     case UPDATE_USERS_SUCCESS: {

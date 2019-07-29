@@ -16,12 +16,12 @@ class InputGroup extends PureComponent {
       this.setState({
         isSelect: true,
       });
-      onChange(event);
     } else {
       this.setState({
         isSelect: false,
       });
     }
+    onChange(event);
   };
 
   render() {

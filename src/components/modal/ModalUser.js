@@ -26,7 +26,7 @@ class ModalUser extends React.PureComponent {
                   <InputGroup
                     name="firstName"
                     label="First Name"
-                    value={values.firstName}
+                    value={values.firstName || ''}
                     required
                     onChange={handleChange}
                   />
@@ -35,7 +35,7 @@ class ModalUser extends React.PureComponent {
                   <InputGroup
                     name="lastName"
                     label="Last Name"
-                    value={values.lastName}
+                    value={values.lastName || ''}
                     required
                     onChange={handleChange}
                   />
@@ -46,7 +46,7 @@ class ModalUser extends React.PureComponent {
                   <InputGroup
                     name="email"
                     label="Email Address"
-                    value={values.email}
+                    value={values.email || ''}
                     required
                     onChange={handleChange}
                   />

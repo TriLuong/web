@@ -24,7 +24,7 @@ class DashBoard extends Component {
     this.gotoPage(1);
   }
 
-  toggleModal = ({ isEdit }) => {
+  toggleModal = ({ isEdit } = {}) => {
     if (!isEdit) {
       this.userEdit = null;
     }
@@ -45,7 +45,7 @@ class DashBoard extends Component {
         form: { data: values },
         cb: status => {
           if (status) {
-            this.toggleModal({});
+            this.toggleModal();
           }
         },
       });
