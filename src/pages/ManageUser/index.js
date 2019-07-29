@@ -10,14 +10,24 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUser, updateUser } from './actions';
+import { getUsers, addUser, updateUser, editProfile } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
+
+
 import DatatablePage from './DatatablePage';
 
-class DashBoard extends Component {
+type Props = {
+  doGetUsers: () => {};
+  doAddUser: () => {},
+  doUpdateUser: () => {},
+  doEditProfile: () => {},
+  dataUsers: {},
+}
+class DashBoard extends Component<Props> {
   state = {
     modalIsOpen: false,
+    modalIsOpenEditProfile: false,
   };
 
   componentDidMount() {
@@ -30,6 +40,12 @@ class DashBoard extends Component {
     }
     this.setState(prevState => ({
       modalIsOpen: !prevState.modalIsOpen,
+    }));
+  };
+
+  toggleModalEditProfile = () => {
+    this.setState(prevState => ({
+      modalIsOpenEditProfile: !prevState.modalIsOpenEditProfile,
     }));
   };
 
@@ -49,7 +65,6 @@ class DashBoard extends Component {
           }
         },
       });
-      return null;
     }
     doAddUser({
       form: { data: values },
@@ -59,19 +74,44 @@ class DashBoard extends Component {
         }
       },
     });
+    return null;
   };
+
+  onSubmitEditProfile = values => {
+    const { doEditProfile } = this.props;
+    doEditProfile({
+      form: { data: values },
+      cb: status => {
+        if (status) {
+          this.toggleModalEditProfile({});
+        }
+      },
+    });
+  }
 
   onEdit = user => {
     this.userEdit = user;
     this.toggleModal({ isEdit: true });
   };
 
+  onEditProfile = userInfo => {
+    this.userEditProfile = userInfo;
+    this.toggleModalEditProfile();
+  }
+
   render() {
-    const { user, dataUsers } = this.props;
-    const { modalIsOpen } = this.state;
+    const { dataUsers } = this.props;
+    const { modalIsOpen, modalIsOpenEditProfile } = this.state;
     return (
       <div className="document">
-        <Header />
+        <Header
+          onEditProfile={this.onEditProfile}
+          titleEditProfile="EditProfile"
+          isOpenEditProfile={modalIsOpenEditProfile}
+          toggleEditProfile={this.toggleModalEditProfile}
+          onSubmitEditProfile={this.onSubmitEditProfile}
+          user={this.userEditProfile}
+        />
         <div className="container">
           <div className="top-control">
             <h1 className="top-control__header">Manage Users</h1>
@@ -116,6 +156,7 @@ const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
+  doEditProfile: evt => dispatch(editProfile(evt)),
 });
 
 const withConnect = connect(

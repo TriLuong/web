@@ -5,6 +5,7 @@ import {
   GET_USERS_FAILURE,
   ADD_USERS_SUCCESS,
   UPDATE_USERS_SUCCESS,
+  EDIT_PROFILE_SUCCESS,
 } from './constants';
 
 const initialState = fromJS({
@@ -32,7 +33,8 @@ export default function manageUserReducer(state = initialState, action) {
       users.pop();
       return state.setIn(['dataUsers', 'users'], [action.payload, ...users]);
     }
-    case UPDATE_USERS_SUCCESS: {
+    case UPDATE_USERS_SUCCESS:
+    case EDIT_PROFILE_SUCCESS: {
       const users = state.getIn(['dataUsers', 'users']);
       const objIndex = users.findIndex(item => item.id === action.payload.id);
       users[objIndex] = action.payload;

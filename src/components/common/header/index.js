@@ -5,8 +5,19 @@ import { makeGetUser } from 'pages/App/selectors';
 import { requestLogout } from 'pages/Login/actions';
 import { createStructuredSelector } from 'reselect';
 import './styles.scss';
+import ModalEditProfile from 'components/modal/ModalEditProfile';
 
-class Header extends PureComponent {
+/* eslint jsx-a11y/anchor-is-valid: 0 */
+type Props = {
+  doRequestLogout: () => {},
+  user: {},
+  onEditProfile: () => {},
+  titleEditProfile: String,
+  isOpenEditProfile: Boolean,
+  toggleEditProfile: () => {},
+  onSubmitEditProfile: () => {},
+};
+class Header extends PureComponent<Props> {
   constructor() {
     super();
 
@@ -36,8 +47,17 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { user } = this.props;
+    const {
+      user,
+      onEditProfile,
+      titleEditProfile,
+      isOpenEditProfile,
+      toggleEditProfile,
+      onSubmitEditProfile,
+    } = this.props;
     const userInfo = user || {};
+    const { showMenu } = this.state;
+    // console.log('userInfo, user', userInfo, user);
     return (
       <div className="header">
         <nav className="navbar">
@@ -49,12 +69,12 @@ class Header extends PureComponent {
             </span>
           </a>
           <div className="dropdown">
-            <button className="avatar" onClick={this.showMenu}>
+            <button className="avatar" onClick={this.showMenu} type="button">
               AD
             </button>
             <div
               className={
-                this.state.showMenu
+                showMenu
                   ? 'dropdown-menu--user dropdown-menu dropdown-menu-right show'
                   : 'dropdown-menu--user dropdown-menu'
               }
@@ -63,13 +83,20 @@ class Header extends PureComponent {
                 <h5 className="dropdown-user__name">{`${userInfo.firstName} ${userInfo.lastName}`}</h5>
                 <p className="dropdown-user__email">{userInfo.email}</p>
                 <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">
+                <button className="dropdown-item" type="button" onClick={() => onEditProfile(userInfo)}>
                   Edit Profile
-                </a>
+                </button>
+                <ModalEditProfile
+                  title={titleEditProfile}
+                  isOpen={isOpenEditProfile}
+                  toggle={toggleEditProfile}
+                  onSubmit={onSubmitEditProfile}
+                  user={userInfo}
+                />
                 <a className="dropdown-item" href="#">
                   Change Password
                 </a>
-                <div role="button" className="dropdown-item" onClick={this.logout}>
+                <div role="button" className="dropdown-item" onClick={() => {}} onKeyUp={this.logout} tabIndex={0}>
                   Logout
                 </div>
               </div>
