@@ -94,7 +94,7 @@ class Header extends PureComponent<Props> {
     return (
       <div className="header">
         <nav className="navbar">
-          <a className="navbar-logo" href="/dashboard">
+          <a className="navbar-logo" href="/">
             <img src={logo} alt="Design Cafe" style={{ width: '37px' }} />
             <span className="navbar-brand">
               <strong>DESIGN</strong>
