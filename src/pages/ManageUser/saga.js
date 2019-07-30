@@ -52,7 +52,7 @@ function* addUsersSaga({ payload }) {
     yield put(addUserSuccess(res.data.user));
   } catch (error) {
     alert(error.response.data.message);
-    yield put(addUserFail(alert(error.response.data.message)));
+    yield put(addUserFail(error.response.data.message));
   }
 }
 
