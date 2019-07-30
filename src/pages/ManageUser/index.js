@@ -107,8 +107,8 @@ class DashBoard extends Component<Props> {
     } else {
       neworderType = 'asc';
     }
-    this.setState({ orderBy: sort.orderBy, orderType: neworderType }, () => doGetUsers({ ...sort, orderType: neworderType }),
-    );
+    this.setState({ orderBy: sort.orderBy, orderType: neworderType });
+    doGetUsers({ ...sort, orderType: neworderType });
   };
 
   render() {
