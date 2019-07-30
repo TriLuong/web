@@ -45,7 +45,11 @@ class LoginPage extends Component<Props, any> {
 
   handleOnChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    if (name === 'username') {
+      this.setState({ [name]: value, password: '' });
+    } else {
+      this.setState({ [name]: value });
+    }
     const { username } = this.state;
     if (username) {
       this.setState({ isFilled: true });
@@ -104,7 +108,14 @@ class LoginPage extends Component<Props, any> {
   };
 
   render() {
-    const { isFilled, modalResetPassworIsOpen, modalConfirmEmailIsOpen, modalSetPasswordIsOpen } = this.state;
+    const {
+      isFilled,
+      modalResetPassworIsOpen,
+      modalConfirmEmailIsOpen,
+      modalSetPasswordIsOpen,
+      username,
+      password,
+    } = this.state;
     return (
       <div className="page-login">
         <div className="page-login__content">
@@ -121,11 +132,19 @@ class LoginPage extends Component<Props, any> {
                   name="username"
                   label="Email address"
                   required
+                  value={username}
                   onChange={this.handleOnChange}
                 />
               </div>
               <div className="form-group">
-                <InputGroup type="password" name="password" label="Password" required onChange={this.handleOnChange} />
+                <InputGroup
+                  type="password"
+                  name="password"
+                  label="Password"
+                  value={password}
+                  required
+                  onChange={this.handleOnChange}
+                />
               </div>
               <div className="list-button">
                 <button type="button" className="btn btn-link" onClick={this.toggleModalResetPassword}>
