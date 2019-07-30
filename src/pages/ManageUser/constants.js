@@ -33,3 +33,7 @@ export const USER_BRANCH = [
   { value: 'Whitefield Experience Center', label: 'Whitefield Experience Center' },
   { value: 'Mumbai DC Experience Center', label: 'Mumbai DC Experience Center' },
 ];
+
+export const BULK_UPLOAD_REQUEST = 'MANAGE_USER/BULK_UPLOAD_REQUEST';
+export const BULK_UPLOAD_SUCCESS = 'MANAGE_USER/BULK_UPLOAD_SUCCESS';
+export const BULK_UPLOAD_FAILURE = 'MANAGE_USER/BULK_UPLOAD_FAILURE';

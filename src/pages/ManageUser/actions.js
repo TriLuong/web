@@ -13,6 +13,9 @@ import {
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
   CHANGE_PASSWORD_FAILURE,
+  BULK_UPLOAD_FAILURE,
+  BULK_UPLOAD_REQUEST,
+  BULK_UPLOAD_SUCCESS,
 } from './constants';
 
 export const getUsers = createAction(GET_USERS_REQUEST);
@@ -28,3 +31,7 @@ export const editProfileFailure = createAction(EDIT_PROFILE_FAILURE);
 export const changePassword = createAction(CHANGE_PASSWORD_REQUEST);
 export const changePasswordSuccess = createAction(CHANGE_PASSWORD_SUCCESS);
 export const changePasswordFailure = createAction(CHANGE_PASSWORD_FAILURE);
+
+export const requestBulkUpload = createAction(BULK_UPLOAD_REQUEST);
+export const bulkUploadSuccess = createAction(BULK_UPLOAD_SUCCESS);
+export const bulkUploadFailure = createAction(BULK_UPLOAD_FAILURE);

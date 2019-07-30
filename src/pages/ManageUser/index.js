@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import Header from 'components/common/header';
 import IconSearch from 'components/common/icon/IconSearch';
 import SelectField from 'components/common/form/Select';
-import { ModalUser } from 'components/modal';
+import { ModalUser, ModalBulkUpload } from 'components/modal';
 import './styles.scss';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUser, updateUser } from './actions';
+import { getUsers, addUser, updateUser, requestBulkUpload } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
 
@@ -21,9 +21,10 @@ type Props = {
   doGetUsers: () => {},
   doAddUser: () => {},
   doUpdateUser: () => {},
+  doRequestBulkUpload: () => {},
 };
 class DashBoard extends Component<Props> {
-  state = { modalIsOpen: false };
+  state = { modalIsOpen: false, modalBulkUpload: true };
 
   componentDidMount() {
     this.gotoPage(1);
@@ -35,6 +36,12 @@ class DashBoard extends Component<Props> {
     }
     this.setState(prevState => ({
       modalIsOpen: !prevState.modalIsOpen,
+    }));
+  };
+
+  toggleModalBulkUpload = () => {
+    this.setState(prevState => ({
+      modalBulkUpload: !prevState.modalBulkUpload,
     }));
   };
 
@@ -66,6 +73,21 @@ class DashBoard extends Component<Props> {
     return null;
   };
 
+  onBulkUpload = values => {
+    const file = values.file;
+    if (!file) return null;
+    const { doRequestBulkUpload } = this.props;
+    const formData = new FormData();
+    formData.append('file', file);
+    doRequestBulkUpload({
+      form: formData,
+      cb: () => {
+        this.gotoPage(1);
+        this.toggleModalBulkUpload();
+      },
+    });
+  };
+
   onEdit = user => {
     this.userEdit = user;
     this.toggleModal({ isEdit: true });
@@ -73,7 +95,7 @@ class DashBoard extends Component<Props> {
 
   render() {
     const { dataUsers } = this.props;
-    const { modalIsOpen } = this.state;
+    const { modalIsOpen, modalBulkUpload } = this.state;
     return (
       <div className="document">
         <Header />
@@ -87,7 +109,7 @@ class DashBoard extends Component<Props> {
               </div>
               <SelectField className="mr-2" options={USER_FILTER} placeholder="All Users" />
               <div className="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={this.toggleModalBulkUpload}>
                   BULK UPLOAD
                 </button>
               </div>
@@ -100,6 +122,12 @@ class DashBoard extends Component<Props> {
                   isOpen={modalIsOpen}
                   toggle={this.toggleModal}
                   onSubmit={this.onAddUser}
+                  user={this.userEdit}
+                />
+                <ModalBulkUpload
+                  isOpen={modalBulkUpload}
+                  toggle={this.toggleModalBulkUpload}
+                  onSubmit={this.onBulkUpload}
                   user={this.userEdit}
                 />
               </div>
@@ -121,6 +149,7 @@ const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
+  doRequestBulkUpload: evt => dispatch(requestBulkUpload(evt)),
 });
 
 const withConnect = connect(

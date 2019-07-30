@@ -20,7 +20,7 @@
   font-family: Roboto;
   font-size: 18px;
   font-weight: 500;
-  outline: none!important;
+  outline: none !important;
 }
 .dropdown-user {
   padding: 20px;
@@ -46,6 +46,13 @@
   .dropdown-item {
     padding: 10px 0;
     color: #282828;
+    &:active {
+      background-color: transparent;
+    }
+    &:focus {
+      border: none;
+      outline: none;
+    }
   }
 }
 
