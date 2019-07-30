@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 import axios from 'axios';
 import { loadState } from 'localStorage';
+import { EDIT_PROFILE_SUCCESS } from 'pages/ManageUser/constants';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_REQUEST } from '../Login/constants';
 // The initial state of the App
 const persitedState = loadState();
@@ -37,6 +38,11 @@ function authReducer(state = initialState, action) {
         .set('user', null)
         .set('token', null)
         .set('error', null);
+    case EDIT_PROFILE_SUCCESS:
+      return state
+        .set('isFetching', false)
+        .set('user', action.payload)
+        .set('error', false);
     default:
       return state;
   }

@@ -13,12 +13,18 @@ import saga from './saga';
 import { getUsers, addUser, updateUser } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
+
+
 import DatatablePage from './DatatablePage';
 
-class DashBoard extends Component {
-  state = {
-    modalIsOpen: false,
-  };
+type Props = {
+  dataUsers: {},
+  doGetUsers: () => {};
+  doAddUser: () => {},
+  doUpdateUser: () => {},
+}
+class DashBoard extends Component<Props> {
+  state = { modalIsOpen: false };
 
   componentDidMount() {
     this.gotoPage(1);
@@ -49,7 +55,6 @@ class DashBoard extends Component {
           }
         },
       });
-      return null;
     }
     doAddUser({
       form: { data: values },
@@ -59,6 +64,7 @@ class DashBoard extends Component {
         }
       },
     });
+    return null;
   };
 
   onEdit = user => {
@@ -67,7 +73,7 @@ class DashBoard extends Component {
   };
 
   render() {
-    const { user, dataUsers } = this.props;
+    const { dataUsers } = this.props;
     const { modalIsOpen } = this.state;
     return (
       <div className="document">
