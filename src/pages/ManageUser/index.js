@@ -23,7 +23,7 @@ type Props = {
   doUpdateUser: () => {},
 };
 class DashBoard extends Component<Props> {
-  state = { modalIsOpen: false };
+  state = { modalIsOpen: false, orderBy: null, orderType: null };
 
   componentDidMount() {
     this.gotoPage(1);
@@ -40,7 +40,8 @@ class DashBoard extends Component<Props> {
 
   gotoPage = page => {
     const { doGetUsers } = this.props;
-    doGetUsers({ page });
+    const { orderBy, orderType } = this.state;
+    doGetUsers({ page, orderBy, orderType });
   };
 
   onAddUser = values => {
@@ -70,6 +71,22 @@ class DashBoard extends Component<Props> {
   onEdit = user => {
     this.userEdit = user;
     this.toggleModal({ isEdit: true });
+  };
+
+  /* Sorting */
+  onSort = sort => {
+    const { doGetUsers } = this.props;
+    const { orderType } = this.state;
+    let neworderType = '';
+    if (orderType === null) {
+      neworderType = 'asc';
+    } else if (orderType === 'asc') {
+      neworderType = 'desc';
+    } else {
+      neworderType = 'asc';
+    }
+    this.setState({ orderBy: sort.orderBy, orderType: neworderType },
+      () => doGetUsers({ ...sort, orderType: neworderType }));
   };
 
   render() {
@@ -106,7 +123,12 @@ class DashBoard extends Component<Props> {
               </div>
             </div>
           </div>
-          <DatatablePage data={dataUsers} gotoPage={this.gotoPage} onEdit={this.onEdit} />
+          <DatatablePage
+            data={dataUsers}
+            gotoPage={this.gotoPage}
+            onEdit={this.onEdit}
+            onSort={this.onSort}
+          />
         </div>
       </div>
     );

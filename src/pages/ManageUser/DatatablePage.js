@@ -3,13 +3,17 @@ import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
-const DatatablePage = ({ data, gotoPage, onEdit }) => {
+const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
   if (!data || !data.users) {
     return null;
   }
   const elemtUser = data.users.map(user => (
     <tr key={user.id}>
-      <td>{user.firstName}</td>
+      <td>
+        {user.firstName}
+        {' '}
+        {user.lastName}
+      </td>
       <td>{user.branch}</td>
       <td>{user.email}</td>
       <td>{user.typeDesigner}</td>
@@ -31,19 +35,19 @@ const DatatablePage = ({ data, gotoPage, onEdit }) => {
       <table entries="10" className="table">
         <thead>
           <tr>
-            <th className="sorting">
+            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'firstName' })}>
               Name (A-Z)
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting">
+            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'branch' })}>
               Branch (A-Z)
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting">
+            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'email' })}>
               Email
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting">
+            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'role' })}>
               Type
               <IconSort className="ml-2" />
             </th>
