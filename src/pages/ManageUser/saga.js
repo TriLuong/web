@@ -1,5 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { Users } from 'api';
+import { isConnecting, isEndConnecting } from 'pages/Loader/actions';
 import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
@@ -10,14 +11,17 @@ import {
 import { addUserSuccess, addUserFail, updateUserSuccess, updateUserFail } from './actions';
 
 function* getUsersSaga({ payload }) {
+  yield put(isConnecting());
   try {
     const res = yield call(Users.getUsers, payload);
     if (res.data.status === 'failed') {
       throw new Error(res.message);
     }
     yield put({ type: GET_USERS_SUCCESS, payload: res.data });
+    yield put(isEndConnecting());
   } catch (error) {
     yield put({ type: GET_USERS_FAILURE, error });
+    yield put(isEndConnecting());
   }
 }
 
