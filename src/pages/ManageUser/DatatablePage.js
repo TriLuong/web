@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Pagination from 'components/common/pagination';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
 const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
+  const [sortBy, setSortby] = useState('');
+
   if (!data || !data.users) {
     return null;
   }
+
   const elemtUser = data.users.map(user => (
     <tr key={user.id}>
-      <td>
-        {user.firstName}
-        {' '}
-        {user.lastName}
-      </td>
+      <td>{`${user.firstName} ${user.lastName}`}</td>
       <td>{user.branch}</td>
       <td>{user.email}</td>
       <td>{user.typeDesigner}</td>
@@ -35,21 +34,45 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
       <table entries="10" className="table">
         <thead>
           <tr>
-            <th className="sorting" onClick={() => onSort({ orderBy: 'firstName' })}>
+            <th
+              className="sorting"
+              onClick={() => {
+                setSortby('firstName');
+                onSort({ orderBy: 'firstName' });
+              }}
+            >
               Name (A-Z)
-              <IconSort className="ml-2" />
+              <IconSort className="ml-2" fill={sortBy === 'firstName' ? '#05486c' : 'white'} />
             </th>
-            <th className="sorting" onClick={() => onSort({ orderBy: 'branch' })}>
+            <th
+              className="sorting"
+              onClick={() => {
+                setSortby('branch');
+                onSort({ orderBy: 'branch' });
+              }}
+            >
               Branch (A-Z)
-              <IconSort className="ml-2" />
+              <IconSort className="ml-2" fill={sortBy === 'branch' ? '#05486c' : 'white'} />
             </th>
-            <th className="sorting" onClick={() => onSort({ orderBy: 'email' })}>
+            <th
+              className="sorting"
+              onClick={() => {
+                setSortby('email');
+                onSort({ orderBy: 'email' });
+              }}
+            >
               Email
-              <IconSort className="ml-2" />
+              <IconSort className="ml-2" fill={sortBy === 'email' ? '#05486c' : 'white'} />
             </th>
-            <th className="sorting" onClick={() => onSort({ orderBy: 'typeDesigner' })}>
+            <th
+              className="sorting"
+              onClick={() => {
+                setSortby('typeDesigner');
+                onSort({ orderBy: 'typeDesigner' });
+              }}
+            >
               Type
-              <IconSort className="ml-2" />
+              <IconSort className="ml-2" fill={sortBy === 'typeDesigner' ? '#05486c' : 'white'} />
             </th>
             <th className="sorting" style={{ width: '150px' }} />
           </tr>
