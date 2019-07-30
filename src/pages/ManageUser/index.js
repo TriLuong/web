@@ -26,11 +26,14 @@ type Props = {
 class DashBoard extends Component<Props> {
   state = {
     modalIsOpen: false,
-    orderBy: null,
-    orderType: null,
-    role: null,
-    typeDesigner: null,
     modalBulkUpload: false,
+    params: {
+      orderBy: null,
+      orderType: null,
+      role: null,
+      typeDesigner: null,
+      keyword: null,
+    },
   };
 
   componentDidMount() {
@@ -54,8 +57,8 @@ class DashBoard extends Component<Props> {
 
   gotoPage = page => {
     const { doGetUsers } = this.props;
-    const { orderBy, orderType } = this.state;
-    doGetUsers({ page, orderBy, orderType });
+    const { params } = this.state;
+    doGetUsers({ ...params, page });
   };
 
   onAddUser = values => {
@@ -105,7 +108,8 @@ class DashBoard extends Component<Props> {
   /* Sorting */
   onSort = sort => {
     const { doGetUsers } = this.props;
-    const { orderType, role, typeDesigner } = this.state;
+    const { params } = this.state;
+    const orderType = params.orderType;
     let neworderType = '';
     if (orderType === null) {
       neworderType = 'asc';
@@ -114,26 +118,42 @@ class DashBoard extends Component<Props> {
     } else {
       neworderType = 'asc';
     }
-    this.setState({ orderBy: sort.orderBy, orderType: neworderType }, () => doGetUsers({ ...sort, orderType: neworderType, role, typeDesigner }),
-    );
+    const newPrams = { ...params, orderType: neworderType, orderBy: sort.orderBy };
+    this.setState({ params: newPrams });
+    doGetUsers(newPrams);
   };
 
   /* Select Field */
   handleOnChangeSelectField = event => {
     const { doGetUsers } = this.props;
-    const { orderType, orderBy } = this.state;
+    const { params } = this.state;
     const { value } = event;
+    let newParams = '';
     if (value === '') {
-      this.setState({ role: null, typeDesigner: null }, () => doGetUsers({ orderType, orderBy }));
+      newParams = { ...params, role: null, typeDesigner: null };
     } else {
       const decodeValue = decodeURI(value)
         .replace(/"/g, '""')
         .replace(/&/g, '","')
         .replace(/=/g, '":"');
       const parseValue = JSON.parse(`{"${decodeValue}"}`);
-      this.setState({ role: parseValue.role, typeDesigner: parseValue.typeDesigner }, () => doGetUsers({ ...parseValue, orderType, orderBy }),
-      );
+
+      newParams = { ...params, role: parseValue.role, typeDesigner: parseValue.typeDesigner };
     }
+    this.setState({ params: newParams });
+    doGetUsers(newParams);
+  };
+
+  doSearch = evt => {
+    const { doGetUsers } = this.props;
+    const searchText = evt.target.value; // this is the search text
+    if (this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      const { params } = this.state;
+      const newPrams = { ...params, keyword: searchText };
+      doGetUsers(newPrams);
+      this.setState({ params: newPrams });
+    }, 300);
   };
 
   render() {
@@ -147,7 +167,7 @@ class DashBoard extends Component<Props> {
             <h1 className="top-control__header">Manage Users</h1>
             <div className="btn-toolbar ml-auto" role="toolbar" aria-label="Toolbar with button groups">
               <div className="top-control__search mr-2">
-                <input type="text" placeholder="Search" className="form-control" />
+                <input type="text" placeholder="Search" className="form-control" onChange={this.doSearch} />
                 <IconSearch className="top-control__search__icon" />
               </div>
               <SelectField
