@@ -47,7 +47,7 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
               Email
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting" onClick={() => onSort({ orderBy: 'role' })}>
+            <th className="sorting" onClick={() => onSort({ orderBy: 'typeDesigner' })}>
               Type
               <IconSort className="ml-2" />
             </th>
