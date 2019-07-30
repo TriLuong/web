@@ -1,30 +1,38 @@
 import React, { PureComponent } from 'react';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
 
-class SelectField extends PureComponent {
+type Props = {
+  onChange: () => {},
+  value: String,
+  name: string,
+  defaultValue: string,
+  options: [],
+  placeholder: String,
+};
+class SelectField extends PureComponent<Props> {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange = selectedOption => {
-    this.props.onChange(selectedOption);
+    const { onChange } = this.props;
+    onChange(selectedOption);
   };
 
   render() {
-    const { value, name } = this.props;
+    const { value, name, defaultValue, options, placeholder } = this.props;
 
     return (
       <Select
         name={name}
-        defaultValue={this.props.defaultValue}
+        defaultValue={defaultValue}
         value={value}
-        //onChange={this.handleChange}
-        options={this.props.options}
+        onChange={this.handleChange}
+        options={options}
         clearable={false}
         className="wrap-select__inner"
-        placeholder={this.props.placeholder}
+        placeholder={placeholder}
         classNamePrefix="wrap-select"
       />
     );
@@ -33,19 +41,8 @@ class SelectField extends PureComponent {
 
 const renderSelectField = props => (
   <div className="wrap-select">
-    <SelectField
-      {...props.input}
-      options={props.options}
-      placeholder={props.placeholder}
-      defaultValue={props.defaultValue}
-    />
+    <SelectField {...props} />
   </div>
 );
-
-renderSelectField.propTypes = {
-  input: PropTypes.object,
-  meta: PropTypes.object,
-  options: PropTypes.array
-};
 
 export default renderSelectField;
