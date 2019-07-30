@@ -1,7 +1,7 @@
 import Request from './request';
-import { getEndPoint } from './endpoints';
+import { getEndPoint, endPoints } from './endpoints';
 
-const URL_API_USER = getEndPoint('user');
+const URL_API_USER = getEndPoint(endPoints.user);
 
 export const addUser = params => Request.post(URL_API_USER, params);
 export const updateUser = params => Request.patch(`${URL_API_USER}`, params);
