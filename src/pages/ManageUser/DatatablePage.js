@@ -35,19 +35,19 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
       <table entries="10" className="table">
         <thead>
           <tr>
-            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'firstName' })}>
+            <th className="sorting" onClick={() => onSort({ orderBy: 'firstName' })}>
               Name (A-Z)
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'branch' })}>
+            <th className="sorting" onClick={() => onSort({ orderBy: 'branch' })}>
               Branch (A-Z)
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'email' })}>
+            <th className="sorting" onClick={() => onSort({ orderBy: 'email' })}>
               Email
               <IconSort className="ml-2" />
             </th>
-            <th className="sorting" onClick={() => onSort({ page: data.page, orderBy: 'role' })}>
+            <th className="sorting" onClick={() => onSort({ orderBy: 'role' })}>
               Type
               <IconSort className="ml-2" />
             </th>
