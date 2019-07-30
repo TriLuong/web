@@ -92,7 +92,7 @@ class Header extends PureComponent<Props> {
     const userInfo = user || {};
 
     return (
-      <div className="header">
+      <div className="header fixed-top">
         <nav className="navbar">
           <a className="navbar-logo" href="/">
             <img src={logo} alt="Design Cafe" style={{ width: '37px' }} />
