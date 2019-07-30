@@ -6,22 +6,13 @@ import { requestLogout } from 'pages/Login/actions';
 import { createStructuredSelector } from 'reselect';
 import './styles.scss';
 import { ModalEditProfile, ModalChangePassword } from 'components/modal';
+import { editProfile, changePassword } from 'pages/ManageUser/actions';
 
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 type Props = {
   user: {},
-  titleEditProfile: String,
-  isOpenEditProfile: Boolean,
-  onEditProfile: () => {},
-  toggleEditProfile: () => {},
-  onSubmitEditProfile: () => {},
-
-  titleChangePassword: String,
-  isOpenChangePassword: Boolean,
-  onChangePassword: () => {},
-  toggleChangePassword: () => {},
-  onSubmitChangePassword: () => {},
-
+  doEditProfile: () => {},
+  doChangePassword: () => {},
   doRequestLogout: () => {},
 };
 class Header extends PureComponent<Props> {
@@ -30,6 +21,8 @@ class Header extends PureComponent<Props> {
 
     this.state = {
       showMenu: false,
+      modalIsOpenEditProfile: false,
+      modalIsOpenChangePassword: false,
     };
 
     this.showMenu = this.showMenu.bind(this);
@@ -53,24 +46,51 @@ class Header extends PureComponent<Props> {
     doRequestLogout();
   };
 
-  render() {
-    const {
-      user,
-      onEditProfile,
-      titleEditProfile,
-      isOpenEditProfile,
-      toggleEditProfile,
-      onSubmitEditProfile,
+  toggleModalEditProfile = () => {
+    this.setState(prevState => ({
+      modalIsOpenEditProfile: !prevState.modalIsOpenEditProfile,
+    }));
+  };
 
-      onChangePassword,
-      titleChangePassword,
-      isOpenChangePassword,
-      toggleChangePassword,
-      onSubmitChangePassword,
-    } = this.props;
+  toggleModalChangePassword = () => {
+    this.setState(prevState => ({
+      modalIsOpenChangePassword: !prevState.modalIsOpenChangePassword,
+    }));
+  };
+
+  onSubmitEditProfile = values => {
+    const { doEditProfile } = this.props;
+    doEditProfile({
+      form: { data: values },
+      cb: status => {
+        if (status) {
+          this.toggleModalEditProfile();
+        }
+      },
+    });
+  }
+
+  onSubmitChangePassword = values => {
+    // console.info('onSubmitChangePassword', values);
+    const { doChangePassword } = this.props;
+    if (values.oldPassword !== values.reNewPassword
+      && values.newPassword === values.reNewPassword) {
+      doChangePassword({
+        form: { password: values.oldPassword, newPassword: values.newPassword },
+        cb: status => {
+          if (status) {
+            this.toggleModalChangePassword();
+          }
+        },
+      });
+    }
+  }
+
+  render() {
+    const { user } = this.props;
+    const { showMenu, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
     const userInfo = user || {};
-    const { showMenu } = this.state;
-    // console.log('userInfo, user', userInfo, user);
+
     return (
       <div className="header">
         <nav className="navbar">
@@ -96,30 +116,29 @@ class Header extends PureComponent<Props> {
                 <h5 className="dropdown-user__name">{`${userInfo.firstName} ${userInfo.lastName}`}</h5>
                 <p className="dropdown-user__email">{userInfo.email}</p>
                 <div className="dropdown-divider" />
-                <button className="dropdown-item" type="button" onClick={() => onEditProfile(userInfo)}>
+                <button className="dropdown-item" type="button" onClick={this.toggleModalEditProfile}>
                   Edit Profile
                 </button>
                 <ModalEditProfile
-                  title={titleEditProfile}
-                  isOpen={isOpenEditProfile}
-                  toggle={toggleEditProfile}
-                  onSubmit={onSubmitEditProfile}
+                  title="Edit Profile"
+                  isOpen={modalIsOpenEditProfile}
+                  toggle={this.toggleModalEditProfile}
+                  onSubmit={this.onSubmitEditProfile}
                   user={userInfo}
                 />
-                <button className="dropdown-item" onClick={() => onChangePassword(userInfo)} type="button">
+                <button className="dropdown-item" onClick={this.toggleModalChangePassword} type="button">
                   Change Password
                 </button>
                 <ModalChangePassword
-                  title={titleChangePassword}
-                  isOpen={isOpenChangePassword}
-                  toggle={toggleChangePassword}
-                  onSubmit={onSubmitChangePassword}
+                  title="Change Password"
+                  isOpen={modalIsOpenChangePassword}
+                  toggle={this.toggleModalChangePassword}
+                  onSubmit={this.onSubmitChangePassword}
                   user={userInfo}
                 />
                 <button className="dropdown-item" onClick={this.logout} type="button">
                   Logout
                 </button>
-
               </div>
               <div className="dropdown-user dropdown-user--role">
                 <a className="dropdown-item" href="#">
@@ -145,6 +164,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   doRequestLogout: evt => dispatch(requestLogout(evt)),
+  doEditProfile: evt => dispatch(editProfile(evt)),
+  doChangePassword: evt => dispatch(changePassword(evt)),
 });
 
 export default connect(
