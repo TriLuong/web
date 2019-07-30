@@ -35,7 +35,8 @@ function* getUsersSaga({ payload }) {
     yield put({ type: GET_USERS_SUCCESS, payload: res.data });
     yield put(isEndConnecting());
   } catch (error) {
-    yield put({ type: GET_USERS_FAILURE, error });
+    alert(error.response.data.message);
+    yield put({ type: GET_USERS_FAILURE, error: error.response.data.message });
     yield put(isEndConnecting());
   }
 }
@@ -50,7 +51,8 @@ function* addUsersSaga({ payload }) {
     cb(true);
     yield put(addUserSuccess(res.data.user));
   } catch (error) {
-    yield put(addUserFail(error));
+    alert(error.response.data.message);
+    yield put(addUserFail(alert(error.response.data.message)));
   }
 }
 
@@ -65,7 +67,8 @@ function* updateUsersSaga({ payload }) {
     cb(true);
     yield put(updateUserSuccess(res.data.user));
   } catch (error) {
-    yield put(updateUserFail(error));
+    alert(error.response.data.message);
+    yield put(updateUserFail(error.response.data.message));
   }
 }
 
@@ -79,7 +82,8 @@ function* editProfileSaga({ payload }) {
     cb(true);
     yield put(editProfileSuccess(res.data.user));
   } catch (error) {
-    yield put(editProfileFailure(error));
+    alert(error.response.data.message);
+    yield put(editProfileFailure(error.response.data.message));
   }
 }
 
@@ -93,7 +97,8 @@ function* changePasswordSaga({ payload }) {
     cb(true);
     yield put(changePasswordSuccess(payload));
   } catch (error) {
-    yield put(changePasswordFailure(error));
+    alert(error.response.data.message);
+    yield put(changePasswordFailure(error.response.data.message));
   }
 }
 
@@ -107,7 +112,8 @@ function* bulkUploadSaga({ payload }) {
     cb(true);
     yield put(bulkUploadSuccess(res.data.user));
   } catch (error) {
-    yield put(bulkUploadFailure(error));
+    alert(error.response.data.message);
+    yield put(bulkUploadFailure(error.response.data.message));
   }
 }
 

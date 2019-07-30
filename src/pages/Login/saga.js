@@ -21,6 +21,7 @@ function* signInSaga(action) {
     yield put(loginSuccess({ token, user }));
     yield put(push('/'));
   } catch (err) {
+    alert(err.response.data.message);
     yield put(loginFail(err.response.data.message));
   }
 }
