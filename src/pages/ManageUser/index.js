@@ -23,7 +23,7 @@ type Props = {
   doUpdateUser: () => {},
 };
 class DashBoard extends Component<Props> {
-  state = { modalIsOpen: false, orderBy: null, orderType: null };
+  state = { modalIsOpen: false, orderBy: null, orderType: null, role: null, typeDesigner: null };
 
   componentDidMount() {
     this.gotoPage(1);
@@ -76,7 +76,7 @@ class DashBoard extends Component<Props> {
   /* Sorting */
   onSort = sort => {
     const { doGetUsers } = this.props;
-    const { orderType } = this.state;
+    const { orderType, role, typeDesigner } = this.state;
     let neworderType = '';
     if (orderType === null) {
       neworderType = 'asc';
@@ -85,8 +85,28 @@ class DashBoard extends Component<Props> {
     } else {
       neworderType = 'asc';
     }
-    this.setState({ orderBy: sort.orderBy, orderType: neworderType });
-    doGetUsers({ ...sort, orderType: neworderType });
+    this.setState({ orderBy: sort.orderBy, orderType: neworderType },
+      () => doGetUsers({ ...sort, orderType: neworderType, role, typeDesigner }));
+  };
+
+  /* Select Field */
+  handleOnChangeSelectField = event => {
+    const { doGetUsers } = this.props;
+    const { orderType, orderBy } = this.state;
+    const { value } = event;
+    if (value === '') {
+      this.setState({ role: null, typeDesigner: null },
+        () => doGetUsers({ orderType, orderBy }));
+    } else {
+      const decodeValue = decodeURI(value)
+        .replace(/"/g, '""')
+        .replace(/&/g, '","')
+        .replace(/=/g, '":"');
+      const parseValue = JSON.parse(`{"${decodeValue}"}`);
+      this.setState({ role: parseValue.role, typeDesigner: parseValue.typeDesigner },
+        () => doGetUsers({ ...parseValue, orderType, orderBy }),
+      );
+    }
   };
 
   render() {
@@ -103,7 +123,12 @@ class DashBoard extends Component<Props> {
                 <input type="text" placeholder="Search" className="form-control" />
                 <IconSearch className="top-control__search__icon" />
               </div>
-              <SelectField className="mr-2" options={USER_FILTER} placeholder="All Users" />
+              <SelectField
+                className="mr-2"
+                options={USER_FILTER}
+                placeholder="All Users"
+                onChange={this.handleOnChangeSelectField}
+              />
               <div className="btn-group mr-2" role="group" aria-label="Second group">
                 <button type="button" className="btn btn-primary">
                   BULK UPLOAD
