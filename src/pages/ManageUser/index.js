@@ -14,15 +14,14 @@ import { getUsers, addUser, updateUser } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
 
-
 import DatatablePage from './DatatablePage';
 
 type Props = {
   dataUsers: {},
-  doGetUsers: () => {};
+  doGetUsers: () => {},
   doAddUser: () => {},
   doUpdateUser: () => {},
-}
+};
 class DashBoard extends Component<Props> {
   state = { modalIsOpen: false };
 

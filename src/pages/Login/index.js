@@ -6,19 +6,21 @@ import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import InputGroup from 'components/common/form/GroupInput';
 import logo from 'assets/images/login/logo.svg';
-import './styles.scss';
 import injectSaga from 'utils/injectSaga';
+import './styles.scss';
 import ModalResetPassword, { ModalConfirmEmail, ModalSetNewPassword } from 'components/modal/ResetPassword';
-import { requestLogin } from './actions';
+import { requestLogin, requestResetPassword, requestSetPassword } from './actions';
 import saga from './saga';
 import { makeGetToken } from './selectors';
 
 type Props = {
   doRequestLogin: () => {},
+  doRequestResetPassword: void => {},
+  doRequestSetPassword: void => {},
   token: string,
   history: any,
 };
-class LoginPage extends Component<Props> {
+class LoginPage extends Component<Props, any> {
   state = {
     isFilled: false,
     modalResetPassworIsOpen: false,
@@ -27,9 +29,17 @@ class LoginPage extends Component<Props> {
   };
 
   componentDidMount() {
-    const { token, history } = this.props;
+    const {
+      token,
+      history,
+      match: { params },
+    } = this.props;
     if (token) {
       history.replace('/');
+    }
+    if (params.token) {
+      this.token = params.token;
+      this.setState({ modalSetPasswordIsOpen: true });
     }
   }
 
@@ -69,35 +79,32 @@ class LoginPage extends Component<Props> {
   };
 
   onResetPassword = values => {
-    console.log('Reset Password', values);
-    // Check Email ?
-    this.toggleModalResetPassword();
-    this.toggleModalConfirmEmail();
-  };
-
-  onConfirmEmail = values => {
-    console.log('Confirm Email', values);
-    // Confirm Email ?
-    this.toggleModalConfirmEmail();
-    this.toggleModalSetPassword();
+    const { doRequestResetPassword } = this.props;
+    doRequestResetPassword({
+      ...values,
+      cb: () => {
+        this.toggleModalResetPassword();
+        this.toggleModalConfirmEmail();
+      },
+    });
   };
 
   onSetPassword = values => {
-    console.log('Set New Password', values);
-    // Update password
-    if (values.newPassword === values.reNewPassword) {
-      console.log('Set New Password SUCCESS!!!');
-      this.toggleModalSetPassword();
+    const { doRequestSetPassword } = this.props;
+    const { newPassword, reNewPassword } = values;
+    if (newPassword === reNewPassword) {
+      doRequestSetPassword({
+        password: newPassword,
+        token: this.token,
+        cb: () => {
+          this.toggleModalSetPassword();
+        },
+      });
     }
   };
 
   render() {
-    const {
-      isFilled,
-      modalResetPassworIsOpen,
-      modalConfirmEmailIsOpen,
-      modalSetPasswordIsOpen,
-    } = this.state;
+    const { isFilled, modalResetPassworIsOpen, modalConfirmEmailIsOpen, modalSetPasswordIsOpen } = this.state;
     return (
       <div className="page-login">
         <div className="page-login__content">
@@ -160,6 +167,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   doRequestLogin: evt => dispatch(requestLogin(evt)),
+  doRequestResetPassword: evt => dispatch(requestResetPassword(evt)),
+  doRequestSetPassword: evt => dispatch(requestSetPassword(evt)),
 });
 
 const withConnect = connect(

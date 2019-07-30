@@ -28,6 +28,7 @@ const App = () => (
     <Switch>
       <PrivateRoute exact path="/" component={ManageUser} />
       <Route exact path="/login" component={Login} />
+      <Route exact path="/password-verify/:token" component={Login} />
       <PrivateRoute path="/users" component={ManageUser} />
       <PrivateRoute path="/leads" component={ManageLead} />
       <PrivateRoute path="/lead-detail" component={LeadDetail} />

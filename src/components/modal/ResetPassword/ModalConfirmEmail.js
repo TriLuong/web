@@ -16,11 +16,8 @@ class ModalConfirmEmail extends PureComponent<Props> {
           {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <div className="form-row">
-                <div className="form-group col-md-12">
-                  <button type="submit" className="btn btn-primary">
-                    Confirm Email
-                  </button>
-                  <p>An email with the password reset link has been sent...</p>
+                <div className="form-group col-md-12 text-center p-4">
+                  <p>An email with the password reset link has been sent to username@designcafe.com</p>
                 </div>
               </div>
             </form>
