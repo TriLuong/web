@@ -72,13 +72,15 @@ class ModalUser extends React.PureComponent {
                   />
                 </div>
                 <div className="form-group col-md-6">
-                  <GroupSelectField
-                    name="typeDesigner"
-                    label="Type of Designer"
-                    options={TYPE_DESIGNER}
-                    value={{ value: values.typeDesigner, label: values.typeDesigner }}
-                    onChange={setFieldValue}
-                  />
+                  {values.role !== 'sale' && (
+                    <GroupSelectField
+                      name="typeDesigner"
+                      label="Type of Designer"
+                      options={TYPE_DESIGNER}
+                      value={{ value: values.typeDesigner, label: values.typeDesigner }}
+                      onChange={setFieldValue}
+                    />
+                  )}
                 </div>
               </div>
               <div className="d-flex my-4 border-0 justify-content-center">
