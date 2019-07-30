@@ -1,7 +1,7 @@
 import Request from './request';
-import { getEndPoint } from './endpoints';
+import { getEndPoint, endPoints } from './endpoints';
 
-const URL_API_LOGIN = getEndPoint('login');
+const URL_API_LOGIN = getEndPoint(endPoints.auth.login);
 
 export const login = payload => Request.post(URL_API_LOGIN, payload);
 export default { login };

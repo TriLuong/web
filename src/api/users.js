@@ -1,7 +1,7 @@
 import Request from './request';
-import { getEndPoint } from './endpoints';
+import { getEndPoint, endPoints } from './endpoints';
 
-const URL_API_USERS = getEndPoint('users');
+const URL_API_USERS = getEndPoint(endPoints.users);
 
 export const getUsers = params => Request.get(URL_API_USERS, {
   params,
