@@ -34,6 +34,7 @@ class SelectField extends PureComponent<Props> {
         className="wrap-select__inner"
         placeholder={placeholder}
         classNamePrefix="wrap-select"
+        isSearchable={false}
       />
     );
   }

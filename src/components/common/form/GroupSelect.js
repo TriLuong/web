@@ -30,6 +30,7 @@ class GroupSelectField extends PureComponent {
           className="group-select__inner"
           placeholder={null}
           classNamePrefix="group-select"
+          isSearchable={false}
         />
       </div>
     );
