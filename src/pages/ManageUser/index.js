@@ -54,15 +54,16 @@ class DashBoard extends Component<Props> {
           }
         },
       });
+    } else {
+      doAddUser({
+        form: { data: values },
+        cb: status => {
+          if (status) {
+            this.toggleModal();
+          }
+        },
+      });
     }
-    doAddUser({
-      form: { data: values },
-      cb: status => {
-        if (status) {
-          this.toggleModal();
-        }
-      },
-    });
     return null;
   };
 
