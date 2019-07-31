@@ -21,13 +21,22 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
           <button type="button" className="btn btn-primary" onClick={() => onEdit(user)}>
             EDIT
           </button>
-          <button type="button" className="btn btn-outline-secondary" style={{ marginLeft: '10px' }}>
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            style={{ marginLeft: '10px' }}
+          >
             <IconEdit />
           </button>
         </div>
       </td>
     </tr>
   ));
+  const empty = (
+    <div className="text-center my-3">
+      <p>No result</p>
+    </div>
+  );
 
   return (
     <div className="table-sort">
@@ -79,9 +88,12 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
         </thead>
         <tbody>{elemtUser}</tbody>
       </table>
-      <div className="table-sort__paginate">
-        <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
-      </div>
+      {data.users.length === 0 && empty}
+      {data.users.length > 0 && (
+        <div className="table-sort__paginate">
+          <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
+        </div>
+      )}
     </div>
   );
 };
