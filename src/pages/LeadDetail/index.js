@@ -7,6 +7,7 @@ import GroupSelectField from 'components/common/form/GroupSelect';
 import IconHand from 'components/common/icon/IconHand';
 import 'pages/ManageLead/styles.scss';
 
+/* eslint-disable */
 const optionsExperience = [
   { value: 'all', label: 'All Users' },
   { value: 'Name', label: 'Name' },
@@ -20,7 +21,9 @@ class SalesDetail extends Component {
       date: new Date(),
     };
   }
+
   onChange = date => this.setState({ date });
+
   render() {
     return (
       <div className="document">
@@ -111,7 +114,7 @@ class SalesDetail extends Component {
               <GroupSelectField label="Select Branch" options={optionsExperience} />
             </div>
             <div className="form-group col-md-5">
-              <div class="box-alert">
+              <div className="box-alert">
                 <div className="box-alert__inner">
                   <IconHand className="box-alert__icon" />
                   IMPORTANT: PLEASE DOUBLE CHECK BRANCH WITH THE CLIENT. CHANGING BRANCH WILL BROADCAST THE LEAD TO THAT
