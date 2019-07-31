@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Pagination from 'components/common/pagination';
-import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
+import MenuPopover from 'components/common/popover/MenuPopover';
+
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
-const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
+const DatatablePage = ({ data, gotoPage, onEdit, onSort, onClickItem }) => {
   const [sortBy, setSortby] = useState('');
 
   if (!data || !data.users) {
@@ -21,13 +22,7 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
           <button type="button" className="btn btn-primary" onClick={() => onEdit(user)}>
             EDIT
           </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            style={{ marginLeft: '10px' }}
-          >
-            <IconEdit />
-          </button>
+          <MenuPopover onClick={() => onClickItem(user.id)} />
         </div>
       </td>
     </tr>

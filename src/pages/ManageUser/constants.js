@@ -25,9 +25,15 @@ export const USER_FILTER = [
   { value: 'role=sale', label: 'Sales' },
 ];
 
-export const TYPE_DESIGNER = [{ value: 'In-house', label: 'In house' }, { value: 'Freelancer', label: 'Freelancer' }];
+export const TYPE_DESIGNER = [
+  { value: 'In-house', label: 'In house' },
+  { value: 'Freelancer', label: 'Freelancer' },
+];
 
-export const USER_TYPE = [{ value: 'sale', label: 'Sale' }, { value: 'designer', label: 'Designer' }];
+export const USER_TYPE = [
+  { value: 'sale', label: 'Sale' },
+  { value: 'designer', label: 'Designer' },
+];
 export const USER_BRANCH = [
   { value: 'MG Road Experience Center', label: 'MG Road Experience Center' },
   { value: 'Whitefield Experience Center', label: 'Whitefield Experience Center' },
@@ -37,3 +43,7 @@ export const USER_BRANCH = [
 export const BULK_UPLOAD_REQUEST = 'MANAGE_USER/BULK_UPLOAD_REQUEST';
 export const BULK_UPLOAD_SUCCESS = 'MANAGE_USER/BULK_UPLOAD_SUCCESS';
 export const BULK_UPLOAD_FAILURE = 'MANAGE_USER/BULK_UPLOAD_FAILURE';
+
+export const DELETE_USER_REQUEST = 'MANAGE_USER/DELETE_USER_REQUEST';
+export const DELETE_USER_SUCCESS = 'MANAGE_USER/DELETE_USER_SUCCESS';
+export const DELETE_USER_FAILURE = 'MANAGE_USER/DELETE_USER_FAILURE';

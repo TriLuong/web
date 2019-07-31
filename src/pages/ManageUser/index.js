@@ -10,7 +10,7 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUser, updateUser, requestBulkUpload } from './actions';
+import { getUsers, addUser, updateUser, requestBulkUpload, requestDeleteUser } from './actions';
 import { USER_FILTER } from './constants';
 import { getFetchingState, getUsersState } from './selectors';
 
@@ -22,6 +22,7 @@ type Props = {
   doAddUser: () => {},
   doUpdateUser: () => {},
   doRequestBulkUpload: () => {},
+  doRequestDeleteUser: () => {},
   isFetching: Boolean,
 };
 class DashBoard extends Component<Props> {
@@ -36,6 +37,11 @@ class DashBoard extends Component<Props> {
       keyword: null,
     },
   };
+
+  constructor(props) {
+    super(props);
+    this.pointer = {};
+  }
 
   componentDidMount() {
     this.gotoPage(1);
@@ -162,6 +168,18 @@ class DashBoard extends Component<Props> {
     return null;
   };
 
+  onClickItem = id => {
+    const { doRequestDeleteUser } = this.props;
+    doRequestDeleteUser({
+      id,
+      cb: () => {
+        const { doGetUsers } = this.props;
+        const { params } = this.state;
+        doGetUsers({ ...params });
+      },
+    });
+  };
+
   render() {
     const { dataUsers } = this.props;
     const {
@@ -231,6 +249,7 @@ class DashBoard extends Component<Props> {
             gotoPage={this.gotoPage}
             onEdit={this.onEdit}
             onSort={this.onSort}
+            onClickItem={this.onClickItem}
           />
         </div>
       </div>
@@ -248,6 +267,7 @@ const mapDispatchToProps = dispatch => ({
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
   doRequestBulkUpload: evt => dispatch(requestBulkUpload(evt)),
+  doRequestDeleteUser: evt => dispatch(requestDeleteUser(evt)),
 });
 
 const withConnect = connect(

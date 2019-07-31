@@ -16,6 +16,9 @@ import {
   BULK_UPLOAD_FAILURE,
   BULK_UPLOAD_REQUEST,
   BULK_UPLOAD_SUCCESS,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
 } from './constants';
 
 export const getUsers = createAction(GET_USERS_REQUEST);
@@ -35,3 +38,7 @@ export const changePasswordFailure = createAction(CHANGE_PASSWORD_FAILURE);
 export const requestBulkUpload = createAction(BULK_UPLOAD_REQUEST);
 export const bulkUploadSuccess = createAction(BULK_UPLOAD_SUCCESS);
 export const bulkUploadFailure = createAction(BULK_UPLOAD_FAILURE);
+
+export const requestDeleteUser = createAction(DELETE_USER_REQUEST);
+export const deleteUserSuccess = createAction(DELETE_USER_SUCCESS);
+export const deleteUserFailure = createAction(DELETE_USER_FAILURE);

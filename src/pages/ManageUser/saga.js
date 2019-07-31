@@ -10,6 +10,7 @@ import {
   EDIT_PROFILE_REQUEST,
   CHANGE_PASSWORD_REQUEST,
   BULK_UPLOAD_REQUEST,
+  DELETE_USER_REQUEST,
 } from './constants';
 import {
   addUserSuccess,
@@ -22,6 +23,8 @@ import {
   changePasswordFailure,
   bulkUploadFailure,
   bulkUploadSuccess,
+  deleteUserFailure,
+  deleteUserSuccess,
 } from './actions';
 
 /* FOR USERS */
@@ -117,6 +120,24 @@ function* bulkUploadSaga({ payload }) {
   }
 }
 
+function* deleteUserSaga({ payload }) {
+  yield put(isConnecting());
+  try {
+    const { id, cb } = payload;
+    const res = yield call(Users.deleteUser, id);
+    if (res.data.status === 'failed') {
+      throw new Error(res.message);
+    }
+    cb();
+    yield put(deleteUserSuccess(res.data.user));
+    yield put(isEndConnecting());
+  } catch (error) {
+    alert(error.response.data.message);
+    yield put(isEndConnecting());
+    yield put(deleteUserFailure(error.response.data.message));
+  }
+}
+
 export default function* getUsersWatcher() {
   yield takeLatest(GET_USERS_REQUEST, getUsersSaga);
   yield takeLatest(ADD_USERS_REQUEST, addUsersSaga);
@@ -124,4 +145,5 @@ export default function* getUsersWatcher() {
   yield takeLatest(EDIT_PROFILE_REQUEST, editProfileSaga);
   yield takeLatest(CHANGE_PASSWORD_REQUEST, changePasswordSaga);
   yield takeLatest(BULK_UPLOAD_REQUEST, bulkUploadSaga);
+  yield takeLatest(DELETE_USER_REQUEST, deleteUserSaga);
 }
