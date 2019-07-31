@@ -7,11 +7,12 @@ import ModalBase from './ModalBase';
 
 class ModalUser extends React.PureComponent {
   render() {
-    const { onSubmit, user, ...rest } = this.props;
+    const { onSubmit, user = {}, ...rest } = this.props;
+    const init = user && user.role === 'sale' ? { ...user, type: '' } : user;
     return (
       <ModalBase className="modal-user" {...rest}>
         <Formik
-          initialValues={user}
+          initialValues={init}
           onSubmit={onSubmit}
           validationSchema={Yup.object().shape({
             branch: Yup.string().required('Required'),
