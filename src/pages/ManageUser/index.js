@@ -22,6 +22,7 @@ type Props = {
   doAddUser: () => {},
   doUpdateUser: () => {},
   doRequestBulkUpload: () => {},
+  isFetching: Boolean,
 };
 class DashBoard extends Component<Props> {
   state = {
@@ -98,6 +99,7 @@ class DashBoard extends Component<Props> {
         this.toggleModalBulkUpload();
       },
     });
+    return null;
   };
 
   onEdit = user => {
@@ -145,29 +147,47 @@ class DashBoard extends Component<Props> {
   };
 
   doSearch = evt => {
-    const { doGetUsers } = this.props;
-    const searchText = evt.target.value; // this is the search text
+    const { doGetUsers, isFetching } = this.props;
+    if (isFetching) {
+      return null;
+    }
+    const searchText = evt.target.value;
+    const { params } = this.state;
+    const newPrams = { ...params, keyword: searchText };
+    this.setState({ params: newPrams });
     if (this.timeout) clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      const { params } = this.state;
-      const newPrams = { ...params, keyword: searchText };
       doGetUsers(newPrams);
-      this.setState({ params: newPrams });
-    }, 300);
+    }, 500);
+    return null;
   };
 
   render() {
     const { dataUsers } = this.props;
-    const { modalIsOpen, modalBulkUpload } = this.state;
+    const {
+      modalIsOpen,
+      modalBulkUpload,
+      params: { keyword },
+    } = this.state;
     return (
       <div className="document">
         <Header />
         <div className="container">
           <div className="top-control">
             <h1 className="top-control__header">Manage Users</h1>
-            <div className="btn-toolbar ml-auto" role="toolbar" aria-label="Toolbar with button groups">
+            <div
+              className="btn-toolbar ml-auto"
+              role="toolbar"
+              aria-label="Toolbar with button groups"
+            >
               <div className="top-control__search mr-2">
-                <input type="text" placeholder="Search" className="form-control" onChange={this.doSearch} />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="form-control"
+                  value={keyword || ''}
+                  onChange={this.doSearch}
+                />
                 <IconSearch className="top-control__search__icon" />
               </div>
               <SelectField
@@ -177,7 +197,11 @@ class DashBoard extends Component<Props> {
                 onChange={this.handleOnChangeSelectField}
               />
               <div className="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" className="btn btn-primary" onClick={this.toggleModalBulkUpload}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={this.toggleModalBulkUpload}
+                >
                   BULK UPLOAD
                 </button>
               </div>
@@ -201,7 +225,12 @@ class DashBoard extends Component<Props> {
               </div>
             </div>
           </div>
-          <DatatablePage data={dataUsers} gotoPage={this.gotoPage} onEdit={this.onEdit} onSort={this.onSort} />
+          <DatatablePage
+            data={dataUsers}
+            gotoPage={this.gotoPage}
+            onEdit={this.onEdit}
+            onSort={this.onSort}
+          />
         </div>
       </div>
     );
