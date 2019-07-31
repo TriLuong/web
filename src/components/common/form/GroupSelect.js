@@ -4,23 +4,39 @@ import Select from 'react-select';
 class GroupSelectField extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { isSelect: (props.value && props.value.value) || false };
+    this.state = { isSelect: (props.value && props.value.value) || false, menuIsOpen: false };
   }
 
   handleChange = event => {
     const { onChange, name } = this.props;
     this.setState({
       isSelect: event.value || false,
+      menuIsOpen: false,
     });
     onChange(name, event.value);
   };
 
-  render() {
-    const { value, label, options } = this.props;
-    const { isSelect } = this.state;
+  onClickGroup = () => {
+    if (!this.flagFirst) {
+      this.setState({ menuIsOpen: true });
+      this.flagFirst = true;
+    } else {
+      this.flagFirst = false;
+    }
+  };
 
+  onMenuClose = () => {
+    this.setState({ menuIsOpen: false });
+  };
+
+  render() {
+    const { value, label, options, name } = this.props;
+    const { isSelect, menuIsOpen } = this.state;
     return (
-      <div className={`group-select ${isSelect ? 'group-select hasValue' : ''}`}>
+      <div
+        className={`group-select ${isSelect ? 'group-select hasValue' : ''}`}
+        onClick={this.onClickGroup}
+      >
         <label>{label}</label>
         <Select
           value={value}
@@ -31,6 +47,10 @@ class GroupSelectField extends PureComponent {
           placeholder={null}
           classNamePrefix="group-select"
           isSearchable={false}
+          menuIsOpen={menuIsOpen}
+          onMenuClose={this.onMenuClose}
+          onMenuOpen={this.onMenuClose}
+          onInputChange={this.onMenuClose}
         />
       </div>
     );
