@@ -69,6 +69,7 @@ class ModalUser extends React.PureComponent {
                     label="User Type"
                     value={{ value: values.role, label: values.role }}
                     onChange={setFieldValue}
+                    isDisabled={user}
                   />
                 </div>
                 <div className="form-group col-md-6">

@@ -17,6 +17,10 @@ class GroupSelectField extends PureComponent {
   };
 
   onClickGroup = () => {
+    const { isDisabled } = this.props;
+    if (isDisabled) {
+      return null;
+    }
     if (!this.flagFirst) {
       this.setState({ menuIsOpen: true });
       this.flagFirst = true;
@@ -30,7 +34,7 @@ class GroupSelectField extends PureComponent {
   };
 
   render() {
-    const { value, label, options, name } = this.props;
+    const { value, label, options, name, isDisabled } = this.props;
     const { isSelect, menuIsOpen } = this.state;
     return (
       <div
@@ -51,6 +55,7 @@ class GroupSelectField extends PureComponent {
           onMenuClose={this.onMenuClose}
           onMenuOpen={this.onMenuClose}
           onInputChange={this.onMenuClose}
+          isDisabled={isDisabled}
         />
       </div>
     );
