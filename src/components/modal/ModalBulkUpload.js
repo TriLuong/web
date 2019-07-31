@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Formik } from 'formik';
-import yup from 'yup';
+import * as Yup from 'yup';
 import ModalBase from './ModalBase';
 
 type Props = {
@@ -12,8 +12,14 @@ class ModalBulkUpload extends PureComponent<Props> {
     const { onSubmit, user, ...rest } = this.props;
     return (
       <ModalBase className="modal-user" title="Bulk Upload" {...rest}>
-        <Formik initialValues={{ file: null }} onSubmit={onSubmit}>
-          {({ handleSubmit, values, setFieldValue }) => (
+        <Formik
+          initialValues={{ file: null }}
+          onSubmit={onSubmit}
+          validationSchema={Yup.object().shape({
+            file: Yup.mixed().required(),
+          })}
+        >
+          {({ handleSubmit, values, setFieldValue, isValid }) => (
             <form onSubmit={handleSubmit}>
               <p className="mb-3">
                 {'Please click link to download template:  '}
@@ -36,7 +42,7 @@ class ModalBulkUpload extends PureComponent<Props> {
                 </label>
               </div>
               <div className="d-flex my-4 border-0 justify-content-center">
-                <button className="btn btn-primary" type="submit">
+                <button className="btn btn-primary" type="submit" disabled={!isValid}>
                   Upload
                 </button>
               </div>
