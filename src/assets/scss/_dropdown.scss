@@ -30,22 +30,15 @@
     white-space: nowrap;
   }
   &__menu {
-    background-color: #11a6b0 !important;
     border-color: #11a6b0;
-    color: white;
-    display: block !important;
+    display: block;
   }
   &__option {
-    &--is-focused {
-      background-color: #11a6b0 !important;
-    }
-    &:hover {
-      background-color: white !important;
-      color: #05486c;
-    }
+    &--is-focused,
+    &:hover,
     &--is-selected {
-      background-color: white !important;
-      color: #05486c !important;
+      background-color: #11a6b0 !important;
+      color: white !important;
     }
   }
 }
