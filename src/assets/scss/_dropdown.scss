@@ -26,7 +26,26 @@
       }
     }
   }
-  &__placeholder{
+  &__placeholder {
     white-space: nowrap;
+  }
+  &__menu {
+    background-color: #11a6b0 !important;
+    border-color: #11a6b0;
+    color: white;
+    display: block !important;
+  }
+  &__option {
+    &--is-focused {
+      background-color: #11a6b0 !important;
+    }
+    &:hover {
+      background-color: white !important;
+      color: #05486c;
+    }
+    &--is-selected {
+      background-color: white !important;
+      color: #05486c !important;
+    }
   }
 }
