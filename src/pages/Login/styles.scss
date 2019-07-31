@@ -3,7 +3,8 @@
   height: 100vh;
   width: 100vw;
   justify-content: center;
-  @media (max-width: 767px){
+  background-color: #ffffff;
+  @media (max-width: 767px) {
     flex-direction: column;
     height: auto;
   }
@@ -22,7 +23,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    @media (max-width: 767px){
+    @media (max-width: 767px) {
       width: 100%;
       padding: 20px 15px;
     }
@@ -31,25 +32,25 @@
     width: 60%;
     background: url('../../assets/images/login/login_bg.jpg') no-repeat center;
     background-size: cover;
-    @media (max-width: 767px){
+    @media (max-width: 767px) {
       width: 100%;
       height: calc(100vh - 435px);
     }
   }
-  &__inner{
+  &__inner {
     min-width: 406px;
-    @media (max-width: 767px){
+    @media (max-width: 767px) {
       min-width: 100%;
     }
   }
-  .list-button{
-      display: flex;
-      justify-content: space-between;
-      margin-top: 50px;
-      .btn-login{
-          background: #05486c;
-          border-color: #05486c;
-          min-width: 120px;
-      }
+  .list-button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    .btn-login {
+      background: #05486c;
+      border-color: #05486c;
+      min-width: 120px;
+    }
   }
 }
