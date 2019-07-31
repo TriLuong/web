@@ -52,6 +52,9 @@
       background: #05486c;
       border-color: #05486c;
       min-width: 120px;
+      &:disabled {
+        opacity: 0.3;
+      }
     }
   }
 }
