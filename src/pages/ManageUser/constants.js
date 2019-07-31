@@ -19,7 +19,7 @@ export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD/SUCCESS';
 export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD/FAILURE';
 
 export const USER_FILTER = [
-  { value: '', label: 'All Users' },
+  { value: 'all', label: 'All Users' },
   { value: 'role=designer&typeDesigner=Freelancer', label: 'Freelancer designer' },
   { value: 'role=designer&typeDesigner=In-house', label: 'In house designer ' },
   { value: 'role=sale', label: 'Sales' },

@@ -21,10 +21,11 @@ class SelectField extends PureComponent<Props> {
   };
 
   render() {
-    const { value, name, defaultValue, options, placeholder } = this.props;
+    const { value, name, defaultValue, options, placeholder, ...rest } = this.props;
 
     return (
       <Select
+        {...rest}
         name={name}
         defaultValue={defaultValue}
         value={value}

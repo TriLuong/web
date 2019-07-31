@@ -131,7 +131,7 @@ class DashBoard extends Component<Props> {
     const { params } = this.state;
     const { value } = event;
     let newParams = '';
-    if (value === '') {
+    if (value === 'all') {
       newParams = { ...params, role: null, typeDesigner: null };
     } else {
       const decodeValue = decodeURI(value)
@@ -193,8 +193,9 @@ class DashBoard extends Component<Props> {
               <SelectField
                 className="mr-2"
                 options={USER_FILTER}
-                placeholder="All Users"
+                placeholder={null}
                 onChange={this.handleOnChangeSelectField}
+                defaultValue={USER_FILTER[0]}
               />
               <div className="btn-group mr-2" role="group" aria-label="Second group">
                 <button

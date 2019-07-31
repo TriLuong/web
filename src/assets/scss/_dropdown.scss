@@ -34,11 +34,18 @@
     display: block;
   }
   &__option {
-    &--is-focused,
-    &:hover,
-    &--is-selected {
+    &--is-selected, &:hover {
       background-color: #11a6b0 !important;
       color: white !important;
     }
+    &--is-focused {
+      background-color:transparent !important;
+      color: black !important;
+      &.wrap-select__option--is-selected{
+        background-color: #11a6b0 !important;
+        color: white !important;
+      }
+    }
+    
   }
 }
