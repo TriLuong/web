@@ -20,14 +20,14 @@ export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD/FAILURE';
 
 export const USER_FILTER = [
   { value: 'all', label: 'All Users' },
-  { value: 'role=designer&type=Freelancer', label: 'Freelancer designer' },
+  { value: 'role=designer&type=Design Partner', label: 'Design Partner' },
   { value: 'role=designer&type=In-house', label: 'In house designer ' },
   { value: 'role=sale', label: 'Sales' },
 ];
 
 export const TYPE_DESIGNER = [
   { value: 'In-house', label: 'In house' },
-  { value: 'Freelancer', label: 'Freelancer' },
+  { value: 'Design Partner', label: 'Design Partner' },
 ];
 
 export const USER_TYPE = [
