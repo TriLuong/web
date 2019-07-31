@@ -7,8 +7,13 @@ import { createStructuredSelector } from 'reselect';
 import InputGroup from 'components/common/form/GroupInput';
 import logo from 'assets/images/login/logo.svg';
 import injectSaga from 'utils/injectSaga';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import './styles.scss';
-import ModalResetPassword, { ModalConfirmEmail, ModalSetNewPassword } from 'components/modal/ResetPassword';
+import ModalResetPassword, {
+  ModalConfirmEmail,
+  ModalSetNewPassword,
+} from 'components/modal/ResetPassword';
 import { requestLogin, requestResetPassword, requestSetPassword } from './actions';
 import saga from './saga';
 import { makeGetToken } from './selectors';
@@ -22,7 +27,6 @@ type Props = {
 };
 class LoginPage extends Component<Props, any> {
   state = {
-    isFilled: false,
     modalResetPassworIsOpen: false,
     modalConfirmEmailIsOpen: false,
     modalSetPasswordIsOpen: false,
@@ -42,27 +46,6 @@ class LoginPage extends Component<Props, any> {
       this.setState({ modalSetPasswordIsOpen: true });
     }
   }
-
-  handleOnChange = event => {
-    const { name, value } = event.target;
-    if (name === 'username') {
-      this.setState({ [name]: value, password: '' });
-    } else {
-      this.setState({ [name]: value });
-    }
-    const { username } = this.state;
-    if (username) {
-      this.setState({ isFilled: true });
-    } else {
-      this.setState({ isFilled: false });
-    }
-  };
-
-  handleOnSubmit = e => {
-    e.preventDefault();
-    const { doRequestLogin } = this.props;
-    doRequestLogin(this.state);
-  };
 
   toggleModalResetPassword = () => {
     this.setState(prevState => ({
@@ -107,15 +90,23 @@ class LoginPage extends Component<Props, any> {
     }
   };
 
+  handleChange = (evt, setFieldValue) => {
+    const value = evt.target.value;
+    const name = evt.target.name;
+    setFieldValue(name, value);
+
+    if (name === 'username') {
+      setFieldValue('password', '');
+    }
+  };
+
+  onSubmit = values => {
+    const { doRequestLogin } = this.props;
+    doRequestLogin(values);
+  };
+
   render() {
-    const {
-      isFilled,
-      modalResetPassworIsOpen,
-      modalConfirmEmailIsOpen,
-      modalSetPasswordIsOpen,
-      username,
-      password,
-    } = this.state;
+    const { modalResetPassworIsOpen, modalConfirmEmailIsOpen, modalSetPasswordIsOpen } = this.state;
     return (
       <div className="page-login">
         <div className="page-login__content">
@@ -125,36 +116,54 @@ class LoginPage extends Component<Props, any> {
             </div>
             <h1>Hello there</h1>
             <p className="text-subheader">Please login to your account.</p>
-            <form onSubmit={this.handleOnSubmit}>
-              <div className="form-group">
-                <InputGroup
-                  type="email"
-                  name="username"
-                  label="Email address"
-                  required
-                  value={username}
-                  onChange={this.handleOnChange}
-                />
-              </div>
-              <div className="form-group">
-                <InputGroup
-                  type="password"
-                  name="password"
-                  label="Password"
-                  value={password}
-                  required
-                  onChange={this.handleOnChange}
-                />
-              </div>
-              <div className="list-button">
-                <button type="button" className="btn btn-link" onClick={this.toggleModalResetPassword}>
-                  Reset Password
-                </button>
-                <button type="submit" className="btn btn-primary btn-login" disabled={!isFilled}>
-                  LOGIN
-                </button>
-              </div>
-            </form>
+            <Formik
+              initialValues={{ username: '', password: '' }}
+              onSubmit={this.onSubmit}
+              validationSchema={Yup.object().shape({
+                username: Yup.string()
+                  .email('Invalid email address')
+                  .required('Required'),
+                password: Yup.string().required('Required'),
+              })}
+            >
+              {({ handleSubmit, values, isValid, setFieldValue, touched, errors }) => (
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <InputGroup
+                      type="email"
+                      name="username"
+                      label="Email address"
+                      value={values.username}
+                      onChange={evt => this.handleChange(evt, setFieldValue)}
+                    />
+                    {errors.username && touched.username && (
+                      <div className="invalid-feedback d-block">{errors.username}</div>
+                    )}
+                  </div>
+                  <div className="form-group">
+                    <InputGroup
+                      type="password"
+                      name="password"
+                      label="Password"
+                      value={values.password}
+                      onChange={evt => this.handleChange(evt, setFieldValue)}
+                    />
+                  </div>
+                  <div className="list-button">
+                    <button
+                      type="button"
+                      className="btn btn-link"
+                      onClick={this.toggleModalResetPassword}
+                    >
+                      Reset Password
+                    </button>
+                    <button type="submit" className="btn btn-primary btn-login" disabled={!isValid}>
+                      LOGIN
+                    </button>
+                  </div>
+                </form>
+              )}
+            </Formik>
           </div>
         </div>
         <ModalResetPassword
