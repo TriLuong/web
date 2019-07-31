@@ -15,7 +15,7 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
       <td>{`${user.firstName} ${user.lastName}`}</td>
       <td>{user.branch}</td>
       <td>{user.email}</td>
-      <td>{user.typeDesigner}</td>
+      <td>{user.type}</td>
       <td>
         <div className="d-flex">
           <button type="button" className="btn btn-primary" onClick={() => onEdit(user)}>
@@ -76,12 +76,12 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort }) => {
             <th
               className="sorting"
               onClick={() => {
-                setSortby('typeDesigner');
-                onSort({ orderBy: 'typeDesigner' });
+                setSortby('type');
+                onSort({ orderBy: 'type' });
               }}
             >
               Type
-              <IconSort className="ml-2" fill={sortBy === 'typeDesigner' ? '#05486c' : 'white'} />
+              <IconSort className="ml-2" fill={sortBy === 'type' ? '#05486c' : 'white'} />
             </th>
             <th className="sorting" style={{ width: '150px' }} />
           </tr>

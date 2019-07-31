@@ -32,7 +32,7 @@ class DashBoard extends Component<Props> {
       orderBy: null,
       orderType: null,
       role: null,
-      typeDesigner: null,
+      type: null,
       keyword: null,
     },
   };
@@ -132,7 +132,7 @@ class DashBoard extends Component<Props> {
     const { value } = event;
     let newParams = '';
     if (value === 'all') {
-      newParams = { ...params, role: null, typeDesigner: null };
+      newParams = { ...params, role: null, type: null };
     } else {
       const decodeValue = decodeURI(value)
         .replace(/"/g, '""')
@@ -140,7 +140,7 @@ class DashBoard extends Component<Props> {
         .replace(/=/g, '":"');
       const parseValue = JSON.parse(`{"${decodeValue}"}`);
 
-      newParams = { ...params, role: parseValue.role, typeDesigner: parseValue.typeDesigner };
+      newParams = { ...params, role: parseValue.role, type: parseValue.type };
     }
     this.setState({ params: newParams });
     doGetUsers(newParams);

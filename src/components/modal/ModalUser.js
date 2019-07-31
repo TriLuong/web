@@ -16,7 +16,7 @@ class ModalUser extends React.PureComponent {
           validationSchema={Yup.object().shape({
             branch: Yup.string().required('Required'),
             role: Yup.string().required('Required'),
-            typeDesigner: Yup.string(),
+            type: Yup.string(),
           })}
         >
           {({ isValid, handleChange, setFieldValue, handleSubmit, values }) => (
@@ -74,10 +74,10 @@ class ModalUser extends React.PureComponent {
                 <div className="form-group col-md-6">
                   {values.role !== 'sale' && (
                     <GroupSelectField
-                      name="typeDesigner"
+                      name="type"
                       label="Type of Designer"
                       options={TYPE_DESIGNER}
-                      value={{ value: values.typeDesigner, label: values.typeDesigner }}
+                      value={{ value: values.type, label: values.type }}
                       onChange={setFieldValue}
                     />
                   )}
