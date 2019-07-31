@@ -16,7 +16,7 @@ class ModalUser extends React.PureComponent {
           validationSchema={Yup.object().shape({
             branch: Yup.string().required('Required'),
             role: Yup.string().required('Required'),
-            typeDesigner: Yup.string().required('Required'),
+            typeDesigner: Yup.string(),
           })}
         >
           {({ isValid, handleChange, setFieldValue, handleSubmit, values }) => (
