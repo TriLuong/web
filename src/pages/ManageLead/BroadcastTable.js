@@ -2,32 +2,49 @@
 import React from 'react';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
-
+import MenuPopover from 'components/common/popover/MenuPopover';
 const BroadcastTable = ({ data, onSchedule }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
       <td>{`${lead.firstName} ${lead.lastName}`}</td>
-      <td>{lead.address}</td>
+      <td>{lead.branch}</td>
       <td>
-        {lead.phone}
+        {lead.status}
         <br />
-        {lead.email}
+        {`${lead.date} ${lead.time}`}
       </td>
-      <td>{`${lead.date} ${lead.time}`}</td>
+      <td>{lead.designer}</td>
 
       <td>
-        <div className="d-flex">
-          <button type="button" className="btn btn-primary" onClick={() => onSchedule(lead.status)}>
-            {lead.status === 'scheduled' ? 'EDIT MEETING' : 'ASSIGN DESIGNER'}
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            style={{ marginLeft: '10px' }}
-          >
-            <IconEdit />
-          </button>
-        </div>
+        {lead.status === 'scheduled' ? (
+          <div className="d-flex">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => onSchedule(lead.status)}
+            >
+              EDIT MEETING
+            </button>
+            <MenuPopover />
+          </div>
+        ) : (
+          <div className="d-flex">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => onSchedule(lead.status)}
+            >
+              ASSIGN DESIGNER
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              style={{ marginLeft: '10px' }}
+            >
+              <IconEdit />
+            </button>
+          </div>
+        )}
       </td>
     </tr>
   ));

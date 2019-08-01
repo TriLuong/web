@@ -2,6 +2,7 @@
 import React from 'react';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
+import MenuPopover from 'components/common/popover/MenuPopover';
 
 const QualifiledTable = ({ data, onSchedule }) => {
   const elemtLeads = data.map(lead => (
@@ -20,13 +21,7 @@ const QualifiledTable = ({ data, onSchedule }) => {
           <button type="button" className="btn btn-primary" onClick={() => onSchedule(lead.status)}>
             {lead.status === 'scheduled' ? 'BROACASH' : 'SCHEDULE'}
           </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            style={{ marginLeft: '10px' }}
-          >
-            <IconEdit />
-          </button>
+          <MenuPopover />
         </div>
       </td>
     </tr>
