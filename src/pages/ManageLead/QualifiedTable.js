@@ -1,4 +1,5 @@
 import React from 'react';
+import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
@@ -17,16 +18,38 @@ const QualifiledTable = ({ data, onSchedule, onClick }) => {
       <td>{`${lead.date} ${lead.time}`}</td>
 
       <td>
-        <div className="d-flex">
-          <button
-            type="button"
-            className="btn btn-primary w-100"
-            onClick={() => onSchedule(lead.status)}
-          >
-            {lead.status === 'scheduled' ? 'BROACASH' : 'SCHEDULE'}
-          </button>
-          <MenuPopover menuItems={MENU_POPOVER_ITEMS_QUALIFILED} onClick={onClick} />
-        </div>
+        {lead.status === 'scheduled' ? (
+          <div className="d-flex">
+            <button
+              type="button"
+              className="btn btn-primary w-100"
+              onClick={() => onSchedule(lead.status)}
+            >
+              BROACASH
+            </button>
+            <MenuPopover
+              menuItems={MENU_POPOVER_ITEMS_QUALIFILED}
+              onClick={name => onClick({ actionLead: name, lead })}
+            />
+          </div>
+        ) : (
+          <div className="d-flex">
+            <button
+              type="button"
+              className="btn btn-primary w-100"
+              onClick={() => onSchedule(lead.status)}
+            >
+              SCHEDULE
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              style={{ marginLeft: '10px' }}
+            >
+              <IconEdit />
+            </button>
+          </div>
+        )}
       </td>
     </tr>
   ));

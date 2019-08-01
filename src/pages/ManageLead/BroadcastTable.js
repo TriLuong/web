@@ -4,7 +4,7 @@ import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 /* eslint react/prop-types: 0 */
-const BroadcastTable = ({ data, onSchedule }) => {
+const BroadcastTable = ({ data, onSchedule, onClick }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
       <td>{`${lead.firstName} ${lead.lastName}`}</td>
@@ -26,7 +26,10 @@ const BroadcastTable = ({ data, onSchedule }) => {
             >
               EDIT MEETING
             </button>
-            <MenuPopover menuItems={MENU_POPOVER_ITEMS_BROADCASR} />
+            <MenuPopover
+              menuItems={MENU_POPOVER_ITEMS_BROADCASR}
+              onClick={name => onClick({ actionLead: name, lead })}
+            />
           </div>
         ) : (
           <div className="d-flex">

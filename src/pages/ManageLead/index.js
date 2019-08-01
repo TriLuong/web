@@ -12,7 +12,7 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getLeads } from './actions';
+import { getLeads, deleteLead } from './actions';
 import { getLeadsState } from './selectors';
 import DatatablePage from './DatatablePage';
 import { LEADS_FILTER, RADIO_QUALIFIELD, RADIO_BROADCAST } from './constants';
@@ -83,8 +83,16 @@ class SalesPage extends Component {
     }
   };
 
-  onClick = value => {
-    console.info('onClick', value);
+  handleDeleteLead = lead => {
+    const { doDeleteLead } = this.props;
+    const { params } = this.state;
+    doDeleteLead({ lead, ...params });
+  };
+
+  onClick = ({ actionLead, lead }) => {
+    if (actionLead === 'deleteLead') {
+      this.handleDeleteLead(lead);
+    }
   };
 
   render() {
@@ -157,6 +165,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => ({
   doGetLeads: evt => dispatch(getLeads(evt)),
+  doDeleteLead: evt => dispatch(deleteLead(evt)),
 });
 
 const withConnect = connect(
