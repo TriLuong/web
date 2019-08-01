@@ -1,29 +1,35 @@
 import React, { PureComponent } from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 
-/* eslint-disable */
-class RadioButton extends PureComponent {
+type Props = {
+  onChange: () => {},
+  onReset: () => {},
+  options: [],
+  id: String,
+  selectedOption: String,
+};
+class RadioButton extends PureComponent<Props> {
   handleChange = event => {
-    const { name, value } = event.target;
-    console.log('event', name, value, event.target.checked);
+    // console.log('event', event.target.value, event);
+    const { value } = event.target;
     const { onChange } = this.props;
-    onChange({ name, value });
+    onChange({ value });
   };
 
   render() {
-    const { options, ...rest } = this.props;
+    const { options, selectedOption, ...rest } = this.props;
     return (
       <Form inline className="ml-auto">
         {options.map((option, index) => (
-          <FormGroup check className="ml-2" key={index}>
-            <Label check>
+          <FormGroup className="ml-2" key={index}>
+            <Label>
               <Input
                 {...rest}
                 type="radio"
                 name={option.name}
                 value={option.value}
                 onChange={this.handleChange}
-                defaultChecked={option.defaultChecked}
+                checked={selectedOption === option.value}
               />
               {option.label}
             </Label>

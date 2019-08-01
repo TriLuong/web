@@ -29,9 +29,6 @@ class SalesPage extends Component {
         typeLead: 'qualifiedLeads',
         filterLead: 'all',
       },
-      // radio: RADIO_QUALIFIELD,
-      // radioSelected: 'all',
-      // filterSelected: 'qualifiedLeads',
     };
   }
 
@@ -42,20 +39,20 @@ class SalesPage extends Component {
   }
 
   handleOnChangeRadioButton = ({ value }) => {
+    console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
     const newParams = { ...params, filterLead: value };
     const { doGetLeads } = this.props;
     this.setState({ params: newParams });
     doGetLeads({ ...newParams });
-    // console.log('handleOnChangeRadioButton', this.state);
   };
 
   handleOnChangeSelectField = event => {
     const { value } = event;
     const { params } = this.state;
     const { doGetLeads } = this.props;
-    const newParams = { ...params, typeLead: value };
-    this.setState({ params: newParams });
+    const newParams = { ...params, typeLead: value, filterLead: 'all' };
+    this.setState({ params: newParams, checked: true });
     doGetLeads({ ...newParams });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
@@ -89,6 +86,7 @@ class SalesPage extends Component {
   render() {
     const {
       params,
+      checked,
       isOpenCheckDesigner,
       isDesignerAvailable,
       isSubmitDesignerAvailable,
@@ -103,8 +101,10 @@ class SalesPage extends Component {
           <div className="top-control">
             <h1 className="top-control__header">Manage Leads</h1>
             <RadioButton
+              id="radioButton"
               options={params.typeLead === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
+              selectedOption={params.filterLead}
             />
             <div
               className="btn-toolbar ml-auto"

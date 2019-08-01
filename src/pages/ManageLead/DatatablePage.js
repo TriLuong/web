@@ -1,12 +1,10 @@
-/* eslint-disable */
 import React from 'react';
 import Pagination from 'components/common/pagination';
-import IconEdit from 'components/common/icon/IconEdit';
-import IconSort from 'components/common/icon/IconSort';
 import QualifiedTable from './QualifiedTable';
 import BroadcastTable from './BroadcastTable';
 
-const DatatablePage = ({ data, params, onSchedule, typeLead }) => {
+/* eslint react/prop-types: 0 */
+const DatatablePage = ({ data, onSchedule, typeLead }) => {
   if (!data) {
     return null;
   }

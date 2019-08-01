@@ -4,11 +4,11 @@ export const LEADS_FILTER = [
 ];
 
 export const RADIO_QUALIFIELD = [
-  { name: 'qualifiedLeads', label: 'All', value: 'all', defaultChecked: true },
+  { name: 'qualifiedLeads', label: 'All', value: 'all' },
   { name: 'qualifiedLeads', label: 'Without Date & Time', value: 'unScheduled' },
 ];
 export const RADIO_BROADCAST = [
-  { name: 'broadcashLeads', label: 'All', value: 'all', defaultChecked: true },
+  { name: 'broadcashLeads', label: 'All', value: 'all' },
   { name: 'broadcashLeads', label: 'Scheduled', value: 'scheduled' },
   { name: 'broadcashLeads', label: 'Unscheduled', value: 'unScheduled' },
 ];

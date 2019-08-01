@@ -8,7 +8,7 @@ function* getLeadsSaga({ payload }) {
   yield put(isConnecting());
   try {
     const { typeLead, filterLead } = payload;
-    console.log('payload data', payload, data);
+    // console.log('payload data', payload, data);
     const leads = filterLead === 'all'
       ? data[`${typeLead}`]
       : data[`${typeLead}`].filter(lead => lead.status === filterLead);

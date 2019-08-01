@@ -1,8 +1,9 @@
-/* eslint-disable */
 import React from 'react';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
+
+/* eslint react/prop-types: 0 */
 const BroadcastTable = ({ data, onSchedule }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
