@@ -13,6 +13,17 @@ export const RADIO_BROADCAST = [
   { name: 'broadcashLeads', label: 'Unscheduled', value: 'unScheduled' },
 ];
 
+export const MENU_POPOVER_ITEMS_QUALIFILED = [
+  { label: 'Broadcast Again', name: 'broadcastAgain' },
+  { label: 'Assign to Different Branch', name: 'assignDiffBranch' },
+  { label: 'Delete Lead', name: 'deleteLead' },
+];
+
+export const MENU_POPOVER_ITEMS_BROADCASR = [
+  { label: 'Cancel Meeting', name: 'cancelMeeting' },
+  { label: 'Delete Lead', name: 'deleteLead' },
+];
+
 export const GET_LEADS_REQUEST = 'GET_LEADS/REQUEST';
 export const GET_LEADS_SUCCESS = 'GET_LEADS/SUCCESS';
 export const GET_LEADS_FAILURE = 'GET_LEADS/FAILURE';

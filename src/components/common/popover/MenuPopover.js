@@ -3,7 +3,14 @@ import className from 'classnames';
 import IconEdit from 'components/common/icon/IconEdit';
 import './styles.scss';
 
-export default class MenuPopover extends React.PureComponent {
+type Props = {
+  onClick: () => {},
+  menuItems: [],
+};
+
+/* eslint jsx-a11y/click-events-have-key-events: 0
+jsx-a11y/no-noninteractive-element-interactions: 0 */
+export default class MenuPopover extends React.PureComponent<Props> {
   state = { isOpen: false };
 
   componentWillUnmount() {
@@ -25,7 +32,7 @@ export default class MenuPopover extends React.PureComponent {
 
   render() {
     const { isOpen } = this.state;
-    const { onClick } = this.props;
+    const { onClick, menuItems } = this.props;
     return (
       <div style={{ position: 'relative' }}>
         <button
@@ -38,9 +45,11 @@ export default class MenuPopover extends React.PureComponent {
         </button>
         <div className={isOpen ? 'menu-popover show' : 'menu-popover dropdown-menu'}>
           <div className="menu-popover__inner">
-            <p className="menu-popover__item" onClick={onClick}>
-              Delete User
-            </p>
+            {menuItems.map(menuItem => (
+              <p className="menu-popover__item" onClick={() => onClick(menuItem.name)}>
+                {menuItem.label}
+              </p>
+            ))}
           </div>
         </div>
       </div>

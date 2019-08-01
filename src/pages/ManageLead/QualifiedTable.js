@@ -1,9 +1,10 @@
 import React from 'react';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
+import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
 
 /* eslint react/prop-types: 0 */
-const QualifiledTable = ({ data, onSchedule }) => {
+const QualifiledTable = ({ data, onSchedule, onClick }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
       <td>{`${lead.firstName} ${lead.lastName}`}</td>
@@ -17,10 +18,14 @@ const QualifiledTable = ({ data, onSchedule }) => {
 
       <td>
         <div className="d-flex">
-          <button type="button" className="btn btn-primary" onClick={() => onSchedule(lead.status)}>
+          <button
+            type="button"
+            className="btn btn-primary w-100"
+            onClick={() => onSchedule(lead.status)}
+          >
             {lead.status === 'scheduled' ? 'BROACASH' : 'SCHEDULE'}
           </button>
-          <MenuPopover />
+          <MenuPopover menuItems={MENU_POPOVER_ITEMS_QUALIFILED} onClick={onClick} />
         </div>
       </td>
     </tr>

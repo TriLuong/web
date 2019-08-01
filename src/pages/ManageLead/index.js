@@ -83,6 +83,10 @@ class SalesPage extends Component {
     }
   };
 
+  onClick = value => {
+    console.info('onClick', value);
+  };
+
   render() {
     const {
       params,
@@ -139,6 +143,7 @@ class SalesPage extends Component {
             params={params}
             typeLead={params.typeLead}
             onSchedule={this.onSchedule}
+            onClick={this.onClick}
           />
         </div>
       </div>

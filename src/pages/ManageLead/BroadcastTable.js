@@ -2,7 +2,7 @@ import React from 'react';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
-
+import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 /* eslint react/prop-types: 0 */
 const BroadcastTable = ({ data, onSchedule }) => {
   const elemtLeads = data.map(lead => (
@@ -21,18 +21,18 @@ const BroadcastTable = ({ data, onSchedule }) => {
           <div className="d-flex">
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary w-100"
               onClick={() => onSchedule(lead.status)}
             >
               EDIT MEETING
             </button>
-            <MenuPopover />
+            <MenuPopover menuItems={MENU_POPOVER_ITEMS_BROADCASR} />
           </div>
         ) : (
           <div className="d-flex">
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary w-100"
               onClick={() => onSchedule(lead.status)}
             >
               ASSIGN DESIGNER
