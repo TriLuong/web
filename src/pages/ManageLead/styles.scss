@@ -3,7 +3,7 @@
   font-size: 24px;
   font-weight: bold;
   color: #282828;
-  padding-bottom: 30px;
+  padding: 40px 0 30px;
   border-bottom: 1px solid #a5a7aa;
   margin-bottom: 30px;
 }
@@ -21,7 +21,7 @@
   &__inner{
     background: #f9f9f9;
     border: 1px solid #bbb;
-    padding: 10px 15px 10px 35px;
+    padding: 9px 14px 9px 32px;
     border-radius: 4px;
     color: #444444;
     position: relative;
@@ -31,5 +31,13 @@
     left: 10px;
     top: 13px;
     font-size: 20px;
+  }
+}
+.form-row-detail{
+  margin-left: -18px;
+  margin-right: -18px;
+  .form-group{
+    padding: 0 18px;
+    margin-bottom: 30px;
   }
 }

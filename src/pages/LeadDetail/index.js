@@ -32,7 +32,7 @@ class SalesDetail extends Component {
         <div className="container">
           <h2 className="page-title">Client Requirements</h2>
           <div className="form-title">Contact Info</div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
               <InputGroup label="First Name" name="FirstName" />
             </div>
@@ -43,7 +43,7 @@ class SalesDetail extends Component {
               <InputGroup label="Email" name="Email" type="email" />
             </div>
           </div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
               <InputGroup type="number" label="Mobile Number" name="MobileNumber" />
             </div>
@@ -54,7 +54,7 @@ class SalesDetail extends Component {
               <GroupSelectField label="City" options={optionsExperience} />
             </div>
           </div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
               <GroupSelectField label="State" options={optionsExperience} />
             </div>
@@ -66,7 +66,7 @@ class SalesDetail extends Component {
             </div>
           </div>
           <div className="form-title">Budget</div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-3">
               <InputGroup label="Low" name="Budget" type="checkbox" id="Low" />
             </div>
@@ -77,13 +77,13 @@ class SalesDetail extends Component {
               <InputGroup label="High" name="Budget" type="checkbox" id="High" />
             </div>
           </div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
               <InputGroup label="Enter budget amount (if available)" name="BudgetAmount" />
             </div>
           </div>
           <div className="form-title">Services Required</div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-3">
               <InputGroup label="Home" name="Home" type="checkbox" id="Home" />
             </div>
@@ -103,13 +103,13 @@ class SalesDetail extends Component {
               <InputGroup label="Bedroom" name="Bedroom" type="checkbox" id="Bedroom" />
             </div>
           </div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-7">
               <InputGroup label="Special instructions (optional)" name="SpecialInstructions" />
             </div>
           </div>
           <div className="form-title">Experience Center</div>
-          <div className="form-row">
+          <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
               <GroupSelectField label="Select Branch" options={optionsExperience} />
             </div>
@@ -126,8 +126,8 @@ class SalesDetail extends Component {
           <div className="form-title">Meeting Availability</div>
           <h2 className="page-title">Broadcast Options</h2>
           <div className="form-title">Select Designer</div>
-          <div className="form-row">
-            <div className="form-group col-md-3">
+          <div className="form-row form-row-detail">
+            <div className="form-group col-md-4">
               <InputGroup type="radio" label="All Designers in 1MG Experience Center" name="Designers" />
             </div>
           </div>
