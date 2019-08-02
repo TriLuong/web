@@ -1,0 +1,22 @@
+.SingleDatePicker {
+  .DateInput {
+    width: 50%;
+    &_input {
+      display: none;
+    }
+    &::after {
+      content: 'Select Date';
+      display: inline-block;
+      font-size: 20px;
+      color: #8e8e93;
+      margin: 15px 10px;
+    }
+
+    svg {
+      display: none;
+    }
+  }
+  &_picker {
+    position: static;
+  }
+}

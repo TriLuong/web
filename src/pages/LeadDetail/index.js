@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import 'react-dates/initialize';
 import Header from 'components/common/header';
 import Footer from 'components/LeadDetail/footer';
 import BreadCrumb from 'components/LeadDetail/breadcrumb';
 import InputGroup from 'components/common/form/GroupInput';
 import GroupSelectField from 'components/common/form/GroupSelect';
 import IconHand from 'components/common/icon/IconHand';
+import SingleDatePickerWrapper from './SingleDatePickerWrapper';
 import 'pages/ManageLead/styles.scss';
 
 /* eslint-disable */
@@ -22,7 +24,10 @@ class SalesDetail extends Component {
     };
   }
 
-  onChange = date => this.setState({ date });
+  onDateChange = date => {
+    this.setState({ date });
+    console.info('onDateChange', date._d);
+  };
 
   render() {
     return (
@@ -117,18 +122,32 @@ class SalesDetail extends Component {
               <div className="box-alert">
                 <div className="box-alert__inner">
                   <IconHand className="box-alert__icon" />
-                  IMPORTANT: PLEASE DOUBLE CHECK BRANCH WITH THE CLIENT. CHANGING BRANCH WILL BROADCAST THE LEAD TO THAT
-                  BRANCH.
+                  IMPORTANT: PLEASE DOUBLE CHECK BRANCH WITH THE CLIENT. CHANGING BRANCH WILL
+                  BROADCAST THE LEAD TO THAT BRANCH.
                 </div>
               </div>
             </div>
           </div>
           <div className="form-title">Meeting Availability</div>
+          <div className="form-row form-row-detail">
+            <div className="form-group col-md-4">
+              <SingleDatePickerWrapper
+                numberOfMonths={1}
+                autoFocus
+                onDateChange={this.onDateChange}
+                placeholder="Select Date"
+              />
+            </div>
+          </div>
           <h2 className="page-title">Broadcast Options</h2>
           <div className="form-title">Select Designer</div>
           <div className="form-row form-row-detail">
             <div className="form-group col-md-4">
-              <InputGroup type="radio" label="All Designers in 1MG Experience Center" name="Designers" />
+              <InputGroup
+                type="radio"
+                label="All Designers in 1MG Experience Center"
+                name="Designers"
+              />
             </div>
           </div>
         </div>

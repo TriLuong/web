@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import 'assets/scss/app.scss';
+import 'react-dates/lib/css/_datepicker.css';
 import App from 'pages/App';
 import history from 'utils/history';
 import configureStore from './configureStore';
