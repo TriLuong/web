@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Pagination from 'components/common/pagination';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
+import { MENU_POPOVER_ITEMS_MANAGE_USER } from './constants';
 
 /* eslint react/destructuring-assignment: 0 react/prop-types: 0 */
 const DatatablePage = ({ data, gotoPage, onEdit, onSort, onClickItem }) => {
@@ -22,7 +23,10 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort, onClickItem }) => {
           <button type="button" className="btn btn-primary" onClick={() => onEdit(user)}>
             EDIT
           </button>
-          <MenuPopover onClick={() => onClickItem(user.id)} />
+          <MenuPopover
+            onClick={() => onClickItem(user.id)}
+            menuItems={MENU_POPOVER_ITEMS_MANAGE_USER}
+          />
         </div>
       </td>
     </tr>

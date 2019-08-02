@@ -18,6 +18,8 @@ export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD/REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD/SUCCESS';
 export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD/FAILURE';
 
+export const MENU_POPOVER_ITEMS_MANAGE_USER = [{ label: 'Delete Lead', name: 'deleteLead' }];
+
 export const USER_FILTER = [
   { value: 'all', label: 'All Users' },
   { value: 'role=designer&type=Design Partner', label: 'Design Partner' },
