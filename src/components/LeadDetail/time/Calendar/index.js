@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import omit from 'lodash/omit';
-import './react_dates_overrides.scss';
+import './style.scss';
 
 import {
   SingleDatePicker,
@@ -44,17 +44,19 @@ const defaultProps = {
   keepFocusOnInput: false,
 
   // calendar presentation and interaction related props
+  renderMonth: PropTypes.func,
   renderMonthText: null,
   orientation: HORIZONTAL_ORIENTATION,
   anchorDirection: ANCHOR_LEFT,
   horizontalMargin: 0,
   withPortal: false,
   withFullScreenPortal: false,
+  daySize: PropTypes.nonNegativeInteger,
+  isRTL: false,
   initialVisibleMonth: null,
   numberOfMonths: 2,
   keepOpenOnDateSelect: false,
   reopenPickerOnClearDate: false,
-  isRTL: false,
 
   // navigation related props
   navPrev: null,
@@ -64,9 +66,11 @@ const defaultProps = {
   onClose() {},
 
   // day presentation and interaction related props
+  renderMonth: PropTypes.func,
   renderCalendarDay: undefined,
   renderDayContents: null,
   enableOutsideDays: false,
+  daySize: PropTypes.nonNegativeInteger,
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
   isDayHighlighted: () => {},

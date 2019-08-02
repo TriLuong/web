@@ -6,7 +6,8 @@ import BreadCrumb from 'components/LeadDetail/breadcrumb';
 import InputGroup from 'components/common/form/GroupInput';
 import GroupSelectField from 'components/common/form/GroupSelect';
 import IconHand from 'components/common/icon/IconHand';
-import SingleDatePickerWrapper from './SingleDatePickerWrapper';
+import SelectDate from 'components/LeadDetail/time/SelectDate';
+import SelectTime from 'components/LeadDetail/time/SelectTime';
 import 'pages/ManageLead/styles.scss';
 
 /* eslint-disable */
@@ -129,14 +130,12 @@ class SalesDetail extends Component {
             </div>
           </div>
           <div className="form-title">Meeting Availability</div>
-          <div className="form-row form-row-detail">
-            <div className="form-group col-md-4">
-              <SingleDatePickerWrapper
-                numberOfMonths={1}
-                autoFocus
-                onDateChange={this.onDateChange}
-                placeholder="Select Date"
-              />
+          <div className="form-row form-row-detail meetingAvailability">
+            <div className="form-group col-md-6">
+              <SelectDate onDateChange={this.onDateChange} />
+            </div>
+            <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
+              <SelectTime />
             </div>
           </div>
           <h2 className="page-title">Broadcast Options</h2>

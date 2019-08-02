@@ -1,0 +1,66 @@
+.SingleDatePicker {
+  .SingleDatePickerInput {
+    border: none;
+  }
+  .DateInput {
+    display: none;
+  }
+  &_picker {
+    position: static;
+  }
+  .DayPicker {
+    box-shadow: none;
+    &_weekHeader {
+      top: 50px;
+      font-size: 14px;
+      text-transform: uppercase;
+      &_li {
+        small {
+          font-weight: bold;
+          font-size: 14px;
+          color: #8e8e93;
+        }
+      }
+    }
+    // &_transitionContainer {
+    //   position: absolute;
+    //   top: 0px;
+    // }
+    &_focusRegion {
+      & > div:last-child {
+        display: none;
+      }
+    }
+  }
+  .CalendarMonth {
+    &_table {
+      .CalendarDay {
+        border: none;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 16px;
+        &:hover {
+          transition: all 0.3s;
+        }
+        &__today {
+          position: relative;
+          background-color: #11a6b0;
+          color: white;
+          &::before {
+            content: 'today';
+            position: absolute;
+            color: #11a6b0;
+            font-size: 12px;
+            left: 0;
+            right: 0;
+            top: -15px;
+          }
+        }
+        &__selected {
+          background-color: #11a6b0;
+          transition: all 0.3s;
+        }
+      }
+    }
+  }
+}
