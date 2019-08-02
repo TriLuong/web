@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import InputGroup from './GroupInput';
 
 type Props = {
   onChange: () => {},
   onReset: () => {},
+  className: String,
   options: [],
   id: String,
   selectedOption: String,
@@ -17,25 +18,23 @@ class RadioButton extends PureComponent<Props> {
   };
 
   render() {
-    const { options, selectedOption, ...rest } = this.props;
+    const { options, selectedOption, className, ...rest } = this.props;
     return (
-      <Form inline className="ml-auto">
+      <div className={`${className} form-inline`}>
         {options.map((option, index) => (
-          <FormGroup className="ml-2" key={index}>
-            <Label>
-              <Input
-                {...rest}
-                type="radio"
-                name={option.name}
-                value={option.value}
-                onChange={this.handleChange}
-                checked={selectedOption === option.value}
-              />
-              {option.label}
-            </Label>
-          </FormGroup>
+          <div className="form-group ml-5" key={index}>
+            <InputGroup
+              {...rest}
+              type="radio"
+              name={option.name}
+              value={option.value}
+              onChange={this.handleChange}
+              checked={selectedOption === option.value}
+              label={option.label}
+            />
+          </div>
         ))}
-      </Form>
+      </div>
     );
   }
 }

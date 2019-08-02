@@ -18,8 +18,12 @@ import DatatablePage from './DatatablePage';
 import { LEADS_FILTER, RADIO_QUALIFIELD, RADIO_BROADCAST } from './constants';
 import './styles.scss';
 
-/* eslint-disable */
-class SalesPage extends Component {
+type Props = {
+  doGetLeads: () => {},
+  doDeleteLead: () => {},
+  dataLeads: {},
+}
+class SalesPage extends Component<Props> {
   constructor() {
     super();
     this.state = {
@@ -52,7 +56,7 @@ class SalesPage extends Component {
     const { params } = this.state;
     const { doGetLeads } = this.props;
     const newParams = { ...params, typeLead: value, filterLead: 'all' };
-    this.setState({ params: newParams, checked: true });
+    this.setState({ params: newParams });
     doGetLeads({ ...newParams });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
@@ -76,7 +80,7 @@ class SalesPage extends Component {
   };
 
   onSchedule = status => {
-    if (status == 'scheduled') {
+    if (status === 'scheduled') {
       this.toggleCheckDesigner();
     } else {
       this.setState({ isSubmitDesignerAvailable: true });
@@ -98,7 +102,6 @@ class SalesPage extends Component {
   render() {
     const {
       params,
-      checked,
       isOpenCheckDesigner,
       isDesignerAvailable,
       isSubmitDesignerAvailable,
@@ -113,13 +116,14 @@ class SalesPage extends Component {
           <div className="top-control">
             <h1 className="top-control__header">Manage Leads</h1>
             <RadioButton
+              className="ml-auto"
               id="radioButton"
               options={params.typeLead === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
               selectedOption={params.filterLead}
             />
             <div
-              className="btn-toolbar ml-auto"
+              className="btn-toolbar ml-5"
               role="toolbar"
               aria-label="Toolbar with button groups"
             >
@@ -170,7 +174,7 @@ const mapDispatchToProps = dispatch => ({
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const withReducer = injectReducer({ key: 'manageLeadReducer', reducer });
@@ -179,5 +183,5 @@ const withSaga = injectSaga({ key: 'manageLeadSaga', saga });
 export default compose(
   withReducer,
   withSaga,
-  withConnect
+  withConnect,
 )(SalesPage);
