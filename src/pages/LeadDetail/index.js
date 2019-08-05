@@ -22,12 +22,30 @@ class SalesDetail extends Component {
     super();
     this.state = {
       date: new Date(),
+      time: {
+        hour: 10,
+        minute: 0,
+        type: 'AM',
+      },
     };
   }
 
   onDateChange = date => {
     this.setState({ date });
     console.info('onDateChange', date._d);
+  };
+
+  onTimeChange = timeValue => {
+    const { time } = this.state;
+    let newType = '';
+    if (timeValue.hour === 10 || timeValue.hour === 11) {
+      newType = 'AM';
+    } else {
+      newType = 'PM';
+    }
+    const newTime = { ...time, ...timeValue, type: newType };
+    this.setState({ time: newTime });
+    console.log(newTime);
   };
 
   render() {
@@ -135,7 +153,7 @@ class SalesDetail extends Component {
               <SelectDate onDateChange={this.onDateChange} />
             </div>
             <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
-              <SelectTime />
+              <SelectTime onTimeChange={this.onTimeChange} />
             </div>
           </div>
           <h2 className="page-title">Broadcast Options</h2>

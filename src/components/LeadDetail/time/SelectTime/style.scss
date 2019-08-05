@@ -27,6 +27,11 @@
         font-weight: bold;
         transition: all 0.3s;
       }
+      &.active {
+        background-color: #11a6b0;
+        border-color: #11a6b0;
+        color: white;
+      }
     }
   }
 }
