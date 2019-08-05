@@ -21,30 +21,25 @@ class SelectField extends PureComponent<Props> {
   };
 
   render() {
-    const { value, name, defaultValue, options, placeholder, ...rest } = this.props;
+    const { className, value, name, defaultValue, options, placeholder, ...rest } = this.props;
 
     return (
-      <Select
-        {...rest}
-        name={name}
-        defaultValue={defaultValue}
-        value={value}
-        onChange={this.handleChange}
-        options={options}
-        clearable={false}
-        className="wrap-select__inner"
-        placeholder={placeholder}
-        classNamePrefix="wrap-select"
-        isSearchable={false}
-      />
+      <div className={`wrap-select ${className}`}>
+        <Select
+          {...rest}
+          name={name}
+          defaultValue={defaultValue}
+          value={value}
+          onChange={this.handleChange}
+          options={options}
+          clearable={false}
+          className="wrap-select__inner"
+          placeholder={placeholder}
+          classNamePrefix="wrap-select"
+          isSearchable={false}
+        />
+      </div>
     );
   }
 }
-
-const renderSelectField = props => (
-  <div className="wrap-select">
-    <SelectField {...props} />
-  </div>
-);
-
-export default renderSelectField;
+export default SelectField;
