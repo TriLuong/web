@@ -22,11 +22,12 @@ type Props = {
   doGetLeads: () => {},
   doDeleteLead: () => {},
   dataLeads: {},
-}
+};
 class SalesPage extends Component<Props> {
   constructor() {
     super();
     this.state = {
+      isChecking: true,
       isOpenCheckDesigner: false,
       isDesignerAvailable: false,
       params: {
@@ -63,6 +64,15 @@ class SalesPage extends Component<Props> {
 
   toggleCheckDesigner = () => {
     this.setState(prevstate => ({ isOpenCheckDesigner: !prevstate.isOpenCheckDesigner }));
+    const { isChecking } = this.state;
+    if (isChecking) {
+      setTimeout(() => {
+        this.setState({ isChecking: false }, () => {
+          this.onSubmitCheckDesigner();
+          this.setState({ isChecking: true });
+        });
+      }, 2000);
+    }
   };
 
   toggleDesignerAvailable = () => {
@@ -101,6 +111,7 @@ class SalesPage extends Component<Props> {
 
   render() {
     const {
+      isChecking,
       params,
       isOpenCheckDesigner,
       isDesignerAvailable,
@@ -140,6 +151,7 @@ class SalesPage extends Component<Props> {
             </div>
           </div>
           <ModalCheckDesigner
+            isChecking={isChecking}
             onSubmit={this.onSubmitCheckDesigner}
             isOpen={isOpenCheckDesigner}
             toggle={this.toggleCheckDesigner}
