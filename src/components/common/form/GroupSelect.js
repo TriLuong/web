@@ -34,11 +34,11 @@ class GroupSelectField extends PureComponent {
   };
 
   render() {
-    const { value, label, options, name, isDisabled } = this.props;
+    const { className, value, label, options, isDisabled } = this.props;
     const { isSelect, menuIsOpen } = this.state;
     return (
       <div
-        className={`group-select ${isSelect ? 'group-select hasValue' : ''}`}
+        className={`group-select ${className} ${isSelect ? 'group-select hasValue' : ''}`}
         onClick={this.onClickGroup}
       >
         <label>{label}</label>

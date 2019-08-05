@@ -9,8 +9,14 @@
     color: #282828;
     margin-bottom: 0;
   }
+  .form-control {
+    & ~ label {
+      white-space: nowrap;
+    }
+  }
   &__search {
     position: relative;
+    min-width: 200px;
     .form-control {
       border-radius: 20px;
       padding-left: 30px;

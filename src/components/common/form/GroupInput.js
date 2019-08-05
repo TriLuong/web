@@ -25,11 +25,11 @@ class InputGroup extends PureComponent {
   };
 
   render() {
-    const { label, name, id, ...rest } = this.props;
+    const { type, className, label, name, id, ...rest } = this.props;
     const { isSelect } = this.state;
     return (
-      <div className={`form-custom ${isSelect ? 'form-custom hasValue' : ''}`}>
-        <input {...rest} name={name} id={id || name} onChange={this.handleChange} className="form-control" />
+      <div className={`form-custom ${className} ${isSelect ? 'form-custom hasValue' : ''}`}>
+        <input type={type || 'text'} {...rest} name={name} id={id || name} onChange={this.handleChange} className="form-control" />
         <label htmlFor={id || name}>{label}</label>
       </div>
     );

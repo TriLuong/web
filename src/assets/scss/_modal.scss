@@ -9,36 +9,6 @@
     font-size: 24px;
     font-weight: bold;
   }
-  .form-group {
-    position: relative;
-    .form-control {
-      padding: 25px 15px 10px;
-      height: auto;
-      &::placeholder {
-        color: #a5a7aa;
-      }
-      &:focus {
-        border-color: #11a6b0;
-        border-left-width: 4px;
-        outline: 0;
-        box-shadow: none;
-        & + label {
-          top: 20px;
-          left: 23px;
-          font-size: 12px;
-          color: #a5a7aa;
-        }
-      }
-    }
-    label {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transition: all 0.3s;
-      transform: translateY(-50%);
-      color: #a5a7aa;
-    }
-  }
   .wrap-select {
     margin-right: 0;
   }
@@ -48,5 +18,44 @@
   }
   .modal-body {
     padding: 30px 40px 10px;
+  }
+}
+.modal-assign {
+  max-width: 915px;
+  .close {
+    opacity: 1;
+    outline: none;
+  }
+  .box-control {
+    padding: 30px 0 0 0;
+  }
+  .modal-header {
+    padding: 0 0 30px;
+  }
+  .modal-content {
+    padding: 30px 40px;
+    background: #f9f9f9;
+  }
+  .modal-body {
+    padding: 0;
+  }
+  &__inner {
+    height: 340px;
+    width: 835px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    padding: 20px;
+    .form-row {
+      border-bottom: 1px solid #a5a7aa;
+      .form-group {
+        margin-top: 1rem;
+        .form-custom .form-control[type='radio'] + label:before {
+          border-color: #c7c7cc;
+        }
+      }
+    }
   }
 }
