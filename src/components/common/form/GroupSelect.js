@@ -1,7 +1,20 @@
 import React, { PureComponent } from 'react';
 import Select from 'react-select';
 
-class GroupSelectField extends PureComponent {
+type Props = {
+  onChange: () => {},
+  value: any,
+  name: String,
+  isDisabled: Boolean,
+  className: String,
+  label: String,
+  options: [],
+  id: String,
+};
+
+/* eslint jsx-a11y/click-events-have-key-events: 0 jsx-a11y/no-static-element-interactions: 0 */
+/* eslint jsx-a11y/label-has-for: 0 */
+class GroupSelectField extends PureComponent<Props> {
   constructor(props) {
     super(props);
     this.state = { isSelect: (props.value && props.value.value) || false, menuIsOpen: false };
@@ -13,7 +26,7 @@ class GroupSelectField extends PureComponent {
       isSelect: event.value || false,
       menuIsOpen: false,
     });
-    onChange(name, event.value);
+    onChange({ target: { name, value: event.value } });
   };
 
   onClickGroup = () => {
@@ -27,6 +40,7 @@ class GroupSelectField extends PureComponent {
     } else {
       this.flagFirst = false;
     }
+    return null;
   };
 
   onMenuClose = () => {
@@ -34,15 +48,16 @@ class GroupSelectField extends PureComponent {
   };
 
   render() {
-    const { className, value, label, options, isDisabled } = this.props;
+    const { className, value, label, options, isDisabled, name, id } = this.props;
     const { isSelect, menuIsOpen } = this.state;
     return (
       <div
         className={`group-select ${className} ${isSelect ? 'group-select hasValue' : ''}`}
         onClick={this.onClickGroup}
       >
-        <label>{label}</label>
+        <label htmlFor={id || name}>{label}</label>
         <Select
+          name={name}
           value={value}
           onChange={this.handleChange}
           options={options}
