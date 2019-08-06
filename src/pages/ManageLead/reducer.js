@@ -10,7 +10,7 @@ import {
 
 const initialState = fromJS({
   isFetching: false,
-  dataLeads: {},
+  dataLeads: [],
   error: null,
 });
 
@@ -18,10 +18,7 @@ export default function manageLeadReducer(state = initialState, action) {
   switch (action.type) {
     case GET_LEADS_REQUEST:
     case DELETE_LEAD_REQUEST:
-      return state
-        .set('isFetching', true)
-        .set('error', false)
-        .set('dataLeads', {});
+      return state.set('isFetching', true).set('error', false);
     case GET_LEADS_SUCCESS:
     case DELETE_LEAD_SUCCESS:
       return state

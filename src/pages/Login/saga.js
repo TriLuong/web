@@ -19,7 +19,11 @@ function* signInSaga(action) {
     const { token, user } = res.data;
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     yield put(loginSuccess({ token, user }));
-    yield put(push('/'));
+    if (user.role === 'admin') {
+      yield put(push('/'));
+    } else {
+      yield put(push('/leads'));
+    }
   } catch (err) {
     alert(err.response.data.message);
     yield put(loginFail(err.response.data.message));

@@ -13,7 +13,7 @@ import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
 import { getLeads, deleteLead } from './actions';
-import { getLeadsState } from './selectors';
+import { getLeadsState, getFetchingState } from './selectors';
 import DatatablePage from './DatatablePage';
 import { LEADS_FILTER, RADIO_QUALIFIELD, RADIO_BROADCAST } from './constants';
 import './styles.scss';
@@ -44,7 +44,7 @@ class SalesPage extends Component<Props> {
   }
 
   handleOnChangeRadioButton = ({ value }) => {
-    console.log('handleOnChangeRadioButton', value);
+    // console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
     const newParams = { ...params, filterLead: value };
     const { doGetLeads } = this.props;
@@ -177,6 +177,7 @@ class SalesPage extends Component<Props> {
 }
 
 const mapStateToProps = store => ({
+  isFetching: getFetchingState(store),
   dataLeads: getLeadsState(store),
 });
 

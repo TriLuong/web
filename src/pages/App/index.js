@@ -13,11 +13,9 @@ import { compose } from 'redux';
 import { LayoutBlank } from 'layouts';
 import PrivateRoute from 'components/privateRoute';
 import Login from 'pages/Login';
-import ManageUser from 'pages/ManageUser';
-import ManageLead from 'pages/ManageLead';
-import LeadDetail from 'pages/LeadDetail';
 import injectReducer from 'utils/injectReducer';
 import Loader from 'pages/Loader';
+import PermissionRoute from './PermissionRoute';
 import reducer from './reducer';
 
 const App = () => (
@@ -26,13 +24,9 @@ const App = () => (
       <meta name="description" content="DesignCafe" />
     </Helmet>
     <Switch>
-      <PrivateRoute exact path="/" component={ManageUser} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/password-verify/:token" component={Login} />
-      <PrivateRoute path="/users" component={ManageUser} />
-      <PrivateRoute path="/leads" component={ManageLead} />
-      <PrivateRoute path="/lead-detail" component={LeadDetail} />
-      {/* <Route path="" component={NotFoundPage} /> */}
+      <PrivateRoute exact path="" component={PermissionRoute} />
     </Switch>
     <Loader />
   </LayoutBlank>
