@@ -9,6 +9,7 @@ import GroupSelectField from 'components/common/form/GroupSelect';
 import IconHand from 'components/common/icon/IconHand';
 import SelectDate from 'components/LeadDetail/time/SelectDate';
 import SelectTime from 'components/LeadDetail/time/SelectTime';
+import { CONTRIES_NAME, STATES_NAME, CITIES_NAME, getStatesOfCountry, getCitiesOfState } from './constant';
 import 'pages/ManageLead/styles.scss';
 
 /* eslint-disable */
@@ -84,6 +85,27 @@ class SalesDetail extends Component {
     console.log('onSubmit', values);
   };
 
+  onChangeCountry = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+    getStatesOfCountry(value);
+    // console.log(event);
+  };
+
+  onChangeCountry = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+    getStatesOfCountry(value);
+    // console.log(event);
+  };
+
+  onChangeState = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+    getCitiesOfState(value);
+    // console.log(event);
+  };
+
   render() {
     // const { contactInfo } = this.state;
     // console.log(contactInfo);
@@ -146,8 +168,8 @@ class SalesDetail extends Component {
                     <GroupSelectField
                       label="City"
                       name="city"
-                      value={values.city}
-                      options={optionsExperience}
+                      value={{ value: values.city, label: values.city }}
+                      options={CITIES_NAME}
                       onChange={handleChange}
                     />
                   </div>
@@ -157,9 +179,9 @@ class SalesDetail extends Component {
                     <GroupSelectField
                       label="State"
                       name="state"
-                      value={values.state}
-                      options={optionsExperience}
-                      onChange={handleChange}
+                      value={{ value: values.state, label: values.state }}
+                      options={STATES_NAME}
+                      onChange={event => this.onChangeState(event, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-4">
@@ -175,9 +197,9 @@ class SalesDetail extends Component {
                     <GroupSelectField
                       label="Country"
                       name="country"
-                      value={values.country}
-                      options={optionsExperience}
-                      onChange={handleChange}
+                      value={{ values: values.country, label: values.country }}
+                      options={CONTRIES_NAME}
+                      onChange={event => this.onChangeCountry(event, setFieldValue)}
                     />
                   </div>
                 </div>
