@@ -9,7 +9,15 @@ import GroupSelectField from 'components/common/form/GroupSelect';
 import IconHand from 'components/common/icon/IconHand';
 import SelectDate from 'components/LeadDetail/time/SelectDate';
 import SelectTime from 'components/LeadDetail/time/SelectTime';
-import { CONTRIES_NAME, STATES_NAME, CITIES_NAME, getStatesOfCountry, getCitiesOfState } from './constant';
+import RadioButton from 'components/common/form/RadioButton';
+import {
+  CONTRIES_NAME,
+  STATES_NAME,
+  CITIES_NAME,
+  getStatesOfCountry,
+  getCitiesOfState,
+  RADIO_DESIGNER,
+} from './constant';
 import 'pages/ManageLead/styles.scss';
 
 /* eslint-disable */
@@ -106,9 +114,13 @@ class SalesDetail extends Component {
     // console.log(event);
   };
 
+  onChangeDesigner = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+    // console.info('onChangeDesigner', event.target);
+  };
+
   render() {
-    // const { contactInfo } = this.state;
-    // console.log(contactInfo);
     return (
       <div className="document">
         <Header />
@@ -358,11 +370,13 @@ class SalesDetail extends Component {
                 <h2 className="page-title">Broadcast Options</h2>
                 <div className="form-title">Select Designer</div>
                 <div className="form-row form-row-detail">
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
+                  <div className="form-group col-md-12">
+                    <RadioButton
                       label="All Designers in 1MG Experience Center"
-                      name="Designers"
+                      options={RADIO_DESIGNER}
+                      value={values.designers}
+                      onChange={() => this.onChangeDesigner(event, setFieldValue)}
+                      selectedOption={values.designers}
                     />
                   </div>
                 </div>

@@ -38,4 +38,8 @@ export let STATES_NAME;
 
 export let CITIES_NAME;
 
+export const RADIO_DESIGNER = [
+  { name: 'designers', label: 'All Designers in 1MG Experience Center', value: 'all' },
+];
+
 export default {};

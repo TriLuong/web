@@ -5,6 +5,7 @@ type Props = {
   onChange: () => {},
   onReset: () => {},
   className: String,
+  classNameRadio: String,
   options: [],
   id: String,
   selectedOption: String,
@@ -18,11 +19,11 @@ class RadioButton extends PureComponent<Props> {
   };
 
   render() {
-    const { options, selectedOption, className, ...rest } = this.props;
+    const { options, selectedOption, className, classNameRadio, ...rest } = this.props;
     return (
       <div className={`${className} form-inline`}>
         {options.map((option, index) => (
-          <div className="form-group ml-5" key={index}>
+          <div className={`${classNameRadio} form-group`} key={index}>
             <InputGroup
               {...rest}
               type="radio"

@@ -128,6 +128,7 @@ class SalesPage extends Component<Props> {
             <h1 className="top-control__header">Manage Leads</h1>
             <RadioButton
               className="ml-auto"
+              classNameRadio="ml-5"
               id="radioButton"
               options={params.typeLead === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
