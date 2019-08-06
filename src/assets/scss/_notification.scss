@@ -1,5 +1,6 @@
 .notification-container {
   width: 500px !important;
+  padding: 0px !important;
 }
 .notification {
   border-radius: 4px !important;
@@ -14,11 +15,12 @@
       font-family: Helvetica, sans-serif;
       white-space: nowrap;
       margin-bottom: 0;
+      padding: 15px;
     }
     &:before {
       content: '\F058';
       color: #11a6b0;
-      font-size: 22px;
+      font-size: 44px;
     }
     &:after {
       content: '';

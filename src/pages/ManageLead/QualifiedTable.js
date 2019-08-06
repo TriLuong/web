@@ -11,7 +11,7 @@ const QualifiledTable = ({ data, onSchedule, onClick }) => {
       <td>{`${lead.firstName} ${lead.lastName}`}</td>
       <td>{lead.address}</td>
       <td>
-        {lead.phone}
+        {lead.mobileNumber}
         <br />
         {lead.email}
       </td>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NotificationManager } from 'react-notifications';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import 'react-dates/initialize';
@@ -12,6 +13,7 @@ import IconHand from 'components/common/icon/IconHand';
 import SelectDate from 'components/LeadDetail/time/SelectDate';
 import SelectTime from 'components/LeadDetail/time/SelectTime';
 import RadioButton from 'components/common/form/RadioButton';
+import Notification from 'components/common/notification';
 import {
   CONTRIES_NAME,
   STATES_NAME,
@@ -41,6 +43,7 @@ class SalesDetail extends Component {
       },
       burget: [],
       services: [],
+      isOpen: false,
     };
   }
 
@@ -61,7 +64,7 @@ class SalesDetail extends Component {
     const newTime = { ...time, ...timeValue, type: newType };
     this.setState({ time: newTime });
     setFieldValue('time', newTime);
-    console.log(newTime);
+    // console.log(newTime);
   };
 
   updateStateCheckbox = (event, field, setFieldValue) => {
@@ -91,10 +94,6 @@ class SalesDetail extends Component {
     this.setState({ services: [...newState] });
   };
 
-  onSubmit = values => {
-    console.log('onSubmit', values);
-  };
-
   onChangeCountry = (event, setFieldValue) => {
     const { name, value } = event.target;
     setFieldValue(name, value);
@@ -122,7 +121,30 @@ class SalesDetail extends Component {
     // console.info('onChangeDesigner', event.target);
   };
 
+  toggle = () => {
+    this.setState(
+      prevState => (
+        { isOpen: !prevState.isOpen }),
+        () => {
+          if (this.state.isOpen) {
+            NotificationManager.success(
+              '',
+              'Lead successfully broadcasted.',
+              999999999,
+              this.toggle
+            );
+          }
+        }
+      )
+  };
+
+  onSubmit = values => {
+    this.toggle();
+    console.log('onSubmit', values);
+  };
+
   render() {
+    const { isOpen } = this.state;
     return (
       <div className="document">
         <Header />
@@ -144,7 +166,6 @@ class SalesDetail extends Component {
               state: Yup.string().required('Required'),
               city: Yup.string().required('Required'),
               pinCode: Yup.number().required('Required'),
-
               budget: Yup.string().required('Required'),
               services: Yup.string().required('Required'),
               branch: Yup.string().required('Required'),
@@ -510,6 +531,7 @@ class SalesDetail extends Component {
             )}
           </Formik>
         </div>
+        <Notification isOpen={isOpen} />
       </div>
     );
   }
