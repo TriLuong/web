@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import 'react-dates/initialize';
+import moment from 'moment';
 import Header from 'components/common/header';
 import Footer from 'components/LeadDetail/footer';
 import BreadCrumb from 'components/LeadDetail/breadcrumb';
@@ -31,7 +33,7 @@ class SalesDetail extends Component {
   constructor() {
     super();
     this.state = {
-      date: new Date(),
+      date: moment()._d,
       time: {
         hour: 10,
         minute: 0,
@@ -127,56 +129,121 @@ class SalesDetail extends Component {
         <BreadCrumb />
         <div className="container">
           <h2 className="page-title">Client Requirements</h2>
-          <Formik onSubmit={this.onSubmit}>
-            {({ handleSubmit, values, handleChange, setFieldValue }) => (
+          <Formik
+            initialValues={this.state}
+            onSubmit={this.onSubmit}
+            validationSchema={Yup.object().shape({
+              firstName: Yup.string().required('Required'),
+              lastName: Yup.string().required('Required'),
+              email: Yup.string()
+                .email('Invalid email address')
+                .required('Required'),
+              mobileNumber: Yup.number().required('Required'),
+              address: Yup.string().required('Required'),
+              country: Yup.string().required('Required'),
+              state: Yup.string().required('Required'),
+              city: Yup.string().required('Required'),
+              pinCode: Yup.number().required('Required'),
+
+              budget: Yup.string().required('Required'),
+              services: Yup.string().required('Required'),
+              branch: Yup.string().required('Required'),
+              date: Yup.string().required('Required'),
+              time: Yup.string().required('Required'),
+              designers: Yup.string().required('Required'),
+            })}
+          >
+            {({ handleSubmit, values, handleChange, setFieldValue, isValid, errors, touched }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-title">Contact Info</div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      label="First Name"
-                      name="firstName"
-                      value={values.firstName}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.firstName && touched.firstName ? (
+                        <div className="invalid-feedback d-block">{errors.firstName}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        label="First Name"
+                        name="firstName"
+                        value={values.firstName}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      label="Last Name"
-                      name="lastName"
-                      value={values.lastName}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.lastName && touched.lastName ? (
+                        <div className="invalid-feedback d-block">{errors.lastName}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        label="Last Name"
+                        name="lastName"
+                        value={values.lastName}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      label="Email"
-                      name="email"
-                      type="email"
-                      value={values.email}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.email && touched.email ? (
+                        <div className="invalid-feedback d-block">{errors.email}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        label="Email"
+                        name="email"
+                        type="email"
+                        value={values.email}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      type="number"
-                      label="Mobile Number"
-                      name="mobileNumber"
-                      value={values.mobileNumber}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.lastName && touched.lastName ? (
+                        <div className="invalid-feedback d-block">{errors.lastName}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        type="number"
+                        label="Mobile Number"
+                        name="mobileNumber"
+                        value={values.mobileNumber}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      label="Address"
-                      name="address"
-                      value={values.address}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.address && touched.address ? (
+                        <div className="invalid-feedback d-block">{errors.address}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        label="Address"
+                        name="address"
+                        value={values.address}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="form-group col-md-4">
+                    <div>
+                      {errors.city && touched.city ? (
+                        <div className="invalid-feedback d-block">{errors.city}</div>
+                      ) : (
+                        <br />
+                      )}
+                    </div>
                     <GroupSelectField
                       label="City"
                       name="city"
@@ -188,6 +255,13 @@ class SalesDetail extends Component {
                 </div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
+                    <div>
+                      {errors.state && touched.state ? (
+                        <div className="invalid-feedback d-block">{errors.state}</div>
+                      ) : (
+                        <br />
+                      )}
+                    </div>
                     <GroupSelectField
                       label="State"
                       name="state"
@@ -197,15 +271,30 @@ class SalesDetail extends Component {
                     />
                   </div>
                   <div className="form-group col-md-4">
-                    <InputGroup
-                      type="number"
-                      label="Pin Code"
-                      name="pinCode"
-                      value={values.pinCode}
-                      onChange={handleChange}
-                    />
+                    <div>
+                      {errors.pinCode && touched.pinCode ? (
+                        <div className="invalid-feedback d-block">{errors.pinCode}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        type="number"
+                        label="Pin Code"
+                        name="pinCode"
+                        value={values.pinCode}
+                        onChange={handleChange}
+                      />
+                    </div>
                   </div>
                   <div className="form-group col-md-4">
+                    <div>
+                      {errors.country && touched.country ? (
+                        <div className="invalid-feedback d-block">{errors.country}</div>
+                      ) : (
+                        <br />
+                      )}
+                    </div>
+
                     <GroupSelectField
                       label="Country"
                       name="country"
@@ -215,7 +304,15 @@ class SalesDetail extends Component {
                     />
                   </div>
                 </div>
-                <div className="form-title">Budget</div>
+                <div className="form-title">
+                  Budget{' '}
+                  {errors.budget && touched.budget ? (
+                    <div className="invalid-feedback d-inline">{errors.budget}</div>
+                  ) : (
+                    ''
+                  )}
+                </div>
+
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-3">
                     <InputGroup
@@ -258,7 +355,14 @@ class SalesDetail extends Component {
                     />
                   </div>
                 </div>
-                <div className="form-title">Services Required</div>
+                <div className="form-title">
+                  Services Required{' '}
+                  {errors.services && touched.services ? (
+                    <div className="invalid-feedback d-inline">{errors.services}</div>
+                  ) : (
+                    ''
+                  )}
+                </div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-3">
                     <InputGroup
@@ -325,20 +429,27 @@ class SalesDetail extends Component {
                   <div className="form-group col-md-7">
                     <InputGroup
                       label="Special instructions (optional)"
-                      name="SpecialInstructions"
-                      value={values.specialIntructions}
+                      name="servicesSpecial"
+                      value={values.servicesSpecial}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-                <div className="form-title">Experience Center</div>
+                <div className="form-title">
+                  Experience Center{' '}
+                  {errors.branch && touched.branch ? (
+                    <div className="invalid-feedback d-inline">{errors.branch}</div>
+                  ) : (
+                    ''
+                  )}
+                </div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
                     <GroupSelectField
                       label="Select Branch"
                       name="branch"
                       options={optionsExperience}
-                      value={values.branch}
+                      value={{ value: values.branch, label: values.branch }}
                       onChange={handleChange}
                     />
                   </div>
@@ -352,7 +463,14 @@ class SalesDetail extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="form-title">Meeting Availability</div>
+                <div className="form-title">
+                  Meeting Availability
+                  {(errors.date || errors.time) && (touched.date || touched.time) ? (
+                    <div className="invalid-feedback d-inline">{errors.date || errors.time}</div>
+                  ) : (
+                    ''
+                  )}
+                </div>
                 <div className="form-row form-row-detail meetingAvailability">
                   <div className="form-group col-md-6">
                     <SelectDate
@@ -368,7 +486,14 @@ class SalesDetail extends Component {
                   </div>
                 </div>
                 <h2 className="page-title">Broadcast Options</h2>
-                <div className="form-title">Select Designer</div>
+                <div className="form-title">
+                  Select Designer{' '}
+                  {errors.designers && touched.designers ? (
+                    <div className="invalid-feedback d-inline">{errors.designers}</div>
+                  ) : (
+                    ''
+                  )}
+                </div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-12">
                     <RadioButton
@@ -380,7 +505,7 @@ class SalesDetail extends Component {
                     />
                   </div>
                 </div>
-                <Footer />
+                <Footer isValid={isValid} />
               </form>
             )}
           </Formik>
