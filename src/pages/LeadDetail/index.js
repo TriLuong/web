@@ -37,9 +37,9 @@ class SalesDetail extends Component {
     this.state = {
       date: moment()._d,
       time: {
-        hour: 10,
+        hour: 1,
         minute: 0,
-        type: 'AM',
+        type: 'PM',
       },
       services: [],
       isOpen: false,
@@ -60,7 +60,7 @@ class SalesDetail extends Component {
     } else {
       newType = 'PM';
     }
-    const newTime = { ...time, ...timeValue, type: newType };
+    const newTime = { ...time, ...timeValue };
     this.setState({ time: newTime });
     setFieldValue('time', newTime);
     // console.log(newTime);
@@ -95,13 +95,8 @@ class SalesDetail extends Component {
   onChangeCountry = (event, setFieldValue) => {
     const { name, value } = event.target;
     setFieldValue(name, value);
-    getStatesOfCountry(value);
-    // console.log(event);
-  };
-
-  onChangeCountry = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    setFieldValue(name, value);
+    setFieldValue('city', '');
+    setFieldValue('state', '');
     getStatesOfCountry(value);
     // console.log(event);
   };
@@ -136,7 +131,7 @@ class SalesDetail extends Component {
   };
 
   render() {
-    const { isOpen } = this.state;
+    const { isOpen, time } = this.state;
     return (
       <div className="document">
         <Header />
@@ -493,6 +488,7 @@ class SalesDetail extends Component {
                   </div>
                   <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
                     <SelectTime
+                      initialTime={time}
                       value={values.time}
                       onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                     />

@@ -4,13 +4,39 @@ import './style.scss';
 
 type Props = {
   onTimeChange: () => {},
+  initialTime: {
+    hour: {},
+    minute: {},
+    type: {},
+  },
 };
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-noninteractive-element-interactions: 0 */
 class SelectTime extends PureComponent<Props> {
   componentDidMount() {
-    document.getElementsByName('hour')[0].classList.add('active');
-    document.getElementsByName('minute')[0].classList.add('active');
+    const { initialTime } = this.props;
+    const initHour = `${initialTime.hour} ${initialTime.type}`;
+    const initMinute = `:${
+      initialTime.minute === 0 ? `${initialTime.minute}0` : initialTime.minute
+    }`;
+    const hourElemt = document.getElementsByName('hour');
+    const minuteElemt = document.getElementsByName('minute');
+    let hourIndex;
+    let minuteIndex;
+
+    for (let i = 0; i < hourElemt.length; i++) {
+      if (hourElemt[i].innerText === initHour) {
+        hourIndex = i;
+      }
+    }
+
+    for (let i = 0; i < minuteElemt.length; i++) {
+      if (minuteElemt[i].innerText === initMinute) {
+        minuteIndex = i;
+      }
+    }
+    hourElemt[hourIndex].classList.add('active');
+    minuteElemt[minuteIndex].classList.add('active');
   }
 
   activeTime = (event, name) => {
