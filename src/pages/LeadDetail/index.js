@@ -41,7 +41,6 @@ class SalesDetail extends Component {
         minute: 0,
         type: 'AM',
       },
-      burget: [],
       services: [],
       isOpen: false,
     };
@@ -83,9 +82,8 @@ class SalesDetail extends Component {
   };
 
   onChangeCheckboxBudget = (event, setFieldValue) => {
-    const { burget } = this.state;
-    const newState = this.updateStateCheckbox(event, burget, setFieldValue);
-    this.setState({ burget: [...newState] });
+    const { name, value } = event.target;
+    setFieldValue(name, value);
   };
 
   onChangeCheckboxServices = (event, setFieldValue) => {
@@ -334,8 +332,8 @@ class SalesDetail extends Component {
                       label="Low"
                       name="budget"
                       type="checkbox"
-                      id="Low"
-                      value={values.budget}
+                      value="low"
+                      checked={values.budget === 'low'}
                       onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
                     />
                   </div>
@@ -344,8 +342,8 @@ class SalesDetail extends Component {
                       label="Medium"
                       name="budget"
                       type="checkbox"
-                      id="Medium"
-                      value={values.budget}
+                      value="medium"
+                      checked={values.budget === 'medium'}
                       onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
                     />
                   </div>
@@ -354,8 +352,8 @@ class SalesDetail extends Component {
                       label="High"
                       name="budget"
                       type="checkbox"
-                      id="High"
-                      value={values.budget}
+                      value="high"
+                      checked={values.budget === 'high'}
                       onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
                     />
                   </div>
