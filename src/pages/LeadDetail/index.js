@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import 'react-dates/initialize';
@@ -123,19 +123,13 @@ class SalesDetail extends Component {
 
   toggle = () => {
     this.setState(
-      prevState => (
-        { isOpen: !prevState.isOpen }),
-        () => {
-          if (this.state.isOpen) {
-            NotificationManager.success(
-              '',
-              'Lead successfully broadcasted.',
-              999999999,
-              this.toggle
-            );
-          }
+      prevState => ({ isOpen: !prevState.isOpen }),
+      () => {
+        if (this.state.isOpen) {
+          NotificationManager.success('', 'Lead successfully broadcasted.', 999999999, this.toggle);
         }
-      )
+      }
+    );
   };
 
   onSubmit = values => {
@@ -531,7 +525,9 @@ class SalesDetail extends Component {
             )}
           </Formik>
         </div>
-        <Notification isOpen={isOpen} />
+        <Notification isOpen={isOpen}>
+          <NotificationContainer />
+        </Notification>
       </div>
     );
   }

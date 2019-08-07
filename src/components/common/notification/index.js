@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { NotificationContainer } from 'react-notifications';
 import './style.scss';
 
 type Props = {
   isOpen: Boolean,
+  children: any,
 };
 class Notification extends PureComponent<Props> {
   componentWillUpdate(nextProps) {
@@ -16,11 +16,11 @@ class Notification extends PureComponent<Props> {
   }
 
   render() {
-    const { isOpen } = this.props;
+    const { isOpen, children, ...rest } = this.props;
     return (
       <>
-        <div isOpen={isOpen} className="container-fluid notify-container" />
-        <NotificationContainer />
+        <div isOpen={isOpen} {...rest} className="container-fluid notify-container" />
+        {children}
       </>
     );
   }

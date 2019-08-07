@@ -6,8 +6,9 @@ import Header from 'components/common/header';
 import IconSearch from 'components/common/icon/IconSearch';
 import SelectField from 'components/common/form/Select';
 import RadioButton from 'components/common/form/RadioButton';
-import ModalCheckDesigner from 'components/modal/ManageLead/ModalCheckDesigner';
+import Checking from 'components/common/checking';
 import ModalDesignerAvailable from 'components/modal/ManageLead/ModalDesignerAvailable';
+import Notification from 'components/common/notification';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
@@ -66,11 +67,10 @@ class SalesPage extends Component<Props> {
     this.setState(prevstate => ({ isOpenCheckDesigner: !prevstate.isOpenCheckDesigner }));
     const { isChecking } = this.state;
     if (isChecking) {
+      this.setState({ isChecking: false });
       setTimeout(() => {
-        this.setState({ isChecking: false }, () => {
-          this.onSubmitCheckDesigner();
-          this.setState({ isChecking: true });
-        });
+        this.onSubmitCheckDesigner();
+        this.setState({ isChecking: true });
       }, 2000);
     }
   };
@@ -111,7 +111,6 @@ class SalesPage extends Component<Props> {
 
   render() {
     const {
-      isChecking,
       params,
       isOpenCheckDesigner,
       isDesignerAvailable,
@@ -151,12 +150,10 @@ class SalesPage extends Component<Props> {
               </div>
             </div>
           </div>
-          <ModalCheckDesigner
-            isChecking={isChecking}
-            onSubmit={this.onSubmitCheckDesigner}
-            isOpen={isOpenCheckDesigner}
-            toggle={this.toggleCheckDesigner}
-          />
+          <Notification isOpen={isOpenCheckDesigner}>
+            <Checking isChecking={isOpenCheckDesigner} />
+          </Notification>
+
           <ModalDesignerAvailable
             title="Designer Available"
             isOpen={isDesignerAvailable}

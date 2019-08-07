@@ -2,7 +2,10 @@ import React from 'react';
 import { IconLoading } from 'components/common/icon';
 import './styles.scss';
 
-class Checking extends React.PureComponent {
+type Props = {
+  isChecking: Boolean,
+};
+class Checking extends React.PureComponent<Props> {
   render() {
     const { isChecking } = this.props;
     if (!isChecking) {
