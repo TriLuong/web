@@ -26,7 +26,7 @@ const permisstionList = [
     role: 'sale',
   },
   {
-    path: '/lead-detail',
+    path: '/lead-detail/:id',
     component: LeadDetail,
     role: 'sale',
   },
@@ -37,15 +37,17 @@ const SectionRoute = ({ component, path, ...rest }) => (
 );
 
 class PermissionRoute extends PureComponent {
+  roleRoutes = role => {
+    if (role === 'admin') {
+      return permisstionList;
+    } else {
+      return permisstionList.filter(route => route.role === role);
+    }
+  };
+
   render() {
     const { user } = this.props;
-    let roleRouteArr = [];
-
-    if (user.role === 'admin') {
-      roleRouteArr = permisstionList;
-    } else {
-      roleRouteArr = permisstionList.filter(route => route.role === user.role);
-    }
+    let roleRouteArr = this.roleRoutes(user.role);
 
     return (
       <Switch>
