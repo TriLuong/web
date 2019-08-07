@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Header from 'components/common/header';
@@ -31,6 +30,7 @@ class SalesPage extends Component<Props> {
       isChecking: true,
       isOpenCheckDesigner: false,
       isDesignerAvailable: false,
+      lead: {},
       params: {
         typeLead: 'qualifiedLeads',
         filterLead: 'all',
@@ -79,21 +79,15 @@ class SalesPage extends Component<Props> {
     this.setState(prevstate => ({ isDesignerAvailable: !prevstate.isDesignerAvailable }));
   };
 
-  onSubmitDesignerAvailable = () => {
-    console.log('onSubmitDesignerAvailable');
-    this.setState({ isSubmitDesignerAvailable: true });
-  };
-
   onSubmitCheckDesigner = () => {
     this.toggleCheckDesigner();
     this.toggleDesignerAvailable();
   };
 
-  onSchedule = status => {
-    if (status === 'scheduled') {
+  onSchedule = lead => {
+    if (lead.status === 'scheduled') {
       this.toggleCheckDesigner();
-    } else {
-      this.setState({ isSubmitDesignerAvailable: true });
+      this.setState({ lead });
     }
   };
 
@@ -111,15 +105,14 @@ class SalesPage extends Component<Props> {
 
   render() {
     const {
+      lead,
       params,
       isOpenCheckDesigner,
       isDesignerAvailable,
-      isSubmitDesignerAvailable,
     } = this.state;
     const { dataLeads } = this.props;
-    return isSubmitDesignerAvailable ? (
-      <Redirect to="/lead-detail" />
-    ) : (
+
+    return (
       <div className="document">
         <Header />
         <div className="container">
@@ -155,6 +148,7 @@ class SalesPage extends Component<Props> {
           </Notification>
 
           <ModalDesignerAvailable
+            user={lead}
             title="Designer Available"
             isOpen={isDesignerAvailable}
             toggle={this.toggleDesignerAvailable}

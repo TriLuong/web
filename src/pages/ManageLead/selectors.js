@@ -12,4 +12,9 @@ export const getLeadsState = createSelector(
   dataLeads => dataLeads.get('dataLeads'),
 );
 
+export const getLeadState = createSelector(
+  manageLeadReducer,
+  lead => lead.get('lead'),
+);
+
 export default {};

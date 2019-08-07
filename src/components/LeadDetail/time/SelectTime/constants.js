@@ -1,2 +1,6 @@
-export const MEETING_HOUR = [[10, 11, 12, 1], [2, 3, 4, 5], [6, 7, 8]];
-export const MEETING_MINUTE = [0, 15, 30, 45];
+export const MEETING_HOUR = [
+  ['10 AM', '11 AM', '12 PM', '1 PM'],
+  ['2 PM', '3 PM', '4 PM', '5 PM'],
+  ['6 PM', '7 PM', '8 PM'],
+];
+export const MEETING_MINUTE = ['00', '15', '30', '45'];

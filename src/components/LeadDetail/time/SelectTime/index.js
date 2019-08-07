@@ -11,32 +11,37 @@ type Props = {
   },
 };
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-interactions: 0 */
+/* eslint jsx-a11y/no-noninteractive-element-interactions: 0 react/prop-types: 0 */
 class SelectTime extends PureComponent<Props> {
+  state = {
+    time: {},
+  };
+
   componentDidMount() {
     const { initialTime } = this.props;
-    const initHour = `${initialTime.hour} ${initialTime.type}`;
-    const initMinute = `:${
-      initialTime.minute === 0 ? `${initialTime.minute}0` : initialTime.minute
-    }`;
-    const hourElemt = document.getElementsByName('hour');
-    const minuteElemt = document.getElementsByName('minute');
-    let hourIndex;
-    let minuteIndex;
+    const timeSplit = initialTime.split(' ');
+    const initType = timeSplit[1];
+    const initHour = timeSplit[0].split(':')[0];
+    const initMinute = timeSplit[0].split(':')[1];
+    const hourElemtArr = document.getElementsByName('hour');
+    const minuteElemtArr = document.getElementsByName('minute');
 
-    for (let i = 0; i < hourElemt.length; i++) {
-      if (hourElemt[i].innerText === initHour) {
-        hourIndex = i;
+    const inintInnerHour = `${initHour} ${initType}`;
+    const initInnerMinute = `:${initMinute}`;
+    for (let i = 0; i < hourElemtArr.length; i++) {
+      if (hourElemtArr[i].innerText === inintInnerHour) {
+        hourElemtArr[i].classList.add('active');
       }
     }
 
-    for (let i = 0; i < minuteElemt.length; i++) {
-      if (minuteElemt[i].innerText === initMinute) {
-        minuteIndex = i;
+    for (let i = 0; i < minuteElemtArr.length; i++) {
+      if (minuteElemtArr[i].innerText === initInnerMinute) {
+        minuteElemtArr[i].classList.add('active');
       }
     }
-    hourElemt[hourIndex].classList.add('active');
-    minuteElemt[minuteIndex].classList.add('active');
+
+    const initTime = { hour: initHour, minute: initMinute, type: initType };
+    this.setState({ time: initTime });
   }
 
   activeTime = (event, name) => {
@@ -47,13 +52,29 @@ class SelectTime extends PureComponent<Props> {
     event.target.classList.add('active');
   };
 
-  onClick = (event, time) => {
+  onClick = (event, timeValue) => {
     const { onTimeChange } = this.props;
+    const { time } = this.state;
     const name = event.target.getAttribute('name');
     this.activeTime(event, name);
-    const value = time;
-    this.setState({ [name]: value });
-    onTimeChange({ [name]: value });
+
+    let hourState = '';
+    let minuteState = '';
+    let typeState = '';
+    let newTime = {};
+    if (name === 'hour') {
+      const hourSplit = timeValue.split(' ');
+      hourState = hourSplit[0];
+      typeState = hourSplit[1];
+      newTime = { ...time, hour: hourState, type: typeState };
+    } else {
+      minuteState = timeValue;
+      newTime = { ...time, minute: minuteState };
+    }
+    this.setState({ time: newTime });
+    const timeString = `${newTime.hour}:${newTime.minute} ${newTime.type}`;
+
+    onTimeChange(timeString);
   };
 
   render() {
@@ -61,7 +82,7 @@ class SelectTime extends PureComponent<Props> {
       <tr>
         {hour.map(h => (
           <td name="hour" onClick={event => this.onClick(event, h)}>
-            {h === 10 || h === 11 ? `${h} AM` : `${h} PM`}
+            {h}
           </td>
         ))}
       </tr>
@@ -69,7 +90,7 @@ class SelectTime extends PureComponent<Props> {
 
     const elemtMinute = MEETING_MINUTE.map(minute => (
       <td name="minute" onClick={event => this.onClick(event, minute)}>
-        {`:${minute === 0 ? `${minute}0` : minute}`}
+        {`:${minute}`}
       </td>
     ));
     return (

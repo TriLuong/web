@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
@@ -23,9 +24,9 @@ const QualifiledTable = ({ data, onSchedule, onClick }) => {
             <button
               type="button"
               className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead.status)}
+              onClick={() => onSchedule(lead)}
             >
-              BROACASH
+              BROADCAST
             </button>
             <MenuPopover
               menuItems={MENU_POPOVER_ITEMS_QUALIFILED}
@@ -34,13 +35,12 @@ const QualifiledTable = ({ data, onSchedule, onClick }) => {
           </div>
         ) : (
           <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead.status)}
-            >
-              SCHEDULE
-            </button>
+            <Link to={`/lead-detail/${lead.id}`} className="w-100">
+              <button type="button" className="btn btn-primary w-100">
+                SCHEDULE
+              </button>
+            </Link>
+
             <button
               type="button"
               className="btn btn-outline-secondary"

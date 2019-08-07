@@ -22,7 +22,7 @@ const BroadcastTable = ({ data, onSchedule, onClick }) => {
             <button
               type="button"
               className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead.status)}
+              onClick={() => onSchedule(lead)}
             >
               EDIT MEETING
             </button>
@@ -36,7 +36,7 @@ const BroadcastTable = ({ data, onSchedule, onClick }) => {
             <button
               type="button"
               className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead.status)}
+              onClick={() => onSchedule(lead)}
             >
               ASSIGN DESIGNER
             </button>

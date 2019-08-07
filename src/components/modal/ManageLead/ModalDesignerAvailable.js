@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import ModalBase from 'components/modal';
 
@@ -24,9 +25,11 @@ class ModalDesignerAvailable extends PureComponent<Props> {
                 </tr>
               </table>
               <div className="d-flex my-4 border-0 justify-content-center">
-                <button type="submit" className="btn btn-primary">
-                  RESCHEDULE NOW
-                </button>
+                <Link to={`/lead-detail/${user.id}`}>
+                  <button type="submit" className="btn btn-primary">
+                    RESCHEDULE NOW
+                  </button>
+                </Link>
                 &nbsp;
                 <button type="button" className="btn btn-secondary" onClick={toggle}>
                   LATER

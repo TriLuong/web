@@ -1,7 +1,14 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { isConnecting, isEndConnecting } from 'pages/Loader/actions';
-import { getLeadsSuccess, getLeadsFailure, deleteLeadSuccess, deleteLeadFailure } from './actions';
-import { GET_LEADS_REQUEST, DELETE_LEAD_REQUEST } from './constants';
+import {
+  getLeadsSuccess,
+  getLeadsFailure,
+  deleteLeadSuccess,
+  deleteLeadFailure,
+  getLeadSuccess,
+  getLeadFailure,
+} from './actions';
+import { GET_LEADS_REQUEST, DELETE_LEAD_REQUEST, GET_LEAD_REQUEST } from './constants';
 import data from './data';
 
 function* getLeadsSaga({ payload }) {
@@ -37,7 +44,26 @@ function* deleteLeadSaga({ payload }) {
   }
 }
 
+/* eslint radix: 0 */
+/* LEAD_DETAIL */
+function* getLeadSaga({ payload }) {
+  yield put(isConnecting());
+  try {
+    const { id } = payload;
+    const idParse = parseInt(id);
+    // console.log('getLeadSaga', id, data.qualifiedLeads);
+    const lead = data.qualifiedLeads.find(item => item.id === idParse);
+    console.log('getLeadSaga', lead);
+    yield put(getLeadSuccess(lead));
+    yield put(isEndConnecting());
+  } catch (error) {
+    yield put(getLeadFailure(error));
+    yield put(isEndConnecting());
+  }
+}
+
 export default function* manageLeadWatcher() {
   yield takeLatest(GET_LEADS_REQUEST, getLeadsSaga);
   yield takeLatest(DELETE_LEAD_REQUEST, deleteLeadSaga);
+  yield takeLatest(GET_LEAD_REQUEST, getLeadSaga);
 }

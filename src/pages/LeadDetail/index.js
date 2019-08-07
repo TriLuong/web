@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -35,83 +37,77 @@ class SalesDetail extends Component {
   constructor() {
     super();
     this.state = {
-      date: moment()._d,
-      time: {
-        hour: 1,
-        minute: 0,
-        type: 'PM',
+      params: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        date: moment().format('DD/MM/YYYY'),
+        time: '10:00 AM',
+        budget: 'high',
+        budgetAmount: 'asdfasdf',
+        services: ['Kitchen', 'DiningRoom', 'Home'],
       },
-      services: [],
+
       isOpen: false,
+      lead: {},
     };
   }
 
+  componentDidMount() {
+  }
+
+  /* This function handleOnChange for common component */
+  onHandleChangeCommon = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { params } = this.state;
+    const newParams = { ...params, [name]: value };
+    this.setState({ params: newParams });
+    setFieldValue(name, value);
+  };
+
   onDateChange = (date, setFieldValue) => {
-    this.setState({ date: date._d });
-    setFieldValue('date', date._d);
-    console.info('onDateChange', date._d);
+    const { params } = this.state;
+    const newParams = { ...params, date: date.format('DD/MM/YYYY') };
+    this.setState({ params: newParams });
+    setFieldValue('date', date.format('DD/MM/YYYY'));
   };
 
   onTimeChange = (timeValue, setFieldValue) => {
-    const { time } = this.state;
-    let newType = '';
-    if (timeValue.hour === 10 || timeValue.hour === 11) {
-      newType = 'AM';
-    } else {
-      newType = 'PM';
-    }
-    const newTime = { ...time, ...timeValue };
-    this.setState({ time: newTime });
-    setFieldValue('time', newTime);
-    // console.log(newTime);
-  };
-
-  updateStateCheckbox = (event, field, setFieldValue) => {
-    const { name, checked, id } = event.target;
-    const value = checked ? id : null;
-    let newState = [];
-    const newIndex = field.findIndex(i => i === id);
-    if (newIndex === -1) {
-      newState = [...field, value];
-    } else {
-      newState = [...field];
-      newState.splice(newIndex, 1);
-    }
-    setFieldValue(name, newState);
-    return newState;
-  };
-
-  onChangeCheckboxBudget = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    setFieldValue(name, value);
+    const { params } = this.state;
+    const newParams = { ...params, time: timeValue };
+    this.setState({ params: newParams });
+    setFieldValue('time', timeValue);
   };
 
   onChangeCheckboxServices = (event, setFieldValue) => {
-    const { services } = this.state;
-    const newState = this.updateStateCheckbox(event, services, setFieldValue);
-    this.setState({ services: [...newState] });
+    const { params } = this.state;
+    const { name, checked, value } = event.target;
+    let newService = [...params.services];
+    if (checked) {
+      newService.push(value);
+    } else {
+      const serviceIndex = newService.findIndex(i => i === value);
+      newService.splice(serviceIndex, 1);
+    }
+
+    const newParams = { ...params, [name]: newService };
+    this.setState({ params: newParams });
+
+    setFieldValue(name, newService);
   };
 
   onChangeCountry = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    setFieldValue(name, value);
+    const { value } = event.target;
+    this.onHandleChangeCommon(event, setFieldValue);
     setFieldValue('city', '');
     setFieldValue('state', '');
     getStatesOfCountry(value);
-    // console.log(event);
   };
 
   onChangeState = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    setFieldValue(name, value);
+    const { value } = event.target;
+    this.onHandleChangeCommon(event, setFieldValue);
     getCitiesOfState(value);
-    // console.log(event);
-  };
-
-  onChangeDesigner = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    setFieldValue(name, value);
-    // console.info('onChangeDesigner', event.target);
   };
 
   toggle = () => {
@@ -127,19 +123,20 @@ class SalesDetail extends Component {
 
   onSubmit = values => {
     this.toggle();
+    console.log('this.state.params', this.state.params);
     console.log('onSubmit', values);
   };
 
   render() {
-    const { isOpen, time } = this.state;
+    const { isOpen, time, lead, params } = this.state;
     return (
       <div className="document">
         <Header />
-        <BreadCrumb />
+        <BreadCrumb lead={lead} />
         <div className="container">
           <h2 className="page-title">Client Requirements</h2>
           <Formik
-            initialValues={this.state}
+            initialValues={params}
             onSubmit={this.onSubmit}
             validationSchema={Yup.object().shape({
               firstName: Yup.string().required('Required'),
@@ -176,7 +173,7 @@ class SalesDetail extends Component {
                         label="First Name"
                         name="firstName"
                         value={values.firstName}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -191,7 +188,7 @@ class SalesDetail extends Component {
                         label="Last Name"
                         name="lastName"
                         value={values.lastName}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -207,7 +204,7 @@ class SalesDetail extends Component {
                         name="email"
                         type="email"
                         value={values.email}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -225,7 +222,7 @@ class SalesDetail extends Component {
                         label="Mobile Number"
                         name="mobileNumber"
                         value={values.mobileNumber}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -240,7 +237,7 @@ class SalesDetail extends Component {
                         label="Address"
                         name="address"
                         value={values.address}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -257,7 +254,7 @@ class SalesDetail extends Component {
                       name="city"
                       value={{ value: values.city, label: values.city }}
                       options={CITIES_NAME}
-                      onChange={handleChange}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -290,7 +287,7 @@ class SalesDetail extends Component {
                         label="Pin Code"
                         name="pinCode"
                         value={values.pinCode}
-                        onChange={handleChange}
+                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -329,7 +326,7 @@ class SalesDetail extends Component {
                       type="checkbox"
                       value="low"
                       checked={values.budget === 'low'}
-                      onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-3">
@@ -339,7 +336,7 @@ class SalesDetail extends Component {
                       type="checkbox"
                       value="medium"
                       checked={values.budget === 'medium'}
-                      onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-3">
@@ -349,7 +346,7 @@ class SalesDetail extends Component {
                       type="checkbox"
                       value="high"
                       checked={values.budget === 'high'}
-                      onChange={event => this.onChangeCheckboxBudget(event, setFieldValue)}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -359,7 +356,7 @@ class SalesDetail extends Component {
                       label="Enter budget amount (if available)"
                       name="budgetAmount"
                       value={values.budgetAmount}
-                      onChange={handleChange}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -377,8 +374,8 @@ class SalesDetail extends Component {
                       label="Home"
                       name="services"
                       type="checkbox"
-                      id="Home"
-                      value={values.services}
+                      value="Home"
+                      checked={values.services.find(se => se === 'Home') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -387,8 +384,8 @@ class SalesDetail extends Component {
                       label="Kitchen"
                       name="services"
                       type="checkbox"
-                      id="Kitchen"
-                      value={values.services}
+                      value="Kitchen"
+                      checked={values.services.find(se => se === 'Kitchen') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -398,7 +395,8 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       id="DiningRoom"
-                      value={values.services}
+                      value="DiningRoom"
+                      checked={values.services.find(se => se === 'DiningRoom') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -408,7 +406,8 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       id="DiningRoom2"
-                      value={values.services}
+                      value="DiningRoom2"
+                      checked={values.services.find(se => se === 'DiningRoom2') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -418,7 +417,8 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       id="LivingRoom"
-                      value={values.services}
+                      value="LivingRoom"
+                      checked={values.services.find(se => se === 'LivingRoom') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -428,7 +428,8 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       id="Bedroom"
-                      value={values.services}
+                      value="Bedroom"
+                      checked={values.services.find(se => se === 'Bedroom') ? true : false}
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -439,7 +440,7 @@ class SalesDetail extends Component {
                       label="Special instructions (optional)"
                       name="servicesSpecial"
                       value={values.servicesSpecial}
-                      onChange={handleChange}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -458,7 +459,7 @@ class SalesDetail extends Component {
                       name="branch"
                       options={optionsExperience}
                       value={{ value: values.branch, label: values.branch }}
-                      onChange={handleChange}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-5">
@@ -488,7 +489,7 @@ class SalesDetail extends Component {
                   </div>
                   <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
                     <SelectTime
-                      initialTime={time}
+                      initialTime={params.time}
                       value={values.time}
                       onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                     />
@@ -509,7 +510,7 @@ class SalesDetail extends Component {
                       label="All Designers in 1MG Experience Center"
                       options={RADIO_DESIGNER}
                       value={values.designers}
-                      onChange={() => this.onChangeDesigner(event, setFieldValue)}
+                      onChange={() => this.onHandleChangeCommon(event, setFieldValue)}
                       selectedOption={values.designers}
                     />
                   </div>
@@ -527,4 +528,10 @@ class SalesDetail extends Component {
   }
 }
 
-export default SalesDetail;
+const mapStateToProps = store => ({
+  // dataLeads: getLeadsState(store),
+});
+
+const withConnect = connect(mapStateToProps);
+
+export default compose(withConnect)(SalesDetail);

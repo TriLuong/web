@@ -15,7 +15,7 @@ class BreadCrumb extends PureComponent {
             <a href="/">Manage Leads</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Jayaprasad Mohanan
+            asdfasdf
           </li>
         </ol>
       </nav>
