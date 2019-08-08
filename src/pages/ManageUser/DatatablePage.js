@@ -17,7 +17,7 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort, onClickItem }) => {
   const elemtUser = data.users.map(user => (
     <tr key={user.id}>
       <td>{`${user.firstName} ${user.lastName}`}</td>
-      <td>{user.Branch !== null ? user.Branch.name : null}</td>
+      <td>{user.branch !== null ? user.branch.name : null}</td>
       <td>{user.email}</td>
       <td>{user.type}</td>
       <td>
