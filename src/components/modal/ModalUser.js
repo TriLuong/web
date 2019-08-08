@@ -2,22 +2,38 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { InputGroup, GroupSelectField } from 'components/common/form/';
-import { USER_TYPE, TYPE_DESIGNER, USER_BRANCH } from 'pages/ManageUser/constants';
+import { USER_TYPE, TYPE_DESIGNER } from 'pages/ManageUser/constants';
 import ModalBase from './ModalBase';
 
+/* eslint react/prop-types: 0 */
 class ModalUser extends React.PureComponent {
+  onHandleChange = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+  };
+
+  onHandleChangeBranch = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { branches } = this.props;
+
+    const branchElemt = branches.find(branch => branch.name === value);
+
+    setFieldValue(name, branchElemt);
+  };
+
   render() {
-    const { onSubmit, user = {}, ...rest } = this.props;
+    const { onSubmit, user = {}, branches, ...rest } = this.props;
     const init = user && user.role === 'sale' ? { ...user, type: '' } : user;
+    const USER_BRANCH = branches.map(branch => ({ value: branch.name, label: branch.name }));
     return (
       <ModalBase className="modal-user" {...rest}>
         <Formik
           initialValues={init}
           onSubmit={onSubmit}
           validationSchema={Yup.object().shape({
-            branch: Yup.string().required('Required'),
-            role: Yup.string().required('Required'),
-            type: Yup.string(),
+            // branch: Yup.string().required('Required'),
+            // role: Yup.string().required('Required'),
+            // type: Yup.string(),
           })}
         >
           {({ isValid, handleChange, setFieldValue, handleSubmit, values }) => (
@@ -57,8 +73,8 @@ class ModalUser extends React.PureComponent {
                     name="branch"
                     label="Select Branch"
                     options={USER_BRANCH}
-                    onChange={setFieldValue}
-                    value={{ value: values.branch, label: values.branch }}
+                    onChange={event => this.onHandleChangeBranch(event, setFieldValue)}
+                    // value={USER_BRANCH[values.branch.id - 1]}
                   />
                 </div>
               </div>
@@ -69,7 +85,7 @@ class ModalUser extends React.PureComponent {
                     options={USER_TYPE}
                     label="User Type"
                     value={{ value: values.role, label: values.role }}
-                    onChange={setFieldValue}
+                    onChange={event => this.onHandleChange(event, setFieldValue)}
                   />
                 </div>
                 <div className="form-group col-md-6">
@@ -79,7 +95,7 @@ class ModalUser extends React.PureComponent {
                       label="Type of Designer"
                       options={TYPE_DESIGNER}
                       value={{ value: values.type, label: values.type }}
-                      onChange={setFieldValue}
+                      onChange={event => this.onHandleChange(event, setFieldValue)}
                     />
                   )}
                 </div>

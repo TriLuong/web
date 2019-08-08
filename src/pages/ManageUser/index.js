@@ -10,9 +10,16 @@ import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getUsers, addUser, updateUser, requestBulkUpload, requestDeleteUser } from './actions';
+import {
+  getUsers,
+  addUser,
+  updateUser,
+  requestBulkUpload,
+  requestDeleteUser,
+  getBranches,
+} from './actions';
 import { USER_FILTER } from './constants';
-import { getFetchingState, getUsersState } from './selectors';
+import { getFetchingState, getUsersState, getBranchesState } from './selectors';
 
 import DatatablePage from './DatatablePage';
 
@@ -23,6 +30,8 @@ type Props = {
   doUpdateUser: () => {},
   doRequestBulkUpload: () => {},
   doRequestDeleteUser: () => {},
+  doGetBranches: () => {},
+  branches: [],
   isFetching: Boolean,
 };
 class DashBoard extends Component<Props> {
@@ -45,6 +54,8 @@ class DashBoard extends Component<Props> {
 
   componentDidMount() {
     this.gotoPage(1);
+    const { doGetBranches } = this.props;
+    doGetBranches();
   }
 
   toggleModal = ({ isEdit } = {}) => {
@@ -70,6 +81,7 @@ class DashBoard extends Component<Props> {
 
   onAddUser = values => {
     const { doAddUser, doUpdateUser } = this.props;
+
     if (this.userEdit) {
       doUpdateUser({
         form: { data: values },
@@ -181,7 +193,7 @@ class DashBoard extends Component<Props> {
   };
 
   render() {
-    const { dataUsers } = this.props;
+    const { dataUsers, branches } = this.props;
     const {
       modalIsOpen,
       modalBulkUpload,
@@ -230,6 +242,7 @@ class DashBoard extends Component<Props> {
                 </button>
                 <ModalUser
                   title={this.userEdit ? 'Edit User' : 'Add New User'}
+                  branches={branches}
                   isOpen={modalIsOpen}
                   toggle={this.toggleModal}
                   onSubmit={this.onAddUser}
@@ -260,10 +273,12 @@ class DashBoard extends Component<Props> {
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   dataUsers: getUsersState(store),
+  branches: getBranchesState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
+  doGetBranches: evt => dispatch(getBranches(evt)),
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
   doRequestBulkUpload: evt => dispatch(requestBulkUpload(evt)),

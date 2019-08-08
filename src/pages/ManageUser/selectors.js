@@ -11,3 +11,8 @@ export const getUsersState = createSelector(
   manageUserReducer,
   dataUsers => dataUsers.get('dataUsers'),
 );
+
+export const getBranchesState = createSelector(
+  manageUserReducer,
+  branches => branches.get('branches'),
+);

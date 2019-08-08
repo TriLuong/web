@@ -1,5 +1,5 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { Users, User } from 'api';
+import { Users, User, Branches } from 'api';
 import { isConnecting, isEndConnecting } from 'pages/Loader/actions';
 import {
   GET_USERS_REQUEST,
@@ -11,6 +11,7 @@ import {
   CHANGE_PASSWORD_REQUEST,
   BULK_UPLOAD_REQUEST,
   DELETE_USER_REQUEST,
+  GET_BRANCHES_REQUEST,
 } from './constants';
 import {
   addUserSuccess,
@@ -25,6 +26,8 @@ import {
   bulkUploadSuccess,
   deleteUserFailure,
   deleteUserSuccess,
+  getBranchesSuccess,
+  getBranchesFailure,
 } from './actions';
 
 /* FOR USERS */
@@ -138,6 +141,22 @@ function* deleteUserSaga({ payload }) {
   }
 }
 
+function* getBranchesSaga({ payload }) {
+  yield put(isConnecting());
+  try {
+    const res = yield call(Branches.getBranches, payload);
+    if (res.data.status === 'failed') {
+      throw new Error(res.message);
+    }
+    yield put(getBranchesSuccess(res.data.branches));
+    yield put(isEndConnecting());
+  } catch (error) {
+    alert(error.response.data.message);
+    yield put(getBranchesFailure(error));
+    yield put(isEndConnecting());
+  }
+}
+
 export default function* getUsersWatcher() {
   yield takeLatest(GET_USERS_REQUEST, getUsersSaga);
   yield takeLatest(ADD_USERS_REQUEST, addUsersSaga);
@@ -146,4 +165,5 @@ export default function* getUsersWatcher() {
   yield takeLatest(CHANGE_PASSWORD_REQUEST, changePasswordSaga);
   yield takeLatest(BULK_UPLOAD_REQUEST, bulkUploadSaga);
   yield takeLatest(DELETE_USER_REQUEST, deleteUserSaga);
+  yield takeLatest(GET_BRANCHES_REQUEST, getBranchesSaga);
 }
