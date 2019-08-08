@@ -12,12 +12,10 @@ const DatatablePage = ({ data, gotoPage, onEdit, onSort, onClickItem }) => {
     return null;
   }
 
-  console.log('DatatablePage', data.users);
-
   const elemtUser = data.users.map(user => (
     <tr key={user.id}>
       <td>{`${user.firstName} ${user.lastName}`}</td>
-      <td>{user.branch !== null ? user.branch.name : null}</td>
+      <td>{(user.branch && user.branch.name) || null}</td>
       <td>{user.email}</td>
       <td>{user.type}</td>
       <td>

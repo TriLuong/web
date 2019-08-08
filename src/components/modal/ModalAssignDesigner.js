@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { InputGroup } from 'components/common/form/';
-import { USER_TYPE, TYPE_DESIGNER, USER_BRANCH } from 'pages/ManageUser/constants';
+import { USER_TYPE, TYPE_DESIGNER } from 'pages/ManageUser/constants';
 import ModalBase from './ModalBase';
 
 class ModalAssignDesigner extends React.PureComponent {

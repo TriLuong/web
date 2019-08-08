@@ -12,19 +12,9 @@ class ModalUser extends React.PureComponent {
     setFieldValue(name, value);
   };
 
-  onHandleChangeBranch = (event, setFieldValue) => {
-    const { name, value } = event.target;
-    const { branches } = this.props;
-
-    const branchElemt = branches.find(branch => branch.name === value);
-
-    setFieldValue(name, branchElemt);
-  };
-
   render() {
     const { onSubmit, user = {}, branches, ...rest } = this.props;
     const init = user && user.role === 'sale' ? { ...user, type: '' } : user;
-    const USER_BRANCH = branches.map(branch => ({ value: branch.name, label: branch.name }));
     return (
       <ModalBase className="modal-user" {...rest}>
         <Formik
@@ -72,9 +62,12 @@ class ModalUser extends React.PureComponent {
                   <GroupSelectField
                     name="branch"
                     label="Select Branch"
-                    options={USER_BRANCH}
-                    onChange={event => this.onHandleChangeBranch(event, setFieldValue)}
-                    // value={USER_BRANCH[values.branch.id - 1]}
+                    options={branches}
+                    getOptionLabel={option => option.name}
+                    getOptionValue={option => `${option.id}`}
+                    onChange={event => this.onHandleChange(event, setFieldValue)}
+                    value={values.branch}
+                    isOptionSelected={option => values.branch === option.id}
                   />
                 </div>
               </div>

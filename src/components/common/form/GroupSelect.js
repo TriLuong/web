@@ -17,16 +17,19 @@ type Props = {
 class GroupSelectField extends PureComponent<Props> {
   constructor(props) {
     super(props);
-    this.state = { isSelect: (props.value && props.value.value) || false, menuIsOpen: false };
+    this.state = {
+      isSelect: (props.value && (props.value.value || props.value.id)) || false,
+      menuIsOpen: false,
+    };
   }
 
   handleChange = event => {
     const { onChange, name } = this.props;
     this.setState({
-      isSelect: event.value || false,
+      isSelect: event.value || event || false,
       menuIsOpen: false,
     });
-    onChange({ target: { name, value: event.value } });
+    onChange({ target: { name, value: event.value || event } });
   };
 
   onClickGroup = () => {
@@ -48,7 +51,7 @@ class GroupSelectField extends PureComponent<Props> {
   };
 
   render() {
-    const { className, value, label, options, isDisabled, name, id } = this.props;
+    const { className, value, label, options, isDisabled, name, id, ...rest } = this.props;
     const { isSelect, menuIsOpen } = this.state;
     return (
       <div
@@ -59,6 +62,7 @@ class GroupSelectField extends PureComponent<Props> {
         <Select
           name={name}
           value={value}
+          {...rest}
           onChange={this.handleChange}
           options={options}
           clearable={false}
