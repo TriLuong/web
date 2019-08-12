@@ -64,6 +64,7 @@ class SalesDetail extends Component<Props> {
       lastName: lead.Full_Name.split(' ')[1],
       params: initParams,
     });
+    // console.log("lead detail", this.props);
   }
 
   /* This function handleOnChange for common component */
@@ -149,11 +150,17 @@ class SalesDetail extends Component<Props> {
       () => {
         const { isOpen } = this.state;
         if (isOpen) {
-          NotificationManager.success('', 'Lead successfully broadcasted.', 999999999, this.toggle);
+          NotificationManager.success('', 'Lead successfully broadcasted.', 999999999, this.onCloseNotification);
         }
       },
     );
   };
+
+  onCloseNotification = () => {
+    this.toggle();
+    const { history } = this.props;
+    history.push('/leads');
+  }
 
   onSubmit = values => {
     this.toggle();
