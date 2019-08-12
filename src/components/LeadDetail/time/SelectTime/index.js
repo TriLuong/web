@@ -19,29 +19,31 @@ class SelectTime extends PureComponent<Props> {
 
   componentDidMount() {
     const { initialTime } = this.props;
-    const timeSplit = initialTime.split(' ');
-    const initType = timeSplit[1];
-    const initHour = timeSplit[0].split(':')[0];
-    const initMinute = timeSplit[0].split(':')[1];
-    const hourElemtArr = document.getElementsByName('hour');
-    const minuteElemtArr = document.getElementsByName('minute');
+    if (initialTime) {
+      const timeSplit = initialTime.split(' ');
+      const initType = timeSplit[1];
+      const initHour = timeSplit[0].split(':')[0];
+      const initMinute = timeSplit[0].split(':')[1];
+      const hourElemtArr = document.getElementsByName('hour');
+      const minuteElemtArr = document.getElementsByName('minute');
 
-    const inintInnerHour = `${initHour} ${initType}`;
-    const initInnerMinute = `:${initMinute}`;
-    for (let i = 0; i < hourElemtArr.length; i++) {
-      if (hourElemtArr[i].innerText === inintInnerHour) {
-        hourElemtArr[i].classList.add('active');
+      const inintInnerHour = `${initHour} ${initType}`;
+      const initInnerMinute = `:${initMinute}`;
+      for (let i = 0; i < hourElemtArr.length; i++) {
+        if (hourElemtArr[i].innerText === inintInnerHour) {
+          hourElemtArr[i].classList.add('active');
+        }
       }
-    }
 
-    for (let i = 0; i < minuteElemtArr.length; i++) {
-      if (minuteElemtArr[i].innerText === initInnerMinute) {
-        minuteElemtArr[i].classList.add('active');
+      for (let i = 0; i < minuteElemtArr.length; i++) {
+        if (minuteElemtArr[i].innerText === initInnerMinute) {
+          minuteElemtArr[i].classList.add('active');
+        }
       }
-    }
 
-    const initTime = { hour: initHour, minute: initMinute, type: initType };
-    this.setState({ time: initTime });
+      const initTime = { hour: initHour, minute: initMinute, type: initType };
+      this.setState({ time: initTime });
+    }
   }
 
   activeTime = (event, name) => {
