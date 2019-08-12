@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react';
 import './styles.scss';
 
-class BreadCrumb extends PureComponent {
+type Props = {
+  lead: {
+    Full_Name: String,
+  },
+};
+class BreadCrumb extends PureComponent<Props> {
   constructor() {
     super();
     this.state = {};
   }
 
   render() {
+    const { lead } = this.props;
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
@@ -15,7 +21,7 @@ class BreadCrumb extends PureComponent {
             <a href="/">Manage Leads</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            asdfasdf
+            {lead.Full_Name}
           </li>
         </ol>
       </nav>

@@ -16,6 +16,8 @@ import SelectDate from 'components/LeadDetail/time/SelectDate';
 import SelectTime from 'components/LeadDetail/time/SelectTime';
 import RadioButton from 'components/common/form/RadioButton';
 import Notification from 'components/common/notification';
+import { getBranchesState, getLeadState } from 'pages/ManageLead/selectors';
+// import { getBranches } from 'pages/ManageLead/actions';
 import {
   CONTRIES_NAME,
   STATES_NAME,
@@ -24,36 +26,44 @@ import {
   getCitiesOfState,
   RADIO_DESIGNER,
 } from './constant';
+
 import 'pages/ManageLead/styles.scss';
 
-/* eslint-disable */
-const optionsExperience = [
-  { value: 'all', label: 'All Users' },
-  { value: 'Name', label: 'Name' },
-  { value: 'Branch', label: 'Branch' },
-];
-
-class SalesDetail extends Component {
+type Props = {
+  lead: {
+    Full_Name: {},
+  },
+  branches: {},
+};
+class SalesDetail extends Component<Props> {
   constructor() {
     super();
     this.state = {
       params: {
-        firstName: '',
-        lastName: '',
-        email: '',
+        Full_Name: '',
+        Email: '',
         date: moment().format('DD/MM/YYYY'),
         time: '10:00 AM',
-        budget: 'high',
-        budgetAmount: 'asdfasdf',
-        services: ['Kitchen', 'DiningRoom', 'Home'],
+        budget: '',
+        budgetAmount: '',
+        services: [],
       },
-
+      firstName: '',
+      lastName: '',
       isOpen: false,
-      lead: {},
     };
   }
 
+  /* eslint  react/prop-types: 0 */
   componentDidMount() {
+    const { lead } = this.props;
+    const { params } = this.state;
+    const initParams = { ...params, ...lead };
+    this.setState({
+      firstName: lead.Full_Name.split(' ')[0],
+      lastName: lead.Full_Name.split(' ')[1],
+      params: initParams,
+    });
   }
 
   /* This function handleOnChange for common component */
@@ -63,6 +73,20 @@ class SalesDetail extends Component {
     const newParams = { ...params, [name]: value };
     this.setState({ params: newParams });
     setFieldValue(name, value);
+  };
+
+  onHandleChangeName = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { firstName, lastName, params } = this.state;
+    const valueFirstName = name === 'firstName' ? value : firstName;
+    const valueLastName = name === 'lastName' ? value : lastName;
+
+    const newFullName = `${valueFirstName} ${valueLastName}`;
+    const newParams = { ...params, Full_Name: newFullName };
+    this.setState({ [name]: value, params: newParams });
+
+    setFieldValue('Full_Name', newFullName);
+    // console.info('onHandleChangeName');
   };
 
   onDateChange = (date, setFieldValue) => {
@@ -82,7 +106,7 @@ class SalesDetail extends Component {
   onChangeCheckboxServices = (event, setFieldValue) => {
     const { params } = this.state;
     const { name, checked, value } = event.target;
-    let newService = [...params.services];
+    const newService = [...params.services];
     if (checked) {
       newService.push(value);
     } else {
@@ -99,8 +123,8 @@ class SalesDetail extends Component {
   onChangeCountry = (event, setFieldValue) => {
     const { value } = event.target;
     this.onHandleChangeCommon(event, setFieldValue);
-    setFieldValue('city', '');
-    setFieldValue('state', '');
+    setFieldValue('City', '');
+    setFieldValue('State', '');
     getStatesOfCountry(value);
   };
 
@@ -110,25 +134,37 @@ class SalesDetail extends Component {
     getCitiesOfState(value);
   };
 
+  onHandleChangeRadioButton = (value, setFieldValue) => {
+    // console.log('onHandleChangeRadioButton', value);
+    const { params } = this.state;
+    const newParams = { ...params, designers: value.value };
+    // console.log('newParams', newParams);
+    this.setState({ params: newParams });
+    setFieldValue('designers', value.value);
+  };
+
   toggle = () => {
     this.setState(
       prevState => ({ isOpen: !prevState.isOpen }),
       () => {
-        if (this.state.isOpen) {
+        const { isOpen } = this.state;
+        if (isOpen) {
           NotificationManager.success('', 'Lead successfully broadcasted.', 999999999, this.toggle);
         }
-      }
+      },
     );
   };
 
   onSubmit = values => {
     this.toggle();
-    console.log('this.state.params', this.state.params);
+    const { params } = this.state;
+    console.log('this.state.params', params);
     console.log('onSubmit', values);
   };
 
   render() {
-    const { isOpen, time, lead, params } = this.state;
+    const { isOpen, params } = this.state;
+    const { branches, lead } = this.props;
     return (
       <div className="document">
         <Header />
@@ -136,44 +172,44 @@ class SalesDetail extends Component {
         <div className="container">
           <h2 className="page-title">Client Requirements</h2>
           <Formik
-            initialValues={params}
+            initialValues={lead}
             onSubmit={this.onSubmit}
             validationSchema={Yup.object().shape({
-              firstName: Yup.string().required('Required'),
-              lastName: Yup.string().required('Required'),
-              email: Yup.string()
-                .email('Invalid email address')
-                .required('Required'),
-              mobileNumber: Yup.number().required('Required'),
-              address: Yup.string().required('Required'),
-              country: Yup.string().required('Required'),
-              state: Yup.string().required('Required'),
-              city: Yup.string().required('Required'),
-              pinCode: Yup.number().required('Required'),
-              budget: Yup.string().required('Required'),
-              services: Yup.string().required('Required'),
-              branch: Yup.string().required('Required'),
-              date: Yup.string().required('Required'),
-              time: Yup.string().required('Required'),
-              designers: Yup.string().required('Required'),
+              // Full_Name: Yup.string().required('Required'),
+              // lastName: Yup.string().required('Required'),
+              // email: Yup.string()
+              //   .email('Invalid email address')
+              //   .required('Required'),
+              // Phone: Yup.string().required('Required'),
+              // Street: Yup.string().required('Required'),
+              // Country: Yup.string().required('Required'),
+              // State: Yup.string().required('Required'),
+              // City: Yup.string().required('Required'),
+              // Zip_Code: Yup.number().required('Required'),
+              // budget: Yup.string().required('Required'),
+              // services: Yup.string().required('Required'),
+              // branch: Yup.string().required('Required'),
+              // date: Yup.string().required('Required'),
+              // time: Yup.string().required('Required'),
+              // designers: Yup.string().required('Required'),
             })}
           >
-            {({ handleSubmit, values, handleChange, setFieldValue, isValid, errors, touched }) => (
+            {({ handleSubmit, values, setFieldValue, isValid, errors, touched }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-title">Contact Info</div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.firstName && touched.firstName ? (
-                        <div className="invalid-feedback d-block">{errors.firstName}</div>
+                      {errors.Full_Name && touched.Full_Name ? (
+                        <div className="invalid-feedback d-block">{errors.Full_Name}</div>
                       ) : (
                         <br />
                       )}
                       <InputGroup
                         label="First Name"
                         name="firstName"
-                        value={values.firstName}
-                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                        value={values.Full_Name.split(' ')[0]}
+                        onChange={event => this.onHandleChangeName(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -187,8 +223,8 @@ class SalesDetail extends Component {
                       <InputGroup
                         label="Last Name"
                         name="lastName"
-                        value={values.lastName}
-                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                        value={values.Full_Name.split(' ')[1]}
+                        onChange={event => this.onHandleChangeName(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -201,9 +237,9 @@ class SalesDetail extends Component {
                       )}
                       <InputGroup
                         label="Email"
-                        name="email"
+                        name="Email"
                         type="email"
-                        value={values.email}
+                        value={values.Email}
                         onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
@@ -218,10 +254,10 @@ class SalesDetail extends Component {
                         <br />
                       )}
                       <InputGroup
-                        type="number"
+                        type="text"
                         label="Mobile Number"
-                        name="mobileNumber"
-                        value={values.mobileNumber}
+                        name="Phone"
+                        value={values.Phone}
                         onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
@@ -235,8 +271,8 @@ class SalesDetail extends Component {
                       )}
                       <InputGroup
                         label="Address"
-                        name="address"
-                        value={values.address}
+                        name="Street"
+                        value={values.Street}
                         onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
@@ -251,8 +287,8 @@ class SalesDetail extends Component {
                     </div>
                     <GroupSelectField
                       label="City"
-                      name="city"
-                      value={{ value: values.city, label: values.city }}
+                      name="City"
+                      value={{ value: values.City, label: values.City }}
                       options={CITIES_NAME}
                       onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
@@ -269,8 +305,8 @@ class SalesDetail extends Component {
                     </div>
                     <GroupSelectField
                       label="State"
-                      name="state"
-                      value={{ value: values.state, label: values.state }}
+                      name="State"
+                      value={{ value: values.State, label: values.State }}
                       options={STATES_NAME}
                       onChange={event => this.onChangeState(event, setFieldValue)}
                     />
@@ -285,16 +321,16 @@ class SalesDetail extends Component {
                       <InputGroup
                         type="number"
                         label="Pin Code"
-                        name="pinCode"
-                        value={values.pinCode}
+                        name="Zip_Code"
+                        value={values.Zip_Code}
                         onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                       />
                     </div>
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.country && touched.country ? (
-                        <div className="invalid-feedback d-block">{errors.country}</div>
+                      {errors.Country && touched.Country ? (
+                        <div className="invalid-feedback d-block">{errors.Country}</div>
                       ) : (
                         <br />
                       )}
@@ -302,15 +338,16 @@ class SalesDetail extends Component {
 
                     <GroupSelectField
                       label="Country"
-                      name="country"
-                      value={{ values: values.country, label: values.country }}
+                      name="Country"
+                      value={{ values: values.Country, label: values.Country }}
                       options={CONTRIES_NAME}
                       onChange={event => this.onChangeCountry(event, setFieldValue)}
                     />
                   </div>
                 </div>
                 <div className="form-title">
-                  Budget{' '}
+                  Budget
+                  {' '}
                   {errors.budget && touched.budget ? (
                     <div className="invalid-feedback d-inline">{errors.budget}</div>
                   ) : (
@@ -361,7 +398,8 @@ class SalesDetail extends Component {
                   </div>
                 </div>
                 <div className="form-title">
-                  Services Required{' '}
+                  Services Required
+                  {' '}
                   {errors.services && touched.services ? (
                     <div className="invalid-feedback d-inline">{errors.services}</div>
                   ) : (
@@ -375,7 +413,9 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       value="Home"
-                      checked={values.services.find(se => se === 'Home') ? true : false}
+                      checked={
+                        !values.services ? false : !!values.services.find(se => se === 'Home')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -385,7 +425,9 @@ class SalesDetail extends Component {
                       name="services"
                       type="checkbox"
                       value="Kitchen"
-                      checked={values.services.find(se => se === 'Kitchen') ? true : false}
+                      checked={
+                        !values.services ? false : !!values.services.find(se => se === 'Kitchen')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -396,7 +438,9 @@ class SalesDetail extends Component {
                       type="checkbox"
                       id="DiningRoom"
                       value="DiningRoom"
-                      checked={values.services.find(se => se === 'DiningRoom') ? true : false}
+                      checked={
+                        !values.services ? false : !!values.services.find(se => se === 'DiningRoom')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -407,7 +451,11 @@ class SalesDetail extends Component {
                       type="checkbox"
                       id="DiningRoom2"
                       value="DiningRoom2"
-                      checked={values.services.find(se => se === 'DiningRoom2') ? true : false}
+                      checked={
+                        !values.services
+                          ? false
+                          : !!values.services.find(se => se === 'DiningRoom2')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -418,7 +466,9 @@ class SalesDetail extends Component {
                       type="checkbox"
                       id="LivingRoom"
                       value="LivingRoom"
-                      checked={values.services.find(se => se === 'LivingRoom') ? true : false}
+                      checked={
+                        !values.services ? false : !!values.services.find(se => se === 'LivingRoom')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -429,7 +479,9 @@ class SalesDetail extends Component {
                       type="checkbox"
                       id="Bedroom"
                       value="Bedroom"
-                      checked={values.services.find(se => se === 'Bedroom') ? true : false}
+                      checked={
+                        !values.services ? false : !!values.services.find(se => se === 'Bedroom')
+                      }
                       onChange={event => this.onChangeCheckboxServices(event, setFieldValue)}
                     />
                   </div>
@@ -445,7 +497,8 @@ class SalesDetail extends Component {
                   </div>
                 </div>
                 <div className="form-title">
-                  Experience Center{' '}
+                  Experience Center
+                  {' '}
                   {errors.branch && touched.branch ? (
                     <div className="invalid-feedback d-inline">{errors.branch}</div>
                   ) : (
@@ -457,9 +510,12 @@ class SalesDetail extends Component {
                     <GroupSelectField
                       label="Select Branch"
                       name="branch"
-                      options={optionsExperience}
-                      value={{ value: values.branch, label: values.branch }}
+                      options={branches}
+                      getOptionLabel={option => option.name}
+                      getOptionValue={option => option.id}
+                      value={values.branch}
                       onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                      isOptionSelected={option => values.branch === option.id}
                     />
                   </div>
                   <div className="form-group col-md-5">
@@ -497,7 +553,8 @@ class SalesDetail extends Component {
                 </div>
                 <h2 className="page-title">Broadcast Options</h2>
                 <div className="form-title">
-                  Select Designer{' '}
+                  Select Designer
+                  {' '}
                   {errors.designers && touched.designers ? (
                     <div className="invalid-feedback d-inline">{errors.designers}</div>
                   ) : (
@@ -510,7 +567,7 @@ class SalesDetail extends Component {
                       label="All Designers in 1MG Experience Center"
                       options={RADIO_DESIGNER}
                       value={values.designers}
-                      onChange={() => this.onHandleChangeCommon(event, setFieldValue)}
+                      onChange={value => this.onHandleChangeRadioButton(value, setFieldValue)}
                       selectedOption={values.designers}
                     />
                   </div>
@@ -529,9 +586,17 @@ class SalesDetail extends Component {
 }
 
 const mapStateToProps = store => ({
-  // dataLeads: getLeadsState(store),
+  branches: getBranchesState(store),
+  lead: getLeadState(store),
 });
 
-const withConnect = connect(mapStateToProps);
+const mapDispatchToProps = () => ({
+  // doGetBranches: evt => dispatch(getBranches(evt)),
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export default compose(withConnect)(SalesDetail);

@@ -4,19 +4,19 @@ import QualifiedTable from './QualifiedTable';
 import BroadcastTable from './BroadcastTable';
 
 /* eslint react/prop-types: 0 */
-const DatatablePage = ({ data, onSchedule, typeLead, onClick }) => {
-  if (!data) {
+const DatatablePage = ({ data, onSchedule, gotoPage, typeLead, onClick }) => {
+  if (!data || !data.leads) {
     return null;
   }
   return (
     <div className="table-sort">
       {typeLead === 'qualifiedLeads' ? (
-        <QualifiedTable data={data} onSchedule={onSchedule} onClick={onClick} />
+        <QualifiedTable data={data.leads} onSchedule={onSchedule} onClick={onClick} />
       ) : (
-        <BroadcastTable data={data} onSchedule={onSchedule} onClick={onClick} />
+        <BroadcastTable data={data.leads} onSchedule={onSchedule} onClick={onClick} />
       )}
       <div className="table-sort__paginate">
-        <Pagination />
+        <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
       </div>
     </div>
   );

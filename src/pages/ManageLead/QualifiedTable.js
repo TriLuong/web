@@ -9,22 +9,22 @@ import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
 const QualifiledTable = ({ data, onSchedule, onClick }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
-      <td>{`${lead.firstName} ${lead.lastName}`}</td>
-      <td>{lead.address}</td>
+      <td>{lead.Full_Name}</td>
+      <td>{lead.Region ? lead.Region : ''}</td>
       <td>
-        {lead.mobileNumber}
+        {lead.Phone}
         <br />
-        {lead.email}
+        {lead.Email}
       </td>
       <td>{`${lead.date} ${lead.time}`}</td>
 
       <td>
-        {lead.status === 'scheduled' ? (
+        {lead.status ? (
           <div className="d-flex">
             <button
               type="button"
               className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead)}
+              onClick={() => onSchedule('broadcast', lead)}
             >
               BROADCAST
             </button>
@@ -36,7 +36,11 @@ const QualifiledTable = ({ data, onSchedule, onClick }) => {
         ) : (
           <div className="d-flex">
             <Link to={`/lead-detail/${lead.id}`} className="w-100">
-              <button type="button" className="btn btn-primary w-100">
+              <button
+                type="button"
+                className="btn btn-primary w-100"
+                onClick={() => onSchedule('schedule', lead)}
+              >
                 SCHEDULE
               </button>
             </Link>

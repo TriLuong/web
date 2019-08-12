@@ -7,17 +7,17 @@ import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 const BroadcastTable = ({ data, onSchedule, onClick }) => {
   const elemtLeads = data.map(lead => (
     <tr key={lead.id}>
-      <td>{`${lead.firstName} ${lead.lastName}`}</td>
-      <td>{lead.branch}</td>
+      <td>{lead.Full_Name}</td>
+      <td>{!lead.branch ? '_' : lead.branch.name}</td>
       <td>
-        {lead.status}
+        {lead.designer ? 'Scheduled' : 'Unscheduled'}
         <br />
         {`${lead.date} ${lead.time}`}
       </td>
-      <td>{lead.designer}</td>
+      <td>{lead.designer ? lead.designer : '_'}</td>
 
       <td>
-        {lead.status === 'scheduled' ? (
+        {lead.designer ? (
           <div className="d-flex">
             <button
               type="button"

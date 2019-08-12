@@ -17,4 +17,9 @@ export const getLeadState = createSelector(
   lead => lead.get('lead'),
 );
 
+export const getBranchesState = createSelector(
+  manageLeadReducer,
+  branches => branches.get('branches'),
+);
+
 export default {};

@@ -8,20 +8,27 @@ import RadioButton from 'components/common/form/RadioButton';
 import Checking from 'components/common/checking';
 import ModalDesignerAvailable from 'components/modal/ManageLead/ModalDesignerAvailable';
 import Notification from 'components/common/notification';
+import { getBranches } from 'pages/ManageUser/actions';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
-import { getLeads, deleteLead } from './actions';
-import { getLeadsState, getFetchingState } from './selectors';
+import { getLeads, deleteLead, getLeadByID } from './actions';
+import { getLeadsState, getFetchingState, getBranchesState, getLeadState } from './selectors';
 import DatatablePage from './DatatablePage';
+
 import { LEADS_FILTER, RADIO_QUALIFIELD, RADIO_BROADCAST } from './constants';
 import './styles.scss';
 
 type Props = {
   doGetLeads: () => {},
   doDeleteLead: () => {},
-  dataLeads: {},
+  doGetBranches: () => {},
+  doGetLeadByID: () => {},
+  dataLeads: {
+    leads: {},
+    page: Number,
+  },
 };
 class SalesPage extends Component<Props> {
   constructor() {
@@ -39,10 +46,16 @@ class SalesPage extends Component<Props> {
   }
 
   componentDidMount() {
+    const { doGetBranches } = this.props;
+    this.gotoPage(1);
+    doGetBranches();
+  }
+
+  gotoPage = page => {
     const { doGetLeads } = this.props;
     const { params } = this.state;
-    doGetLeads({ ...params });
-  }
+    doGetLeads({ ...params, page });
+  };
 
   handleOnChangeRadioButton = ({ value }) => {
     // console.log('handleOnChangeRadioButton', value);
@@ -56,10 +69,10 @@ class SalesPage extends Component<Props> {
   handleOnChangeSelectField = event => {
     const { value } = event;
     const { params } = this.state;
-    const { doGetLeads } = this.props;
+    const { doGetLeads, dataLeads } = this.props;
     const newParams = { ...params, typeLead: value, filterLead: 'all' };
     this.setState({ params: newParams });
-    doGetLeads({ ...newParams });
+    doGetLeads({ ...newParams, page: dataLeads.page });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
 
@@ -84,10 +97,17 @@ class SalesPage extends Component<Props> {
     this.toggleDesignerAvailable();
   };
 
-  onSchedule = lead => {
-    if (lead.status === 'scheduled') {
+  /* eslint react/prop-types: 0 */
+  onSchedule = (typeAction, lead) => {
+    const { doGetLeadByID, dataLeads } = this.props;
+    const leadFind = dataLeads.leads.find(item => item.id === lead.id);
+    doGetLeadByID(leadFind);
+    // console.log('leadFind', leadFind);
+    if (typeAction === 'broadcast') {
       this.toggleCheckDesigner();
       this.setState({ lead });
+    } else {
+      console.info('onSchedule', typeAction, lead);
     }
   };
 
@@ -104,12 +124,7 @@ class SalesPage extends Component<Props> {
   };
 
   render() {
-    const {
-      lead,
-      params,
-      isOpenCheckDesigner,
-      isDesignerAvailable,
-    } = this.state;
+    const { lead, params, isOpenCheckDesigner, isDesignerAvailable } = this.state;
     const { dataLeads } = this.props;
 
     return (
@@ -156,6 +171,7 @@ class SalesPage extends Component<Props> {
           />
           <DatatablePage
             data={dataLeads}
+            gotoPage={this.gotoPage}
             params={params}
             typeLead={params.typeLead}
             onSchedule={this.onSchedule}
@@ -170,11 +186,15 @@ class SalesPage extends Component<Props> {
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   dataLeads: getLeadsState(store),
+  branches: getBranchesState(store),
+  lead: getLeadState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
   doGetLeads: evt => dispatch(getLeads(evt)),
   doDeleteLead: evt => dispatch(deleteLead(evt)),
+  doGetBranches: evt => dispatch(getBranches(evt)),
+  doGetLeadByID: evt => dispatch(getLeadByID(evt)),
 });
 
 const withConnect = connect(
