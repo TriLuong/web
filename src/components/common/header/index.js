@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import logo from 'assets/images/login/logo.svg';
 import { makeGetUser } from 'pages/App/selectors';
 import { requestLogout } from 'pages/Login/actions';
@@ -141,12 +142,12 @@ class Header extends PureComponent<Props> {
                 </button>
               </div>
               <div className="dropdown-user dropdown-user--role">
-                <a className="dropdown-item" href="#">
+                <Link to="/users" className="dropdown-item">
                   Super Admin Dashboard
-                </a>
-                <a className="dropdown-item" href="#">
+                </Link>
+                <Link to="/leads" className="dropdown-item">
                   Sales Dashboard
-                </a>
+                </Link>
                 <a className="dropdown-item" href="#">
                   Designer Dashboard
                 </a>
