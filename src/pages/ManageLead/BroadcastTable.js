@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 /* eslint react/prop-types: 0 */
-const BroadcastTable = ({ data, onSchedule, onClick, branches, filter }) => {
+const BroadcastTable = ({ data, onSchedule, onClick, branches, filter, onSort }) => {
+  const [sortBy, setSortby] = useState('');
+
   let dataFilter = {};
 
   if (filter === 'all') {
@@ -18,6 +20,15 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, filter }) => {
 
   const elemtLeads = dataFilter.map(lead => {
     let branch = null;
+    let date;
+    let time;
+    if (lead.Meeting_Date_and_Time) {
+      const dateTimeArr = lead.Meeting_Date_and_Time.split('T');
+      date = dateTimeArr[0];
+      const hour = dateTimeArr[1].split(':')[0];
+      const minute = dateTimeArr[1].split(':')[1];
+      time = `${hour}:${minute}`;
+    }
     if (lead.broadcastType) {
       branch = branches.find(br => br.id === lead.branchId);
     }
@@ -28,7 +39,7 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, filter }) => {
         <td>
           {lead.broadcastType ? 'Scheduled' : 'Unscheduled'}
           <br />
-          {`${lead.date} ${lead.time}`}
+          {lead.Meeting_Date_and_Time ? `${date} • ${time}` : ''}
         </td>
         <td>{lead.broadcastType ? lead.broadcastType : '_'}</td>
 
@@ -76,21 +87,45 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, filter }) => {
     <table entries="10" className="table">
       <thead>
         <tr>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('Full_Name');
+              onSort({ orderBy: 'Full_Name' });
+            }}
+          >
             Name (A-Z)
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'Full_Name' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('branchId');
+              onSort({ orderBy: 'branchId' });
+            }}
+          >
             Branch
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'branchId' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('broadcastType');
+              onSort({ orderBy: 'broadcastType' });
+            }}
+          >
             Metting status
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'broadcastType' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('broadcastType');
+              onSort({ orderBy: 'broadcastType' });
+            }}
+          >
             Designer
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'broadcastType' ? '#05486c' : 'white'} />
           </th>
           <th className="sorting" />
         </tr>

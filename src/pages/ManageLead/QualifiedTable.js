@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
@@ -6,7 +6,9 @@ import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
 
 /* eslint react/prop-types: 0 */
-const QualifiledTable = ({ data, onSchedule, onClick, filter }) => {
+const QualifiledTable = ({ data, onSchedule, onClick, filter, onSort }) => {
+  const [sortBy, setSortby] = useState('');
+
   let dataFilter = [];
   if (filter === 'all') {
     dataFilter = [...data];
@@ -79,21 +81,48 @@ const QualifiledTable = ({ data, onSchedule, onClick, filter }) => {
     <table entries="10" className="table">
       <thead>
         <tr>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('Full_Name');
+              onSort({ orderBy: 'Full_Name' });
+            }}
+          >
             Name (A-Z)
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'Full_Name' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('Region');
+              onSort({ orderBy: 'Region' });
+            }}
+          >
             Address
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'Region' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('Phone');
+              onSort({ orderBy: 'Phone' });
+            }}
+          >
             Contact
-            <IconSort className="ml-2" />
+            <IconSort className="ml-2" fill={sortBy === 'Phone' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting">
+          <th
+            className="sorting"
+            onClick={() => {
+              setSortby('Meeting_Date_and_Time');
+              onSort({ orderBy: 'Meeting_Date_and_Time' });
+            }}
+          >
             {'Date & Time'}
-            <IconSort className="ml-2" />
+            <IconSort
+              className="ml-2"
+              fill={sortBy === 'Meeting_Date_and_Time' ? '#05486c' : 'white'}
+            />
           </th>
           <th className="sorting" />
         </tr>

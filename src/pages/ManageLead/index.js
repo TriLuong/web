@@ -1,3 +1,4 @@
+/* eslint import/no-cycle: 0 */
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -45,6 +46,8 @@ class SalesPage extends Component<Props> {
       params: {
         status: 'qualifiedLeads',
         filter: 'all',
+        orderBy: null,
+        orderType: null,
       },
     };
   }
@@ -111,10 +114,7 @@ class SalesPage extends Component<Props> {
       () => {
         const { isOpen } = this.state;
         if (isOpen) {
-          NotificationManager.success(
-            '',
-            'Lead successfully broadcasted.',
-            1500);
+          NotificationManager.success('', 'Lead successfully broadcasted.', 1500);
           setTimeout(() => {
             this.setState(prevState => ({ isOpen: !prevState.isOpen }));
           }, 1500);
@@ -153,6 +153,24 @@ class SalesPage extends Component<Props> {
     if (actionLead === 'deleteLead') {
       this.handleDeleteLead(lead);
     }
+  };
+
+  /* Sorting */
+  onSort = sort => {
+    const { doGetLeads } = this.props;
+    const { params } = this.state;
+    const orderType = params.orderType;
+    let newOrderType = '';
+    if (orderType === null) {
+      newOrderType = 'asc';
+    } else if (orderType === 'asc') {
+      newOrderType = 'desc';
+    } else {
+      newOrderType = 'asc';
+    }
+    const newPrams = { ...params, orderType: newOrderType, orderBy: sort.orderBy };
+    this.setState({ params: newPrams });
+    doGetLeads(newPrams);
   };
 
   render() {
@@ -228,6 +246,7 @@ class SalesPage extends Component<Props> {
             onSchedule={this.onSchedule}
             branches={branches}
             onClick={this.onClick}
+            onSort={this.onSort}
           />
         </div>
       </div>
