@@ -15,7 +15,6 @@ class SelectField extends PureComponent<Props> {
           className="wrap-select__inner"
           classNamePrefix="wrap-select"
           isSearchable={false}
-          navPrev={null}
         />
       </div>
     );
