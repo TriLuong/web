@@ -3,8 +3,7 @@ import './styles.scss';
 
 type Props = {
   isValid: Boolean,
-  date: String,
-  time: String,
+  dateTime: String,
 };
 class Footer extends PureComponent<Props> {
   constructor() {
@@ -13,21 +12,24 @@ class Footer extends PureComponent<Props> {
   }
 
   /* eslint radix: 0 */
-  endTime = time => {
-    const timeArr = time.split(' ');
-    const hour = timeArr[0].split(':')[0];
-    const minute = timeArr[0].split(':')[1];
-    const type = timeArr[1];
-    const newHour = parseInt(hour) + 1;
-    const newTime = `${newHour}:${minute} ${type}`;
-    return newTime;
-  };
-
   render() {
-    const { isValid, date, time } = this.props;
-    let newTime = '';
-    if (time) {
-      newTime = this.endTime(time);
+    const { isValid, dateTime } = this.props;
+    let date;
+    let timeStart;
+    let timeEnd;
+    if (dateTime) {
+      const dateTimeArr = dateTime.split('T');
+      date = dateTimeArr[0];
+      const hourInt = parseInt(dateTimeArr[1].split(':')[0]);
+      const hour = hourInt <= 12 ? hourInt : hourInt - 12;
+      const typeTime = hourInt < 12 ? 'AM' : 'PM';
+
+      const hourEnd = hourInt + 1 <= 12 ? hourInt + 1 : hourInt - 12 + 1;
+      const typeTimeEnd = hourInt + 1 < 12 ? 'AM' : 'PM';
+
+      const minute = dateTimeArr[1].split(':')[1];
+      timeStart = `${hour}:${minute} ${typeTime}`;
+      timeEnd = `${hourEnd}:${minute} ${typeTimeEnd}`;
     }
 
     return (
@@ -38,7 +40,7 @@ class Footer extends PureComponent<Props> {
               Slot will be booked for
               <span className="footer__date-update">{!date ? null : date}</span>
               <span className="footer__date-update">
-                {!time ? null : `from ${time} to ${newTime}`}
+                {!dateTime ? null : `from ${timeStart} to ${timeEnd}`}
               </span>
             </div>
             <button type="submit" className="btn btn-primary" disabled={!isValid}>

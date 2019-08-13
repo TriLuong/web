@@ -49,7 +49,7 @@ class SalesDetail extends Component<Props> {
       firstName: '',
       lastName: '',
       date: moment().format('YYYY-MM-DD'),
-      time: '10:00 AM',
+      time: '10:00',
       isOpen: false,
     };
   }
@@ -57,13 +57,10 @@ class SalesDetail extends Component<Props> {
   /* eslint  react/prop-types: 0 */
   componentDidMount() {
     const { lead } = this.props;
-    const { params } = this.state;
-    const initParams = { ...params, ...lead };
     console.log(lead);
     this.setState({
       firstName: lead.Owner.name.split(' ')[0],
       lastName: lead.Owner.name.split(' ')[1],
-      params: initParams,
     });
   }
 
@@ -622,7 +619,7 @@ class SalesDetail extends Component<Props> {
                     />
                   </div>
                 </div>
-                <Footer isValid={isValid} time={values.time} date={values.date} />
+                <Footer isValid={isValid} dateTime={values.Meeting_Date_and_Time} />
               </form>
             )}
           </Formik>
