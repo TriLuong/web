@@ -44,11 +44,19 @@ class Pagination extends PureComponent<Props> {
     }
   };
 
+  /* eslint  jsx-a11y/click-events-have-key-events : 0 */
+  /* eslint jsx-a11y/no-noninteractive-element-interactions : 0 */
   render() {
     const { pages, page } = this.props;
     const pageArr = Array.from(Array(pages).keys());
+    let pageMax = Array.from(Array(5).keys());
+    if (pages <= 5) {
+      pageMax = pageArr;
+    } else if (page > 5) {
+      pageMax = pageMax.map(p => p + (page - 5));
+    }
 
-    const elemtPages = pageArr.map(pageIdx => (
+    const elemtPages = pageMax.map(pageIdx => (
       <li
         key={`${pageIdx} + 1`}
         onClick={() => this.gotoNumber(pageIdx + 1)}
