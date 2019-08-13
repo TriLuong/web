@@ -1,5 +1,9 @@
 import axios from 'axios';
+import { requestLogout } from 'pages/Login/actions';
+import { store } from '../index';
+
 // Add a response interceptor
+
 axios.interceptors.response.use(
   response => response,
   error => {
@@ -7,7 +11,7 @@ axios.interceptors.response.use(
       response: { status },
     } = error;
     if (status === 401) {
-      axios.defaults.headers.common.Authorization = '';
+      store.dispatch(requestLogout());
     }
     Promise.reject(error);
   },

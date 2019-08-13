@@ -41,8 +41,7 @@ function* getUsersSaga({ payload }) {
     yield put({ type: GET_USERS_SUCCESS, payload: res.data });
     yield put(isEndConnecting());
   } catch (error) {
-    alert(error.response.data.message);
-    yield put({ type: GET_USERS_FAILURE, error: error.response.data.message });
+    // yield put({ type: GET_USERS_FAILURE, error: error.response.data.message });
     yield put(isEndConnecting());
   }
 }
@@ -151,7 +150,6 @@ function* getBranchesSaga({ payload }) {
     yield put(getBranchesSuccess(res.data.branches));
     yield put(isEndConnecting());
   } catch (error) {
-    alert(error.response.data.message);
     yield put(getBranchesFailure(error));
     yield put(isEndConnecting());
   }
