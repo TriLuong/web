@@ -24,10 +24,9 @@ import data from './data';
 function* getLeadsSaga({ payload }) {
   yield put(isConnecting());
   try {
-    // console.log('payload data', payload, data);
-    // const leads = filterLead === 'all'
-    //   ? data[`${typeLead}`]
-    //   : data[`${typeLead}`].filter(lead => lead.status === filterLead);
+    // const leads = filter === 'all'
+    //   ? data[`${status}`]
+    //   : data[`${status}`].filter(lead => lead.status === filter);
     // yield put(getLeadsSuccess(leads));
     const res = yield call(Leads.getLeads, payload);
     if (res.data.status === 'failed') {
@@ -45,10 +44,10 @@ function* getLeadsSaga({ payload }) {
 function* deleteLeadSaga({ payload }) {
   yield put(isConnecting());
   try {
-    const { lead, filterLead, typeLead } = payload;
-    const leads = filterLead === 'all'
-      ? data[`${typeLead}`]
-      : data[`${typeLead}`].filter(item => item.status === filterLead);
+    const { lead, filter, status } = payload;
+    const leads = filter === 'all'
+      ? data[`${status}`]
+      : data[`${status}`].filter(item => item.status === filter);
     const leadDeleteIdex = leads.findIndex(item => item.id === lead.id);
     leads.splice(leadDeleteIdex, 1);
     yield put(deleteLeadSuccess(leads));

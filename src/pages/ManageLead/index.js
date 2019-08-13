@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 import Header from 'components/common/header';
 import IconSearch from 'components/common/icon/IconSearch';
 import SelectField from 'components/common/form/Select';
 import RadioButton from 'components/common/form/RadioButton';
 import Checking from 'components/common/checking';
 import ModalDesignerAvailable from 'components/modal/ManageLead/ModalDesignerAvailable';
+import ModalAssignDesigner from 'components/modal/ModalAssignDesigner';
 import Notification from 'components/common/notification';
 import { getBranches } from 'pages/ManageUser/actions';
 import injectReducer from 'utils/injectReducer';
@@ -34,13 +36,15 @@ class SalesPage extends Component<Props> {
   constructor() {
     super();
     this.state = {
+      isOpen: false,
       isChecking: true,
       isOpenCheckDesigner: false,
       isDesignerAvailable: false,
+      isOpenAssignDesigner: false,
       lead: {},
       params: {
-        typeLead: 'qualifiedLeads',
-        filterLead: 'all',
+        status: 'qualifiedLeads',
+        filter: 'all',
       },
     };
   }
@@ -60,19 +64,19 @@ class SalesPage extends Component<Props> {
   handleOnChangeRadioButton = ({ value }) => {
     // console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
-    const newParams = { ...params, filterLead: value };
-    const { doGetLeads } = this.props;
+    const newParams = { ...params, filter: value };
+    // const { doGetLeads } = this.props;
     this.setState({ params: newParams });
-    doGetLeads({ ...newParams });
+    // doGetLeads({ ...newParams });
   };
 
   handleOnChangeSelectField = event => {
     const { value } = event;
     const { params } = this.state;
-    const { doGetLeads, dataLeads } = this.props;
-    const newParams = { ...params, typeLead: value, filterLead: 'all' };
+    // const { doGetLeads, dataLeads } = this.props;
+    const newParams = { ...params, status: value, filter: 'all' };
     this.setState({ params: newParams });
-    doGetLeads({ ...newParams, page: dataLeads.page });
+    // doGetLeads({ ...newParams, page: dataLeads.page });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
 
@@ -92,22 +96,50 @@ class SalesPage extends Component<Props> {
     this.setState(prevstate => ({ isDesignerAvailable: !prevstate.isDesignerAvailable }));
   };
 
+  toggleAssignDesigner = () => {
+    this.setState(prevstate => ({ isOpenAssignDesigner: !prevstate.isOpenAssignDesigner }));
+  };
+
   onSubmitCheckDesigner = () => {
     this.toggleCheckDesigner();
     this.toggleDesignerAvailable();
+  };
+
+  onOpenNotification = () => {
+    this.setState(
+      prevState => ({ isOpen: !prevState.isOpen }),
+      () => {
+        const { isOpen } = this.state;
+        if (isOpen) {
+          NotificationManager.success(
+            '',
+            'Lead successfully broadcasted.',
+            1500);
+          setTimeout(() => {
+            this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+          }, 1500);
+        }
+      },
+    );
+  };
+
+  onSubmitAssignDesigner = values => {
+    this.toggleAssignDesigner();
+    this.onOpenNotification();
+    console.log('onSubmitAssignDesigner', values);
   };
 
   /* eslint react/prop-types: 0 */
   onSchedule = (typeAction, lead) => {
     const { doGetLeadByID, dataLeads } = this.props;
     const leadFind = dataLeads.leads.find(item => item.id === lead.id);
+    this.setState({ lead });
     doGetLeadByID(leadFind);
     // console.log('leadFind', leadFind);
     if (typeAction === 'broadcast') {
       this.toggleCheckDesigner();
-      this.setState({ lead });
-    } else {
-      console.info('onSchedule', typeAction, lead);
+    } else if (typeAction === 'assignDesigner') {
+      this.toggleAssignDesigner();
     }
   };
 
@@ -124,8 +156,15 @@ class SalesPage extends Component<Props> {
   };
 
   render() {
-    const { lead, params, isOpenCheckDesigner, isDesignerAvailable } = this.state;
-    const { dataLeads } = this.props;
+    const {
+      lead,
+      params,
+      isOpenCheckDesigner,
+      isDesignerAvailable,
+      isOpenAssignDesigner,
+      isOpen,
+    } = this.state;
+    const { dataLeads, branches } = this.props;
 
     return (
       <div className="document">
@@ -137,9 +176,9 @@ class SalesPage extends Component<Props> {
               className="ml-auto"
               classNameRadio="ml-5"
               id="radioButton"
-              options={params.typeLead === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
+              options={params.status === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
-              selectedOption={params.filterLead}
+              selectedOption={params.filter}
             />
             <div
               className="btn-toolbar ml-5"
@@ -169,12 +208,25 @@ class SalesPage extends Component<Props> {
             toggle={this.toggleDesignerAvailable}
             onSubmit={this.onSubmitDesignerAvailable}
           />
+
+          <ModalAssignDesigner
+            title="Assign Designer"
+            isOpen={isOpenAssignDesigner}
+            toggle={this.toggleAssignDesigner}
+            onSubmit={this.onSubmitAssignDesigner}
+          />
+
+          <Notification isOpen={isOpen}>
+            <NotificationContainer />
+          </Notification>
           <DatatablePage
             data={dataLeads}
             gotoPage={this.gotoPage}
             params={params}
-            typeLead={params.typeLead}
+            status={params.status}
+            filter={params.filter}
             onSchedule={this.onSchedule}
+            branches={branches}
             onClick={this.onClick}
           />
         </div>

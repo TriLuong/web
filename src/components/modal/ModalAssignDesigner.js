@@ -2,139 +2,79 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { InputGroup } from 'components/common/form/';
-import { USER_TYPE, TYPE_DESIGNER } from 'pages/ManageUser/constants';
+import { dataDesigners } from 'pages/ManageLead/constants';
 import ModalBase from './ModalBase';
 
-class ModalAssignDesigner extends React.PureComponent {
+type Props = {
+  onSubmit: () => {},
+};
+class ModalAssignDesigner extends React.PureComponent<Props> {
+  elemtDesigner = (values, setFieldValue) => dataDesigners.map(designerRow => (
+    <div className="form-row">
+      {designerRow.map(designer => (
+        <div className="form-group col-md-4">
+          <InputGroup
+            type="radio"
+            name="designerId"
+            label={`${designer.name} Availble from ${designer.timeFrom} to ${designer.timeTo}`}
+            value={designer.id}
+            checked={values.designerId === `${designer.id}`}
+            required
+            id={designer.id}
+            onChange={event => this.onHandleChange(event, setFieldValue)}
+          />
+        </div>
+      ))}
+    </div>
+  ));
+
+  onHandleChange = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    setFieldValue(name, value);
+  };
+
+  onHandleChangeDesigner = () => { };
+
   render() {
-    const { onSubmit, user = {}, ...rest } = this.props;
-    const init = user && user.role === 'sale' ? { ...user, type: '' } : user;
+    const { onSubmit, ...rest } = this.props;
     return (
       <ModalBase className="modal-assign" {...rest}>
+        <div className="box-control">
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <InputGroup
+                type="radio"
+                name="Designers"
+                label="Available Designers"
+                required
+                checked
+                onChange={this.onHandleChangeDesigner}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <InputGroup
+                type="radio"
+                name="Designers"
+                label="All Designers"
+                id="allDesign"
+                required
+                onChange={this.onHandleChangeDesigner}
+              />
+            </div>
+          </div>
+        </div>
         <Formik
-          initialValues={init}
           onSubmit={onSubmit}
           validationSchema={Yup.object().shape({
-            branch: Yup.string().required('Required'),
-            role: Yup.string().required('Required'),
-            type: Yup.string(),
+            designerId: Yup.string().required('Required'),
           })}
         >
-          {({ isValid, handleChange, setFieldValue, handleSubmit, values }) => (
+          {({ isValid, setFieldValue, handleSubmit, values }) => (
             <form onSubmit={handleSubmit}>
-              <div className="box-control">
-                <div className="form-row">
-                  <div className="form-group col-md-6">
-                    <InputGroup
-                      type="radio"
-                      name="Designers"
-                      label="Available Designers"
-                      value={values.firstName || ''}
-                      required
-                      checked
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <InputGroup
-                      type="radio"
-                      name="Designers"
-                      label="All Designers"
-                      id="allDesign"
-                      value={values.lastName || ''}
-                      required
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="modal-assign__inner">
-                <div className="form-row">
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val01"
-                      label="Designer Name
-                        Available
-                        10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user01"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val01"
-                      label="Designer Name
-                        Available
-                        10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user02"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val01"
-                      label="Designer Name
-                        Available
-                        10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user03"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val02"
-                      label="Designer Name
-                    Available
-                    10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user04"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val02"
-                      label="Designer Name
-                    Available
-                    10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user05"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <InputGroup
-                      type="radio"
-                      name="val02"
-                      label="Designer Name
-                    Available
-                    10AM to 7:30AM"
-                      value={values.lastName || ''}
-                      required
-                      id="user06"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
+              <div className="modal-assign__inner">{this.elemtDesigner(values, setFieldValue)}</div>
               <div className="d-flex my-4 border-0 justify-content-center">
-                <button type="submit" className="btn btn-primary" disabled={!isValid && !user}>
-                  {user ? 'ASSIGN DESIGNER' : 'ADD USER'}
+                <button type="submit" className="btn btn-primary" disabled={!isValid}>
+                  ASSIGN DESIGNER
                 </button>
               </div>
             </form>

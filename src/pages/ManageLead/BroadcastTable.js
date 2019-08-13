@@ -1,57 +1,76 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 /* eslint react/prop-types: 0 */
-const BroadcastTable = ({ data, onSchedule, onClick }) => {
-  const elemtLeads = data.map(lead => (
-    <tr key={lead.id}>
-      <td>{lead.Full_Name}</td>
-      <td>{!lead.branch ? '_' : lead.branch.name}</td>
-      <td>
-        {lead.designer ? 'Scheduled' : 'Unscheduled'}
-        <br />
-        {`${lead.date} ${lead.time}`}
-      </td>
-      <td>{lead.designer ? lead.designer : '_'}</td>
+const BroadcastTable = ({ data, onSchedule, onClick, branches, filter }) => {
+  let dataFilter = {};
 
-      <td>
-        {lead.designer ? (
-          <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead)}
-            >
-              EDIT MEETING
-            </button>
-            <MenuPopover
-              menuItems={MENU_POPOVER_ITEMS_BROADCASR}
-              onClick={name => onClick({ actionLead: name, lead })}
-            />
-          </div>
-        ) : (
-          <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-primary w-100"
-              onClick={() => onSchedule(lead)}
-            >
-              ASSIGN DESIGNER
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              style={{ marginLeft: '10px' }}
-            >
-              <IconEdit />
-            </button>
-          </div>
-        )}
-      </td>
-    </tr>
-  ));
+  if (filter === 'all') {
+    dataFilter = data;
+  } else if (filter === 'scheduled') {
+    dataFilter = data.filter(l => l.broadcastType);
+  } else {
+    dataFilter = data.filter(l => !l.broadcastType);
+  }
+
+  const elemtLeads = dataFilter.map(lead => {
+    let branch = null;
+    if (lead.broadcastType) {
+      branch = branches.find(br => br.id === lead.branchId);
+    }
+    return (
+      <tr key={lead.id}>
+        <td>{lead.Full_Name}</td>
+        <td>{!branch ? '_' : branch.name}</td>
+        <td>
+          {lead.broadcastType ? 'Scheduled' : 'Unscheduled'}
+          <br />
+          {`${lead.date} ${lead.time}`}
+        </td>
+        <td>{lead.broadcastType ? lead.broadcastType : '_'}</td>
+
+        <td>
+          {lead.broadcastType ? (
+            <div className="d-flex">
+              <Link to={`/lead-detail/${lead.id}`} className="w-100">
+                <button
+                  type="button"
+                  className="btn btn-primary w-100"
+                  onClick={() => onSchedule('schedule', lead)}
+                >
+                  EDIT MEETING
+                </button>
+              </Link>
+              <MenuPopover
+                menuItems={MENU_POPOVER_ITEMS_BROADCASR}
+                onClick={name => onClick({ actionLead: name, lead })}
+              />
+            </div>
+          ) : (
+            <div className="d-flex">
+              <button
+                type="button"
+                className="btn btn-primary w-100"
+                onClick={() => onSchedule('assignDesigner', lead)}
+              >
+                ASSIGN DESIGNER
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                style={{ marginLeft: '10px' }}
+              >
+                <IconEdit />
+              </button>
+            </div>
+          )}
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <table entries="10" className="table">

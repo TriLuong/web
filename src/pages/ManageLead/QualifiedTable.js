@@ -6,8 +6,14 @@ import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
 
 /* eslint react/prop-types: 0 */
-const QualifiledTable = ({ data, onSchedule, onClick }) => {
-  const elemtLeads = data.map(lead => {
+const QualifiledTable = ({ data, onSchedule, onClick, filter }) => {
+  let dataFilter = [];
+  if (filter === 'all') {
+    dataFilter = [...data];
+  } else {
+    dataFilter = data.filter(lead => !lead.Meeting_Date_and_Time);
+  }
+  const elemtLeads = dataFilter.map(lead => {
     let date;
     let time;
     if (lead.Meeting_Date_and_Time) {

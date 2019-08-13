@@ -203,7 +203,7 @@ class SalesDetail extends Component<Props> {
   onCloseNotification = () => {
     this.toggle();
     const { history } = this.props;
-    history.push('/leads');
+    history.goBack();
   };
 
   onSubmit = values => {
