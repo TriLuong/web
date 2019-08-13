@@ -3,3 +3,16 @@
   color: #8e8e93;
   padding: 15px 10px 0;
 }
+.select-year {
+  width: 50px;
+  min-width: 100px;
+}
+.select-month {
+  width: 130px;
+  min-width: 130px;
+}
+.wrapper-calendar {
+  .DayPickerNavigation_button {
+    display: none;
+  }
+}
