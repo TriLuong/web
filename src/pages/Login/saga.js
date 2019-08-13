@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 import { Auth } from 'api';
 import axios from 'axios';
 import { isConnecting, isEndConnecting } from 'pages/Loader/actions';
+import { getBranches } from 'pages/App/actions';
 import { loginSuccess, loginFail, resetPasswordFail, setPasswordFail } from './actions';
 import { LOGIN_REQUEST, LOGOUT_REQUEST, RESET_PASSWORD, SET_PASSWORD } from './constants';
 
@@ -19,6 +20,7 @@ function* signInSaga(action) {
     const { token, user } = res.data;
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     yield put(loginSuccess({ token, user }));
+    yield put(getBranches());
     if (user.role === 'admin') {
       yield put(push('/'));
     } else {
