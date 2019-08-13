@@ -10,12 +10,14 @@ import {
   getLeadByIDFailure,
   getBranchesSuccess,
   getBranchesFailure,
+  updateLeadFailure,
 } from './actions';
 import {
   GET_LEADS_REQUEST,
   DELETE_LEAD_REQUEST,
   GET_LEAD_BY_ID_REQUEST,
   GET_BRANCHES_REQUEST,
+  UPDATE_LEAD_REQUEST,
 } from './constants';
 import data from './data';
 
@@ -86,9 +88,24 @@ function* getLeadByIDSaga({ payload }) {
   }
 }
 
+function* updateLeadSaga({ payload }) {
+  yield put(isConnecting());
+  try {
+    const res = yield call(Leads.updateLead, payload);
+    if (res.data.status === 'failed') {
+      throw new Error(res.message);
+    }
+    yield put(isEndConnecting());
+  } catch (error) {
+    yield put(updateLeadFailure(error));
+    yield put(isEndConnecting());
+  }
+}
+
 export default function* manageLeadWatcher() {
   yield takeLatest(GET_LEADS_REQUEST, getLeadsSaga);
   yield takeLatest(DELETE_LEAD_REQUEST, deleteLeadSaga);
   yield takeLatest(GET_BRANCHES_REQUEST, getBranchesSaga);
   yield takeLatest(GET_LEAD_BY_ID_REQUEST, getLeadByIDSaga);
+  yield takeLatest(UPDATE_LEAD_REQUEST, updateLeadSaga);
 }

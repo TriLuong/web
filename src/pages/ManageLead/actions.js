@@ -12,6 +12,9 @@ import {
   GET_BRANCHES_REQUEST,
   GET_BRANCHES_SUCCESS,
   GET_BRANCHES_FAILURE,
+  UPDATE_LEAD_REQUEST,
+  UPDATE_LEAD_SUCCESS,
+  UPDATE_LEAD_FAILURE,
 } from './constants';
 
 export const getLeads = createAction(GET_LEADS_REQUEST);
@@ -30,3 +33,7 @@ export const getBranchesFailure = createAction(GET_BRANCHES_FAILURE);
 export const getLeadByID = createAction(GET_LEAD_BY_ID_REQUEST);
 export const getLeadByIDSuccess = createAction(GET_LEAD_BY_ID_SUCCESS);
 export const getLeadByIDFailure = createAction(GET_LEAD_BY_ID_FAILURE);
+
+export const updateLead = createAction(UPDATE_LEAD_REQUEST);
+export const updateLeadSuccess = createAction(UPDATE_LEAD_SUCCESS);
+export const updateLeadFailure = createAction(UPDATE_LEAD_FAILURE);

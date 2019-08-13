@@ -5,10 +5,11 @@ import './style.scss';
 
 type Props = {
   onDateChange: () => {},
+  initialDate: '',
 };
 class SelectDate extends PureComponent<Props> {
   render() {
-    const { onDateChange } = this.props;
+    const { onDateChange, initialDate } = this.props;
     return (
       <div>
         <div className="titleCalendar">
@@ -20,7 +21,7 @@ class SelectDate extends PureComponent<Props> {
           autoFocus
           onDateChange={onDateChange}
           daySize={50}
-          initialDate={moment()}
+          initialDate={initialDate ? moment(initialDate) : ''}
         />
       </div>
     );

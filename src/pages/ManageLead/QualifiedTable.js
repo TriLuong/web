@@ -7,56 +7,68 @@ import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
 
 /* eslint react/prop-types: 0 */
 const QualifiledTable = ({ data, onSchedule, onClick }) => {
-  const elemtLeads = data.map(lead => (
-    <tr key={lead.id}>
-      <td>{lead.Full_Name}</td>
-      <td>{lead.Region ? lead.Region : ''}</td>
-      <td>
-        {lead.Phone}
-        <br />
-        {lead.Email}
-      </td>
-      <td>{`${lead.date} ${lead.time}`}</td>
+  const elemtLeads = data.map(lead => {
+    let date;
+    let time;
+    if (lead.Meeting_Date_and_Time) {
+      const dateTimeArr = lead.Meeting_Date_and_Time.split('T');
+      date = dateTimeArr[0];
+      const hour = dateTimeArr[1].split(':')[0];
+      const minute = dateTimeArr[1].split(':')[1];
+      time = `${hour}:${minute}`;
+    }
 
-      <td>
-        {lead.status ? (
-          <div className="d-flex">
-            <button
-              type="button"
-              className="btn btn-primary w-100"
-              onClick={() => onSchedule('broadcast', lead)}
-            >
-              BROADCAST
-            </button>
-            <MenuPopover
-              menuItems={MENU_POPOVER_ITEMS_QUALIFILED}
-              onClick={name => onClick({ actionLead: name, lead })}
-            />
-          </div>
-        ) : (
-          <div className="d-flex">
-            <Link to={`/lead-detail/${lead.id}`} className="w-100">
+    return (
+      <tr key={lead.id}>
+        <td>{lead.Full_Name}</td>
+        <td>{lead.Region ? lead.Region : ''}</td>
+        <td>
+          {lead.Phone}
+          <br />
+          {lead.Email}
+        </td>
+        <td>{lead.Meeting_Date_and_Time ? `${date} • ${time}` : 'Not available'}</td>
+
+        <td>
+          {lead.Meeting_Date_and_Time ? (
+            <div className="d-flex">
               <button
                 type="button"
                 className="btn btn-primary w-100"
-                onClick={() => onSchedule('schedule', lead)}
+                onClick={() => onSchedule('broadcast', lead)}
               >
-                SCHEDULE
+                BROADCAST
               </button>
-            </Link>
+              <MenuPopover
+                menuItems={MENU_POPOVER_ITEMS_QUALIFILED}
+                onClick={name => onClick({ actionLead: name, lead })}
+              />
+            </div>
+          ) : (
+            <div className="d-flex">
+              <Link to={`/lead-detail/${lead.id}`} className="w-100">
+                <button
+                  type="button"
+                  className="btn btn-primary w-100"
+                  onClick={() => onSchedule('schedule', lead)}
+                >
+                  SCHEDULE
+                </button>
+              </Link>
 
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              style={{ marginLeft: '10px' }}
-            >
-              <IconEdit />
-            </button>
-          </div>
-        )}
-      </td>
-    </tr>
-  ));
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                style={{ marginLeft: '10px' }}
+              >
+                <IconEdit />
+              </button>
+            </div>
+          )}
+        </td>
+      </tr>
+    );
+  });
   return (
     <table entries="10" className="table">
       <thead>

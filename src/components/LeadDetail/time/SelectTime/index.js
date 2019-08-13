@@ -17,15 +17,17 @@ class SelectTime extends PureComponent<Props> {
     time: {},
   };
 
+  /* eslint radix: 0 */
   componentDidMount() {
     const { initialTime } = this.props;
     if (initialTime) {
-      const timeSplit = initialTime.split(' ');
-      const initType = timeSplit[1];
-      const initHour = timeSplit[0].split(':')[0];
-      const initMinute = timeSplit[0].split(':')[1];
+      const timeSplit = initialTime.split(':');
+      const houtInt = parseInt(timeSplit[0]);
+      const initHour = houtInt > 12 ? houtInt - 12 : houtInt;
+      const initMinute = timeSplit[1];
       const hourElemtArr = document.getElementsByName('hour');
       const minuteElemtArr = document.getElementsByName('minute');
+      const initType = houtInt >= 12 ? 'PM' : 'AM';
 
       const inintInnerHour = `${initHour} ${initType}`;
       const initInnerMinute = `:${initMinute}`;

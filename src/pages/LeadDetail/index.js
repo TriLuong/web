@@ -17,7 +17,7 @@ import SelectTime from 'components/LeadDetail/time/SelectTime';
 import RadioButton from 'components/common/form/RadioButton';
 import Notification from 'components/common/notification';
 import { getBranchesState, getLeadState, getFetchingState } from 'pages/ManageLead/selectors';
-// import { getBranches } from 'pages/ManageLead/actions';
+import { updateLead } from 'pages/ManageLead/actions';
 import {
   CONTRIES_NAME,
   STATES_NAME,
@@ -44,10 +44,11 @@ class SalesDetail extends Component<Props> {
         Email: '',
         budget: '',
         service: [],
+        Meeting_Date_and_Time: '',
       },
       firstName: '',
       lastName: '',
-      date: moment().format('DD/MM/YYYY'),
+      date: moment().format('YYYY-MM-DD'),
       time: '10:00 AM',
       isOpen: false,
     };
@@ -91,7 +92,7 @@ class SalesDetail extends Component<Props> {
 
   onDateChange = (dateValue, setFieldValue) => {
     const { params, time } = this.state;
-    const newDate = dateValue.format('DD/MM/YYYY');
+    const newDate = dateValue.format('YYYY-MM-DD');
     const newDateTime = `${newDate}T${time}`;
 
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
@@ -106,10 +107,10 @@ class SalesDetail extends Component<Props> {
     const typeTime = timeArr[1];
     let hour = timeArr[0].split(':')[0];
     const minute = timeArr[0].split(':')[1];
-    if (typeTime === 'PM') {
+    if (typeTime === 'PM' && hour !== '12') {
       hour = parseInt(hour) + 12;
     }
-    const newTime = `${hour}:${minute}:00`;
+    const newTime = `${hour}:${minute}`;
 
     const newDateTime = `${date}T${newTime}`;
 
@@ -206,6 +207,8 @@ class SalesDetail extends Component<Props> {
   };
 
   onSubmit = values => {
+    const { doUpdateLead } = this.props;
+    doUpdateLead({ data: values });
     this.toggle();
     // console.log('this.state.params', params);
     console.log('this.state', this.state);
@@ -586,12 +589,13 @@ class SalesDetail extends Component<Props> {
                   <div className="form-group col-md-6">
                     <SelectDate
                       value={values.date}
+                      initialDate={values.Meeting_Date_and_Time ? values.Meeting_Date_and_Time.split('T')[0] : ''}
                       onDateChange={date => this.onDateChange(date, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
                     <SelectTime
-                      initialTime={values.time}
+                      initialTime={values.Meeting_Date_and_Time ? values.Meeting_Date_and_Time.split('T')[1] : ''}
                       value={values.time}
                       onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                     />
@@ -637,8 +641,8 @@ const mapStateToProps = store => ({
   lead: getLeadState(store),
 });
 
-const mapDispatchToProps = () => ({
-  // doGetBranches: evt => dispatch(getBranches(evt)),
+const mapDispatchToProps = dispatch => ({
+  doUpdateLead: evt => dispatch(updateLead(evt)),
 });
 
 const withConnect = connect(

@@ -12,6 +12,8 @@ import {
   GET_BRANCHES_REQUEST,
   GET_BRANCHES_SUCCESS,
   GET_BRANCHES_FAILURE,
+  UPDATE_LEAD_REQUEST,
+  UPDATE_LEAD_FAILURE,
 } from './constants';
 
 const initialState = fromJS({
@@ -28,6 +30,7 @@ export default function manageLeadReducer(state = initialState, action) {
     case DELETE_LEAD_REQUEST:
     case GET_LEAD_BY_ID_REQUEST:
     case GET_BRANCHES_REQUEST:
+    case UPDATE_LEAD_REQUEST:
       return state.set('isFetching', true).set('error', false);
     case GET_LEADS_SUCCESS:
     case DELETE_LEAD_SUCCESS:
@@ -37,6 +40,7 @@ export default function manageLeadReducer(state = initialState, action) {
         .set('error', false);
     case GET_LEADS_FAILURE:
     case DELETE_LEAD_FAILURE:
+    case UPDATE_LEAD_FAILURE:
       return state
         .set('isFetching', false)
         .set('dataLeads', [])
