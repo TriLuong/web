@@ -49,6 +49,7 @@ class SalesPage extends Component<Props> {
         keyword: null,
       },
       filter: '',
+      typeLead: LEADS_FILTER[0],
     };
   }
 
@@ -89,10 +90,10 @@ class SalesPage extends Component<Props> {
   handleOnChangeSelectField = event => {
     const { value } = event;
     const { params } = this.state;
-    const { doGetLeads, dataLeads } = this.props;
+    const { doGetLeads } = this.props;
     const newParams = { ...params, status: value };
-    this.setState({ params: newParams, filter: '' });
-    doGetLeads({ ...newParams, page: dataLeads.page });
+    this.setState({ params: newParams, filter: '', typeLead: event });
+    doGetLeads({ ...newParams, page: 1 });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
 
@@ -209,6 +210,7 @@ class SalesPage extends Component<Props> {
       isOpenAssignDesigner,
       isOpen,
       filter,
+      typeLead,
     } = this.state;
     const { dataLeads, branches } = this.props;
 
@@ -233,6 +235,7 @@ class SalesPage extends Component<Props> {
               <SelectField
                 className="mr-2"
                 options={LEADS_FILTER}
+                value={typeLead}
                 placeholder="Qualified Leads"
                 onChange={this.handleOnChangeSelectField}
               />
