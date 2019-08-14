@@ -232,33 +232,34 @@ class SalesDetail extends Component<Props> {
       <div className="document">
         <Header />
         <BreadCrumb lead={lead} />
-        <div className="container">
-          <h2 className="page-title">Client Requirements</h2>
-          <Formik
-            initialValues={lead}
-            onSubmit={this.onSubmit}
-            validationSchema={Yup.object().shape({
-              // Full_Name: Yup.string().required('Required'),
-              // lastName: Yup.string().required('Required'),
-              // Email: Yup.string()
-              //   .email('Invalid email address')
-              //   .required('Required'),
-              // Phone: Yup.string().required('Required'),
-              // Street: Yup.string().required('Required'),
-              // Country: Yup.string().required('Required'),
-              // State: Yup.string().required('Required'),
-              // City: Yup.string().required('Required'),
-              // Zip_Code: Yup.number().required('Required'),
-              // budget: Yup.string().required('Required'),
-              // services: Yup.string().required('Required'),
-              // branch: Yup.string().required('Required'),
-              // date: Yup.string().required('Required'),
-              // time: Yup.string().required('Required'),
-              // designers: Yup.string().required('Required'),
-            })}
-          >
-            {({ handleSubmit, values, setFieldValue, isValid, errors, touched }) => (
-              <form onSubmit={handleSubmit}>
+        <Formik
+          initialValues={lead}
+          onSubmit={this.onSubmit}
+          validationSchema={Yup.object().shape({
+            // Full_Name: Yup.string().required('Required'),
+            // lastName: Yup.string().required('Required'),
+            // Email: Yup.string()
+            //   .email('Invalid email address')
+            //   .required('Required'),
+            // Phone: Yup.string().required('Required'),
+            // Street: Yup.string().required('Required'),
+            // Country: Yup.string().required('Required'),
+            // State: Yup.string().required('Required'),
+            // City: Yup.string().required('Required'),
+            // Zip_Code: Yup.number().required('Required'),
+            // budget: Yup.string().required('Required'),
+            // services: Yup.string().required('Required'),
+            // branch: Yup.string().required('Required'),
+            // date: Yup.string().required('Required'),
+            // time: Yup.string().required('Required'),
+            // designers: Yup.string().required('Required'),
+          })}
+        >
+          {({ handleSubmit, values, setFieldValue, isValid, errors, touched }) => (
+            <form onSubmit={handleSubmit}>
+              <div className="container">
+                <h2 className="page-title">Client Requirements</h2>
+
                 <div className="form-title">Contact Info</div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
@@ -595,29 +596,38 @@ class SalesDetail extends Component<Props> {
                     ''
                   )}
                 </div>
-                <div className="form-row form-row-detail meetingAvailability">
-                  <div className="form-group col-md-6">
-                    <SelectDate
-                      value={values.date}
-                      initialDate={
+                <div className="form-row form-row-detail">
+                  <div className="form-group col-md-12">
+                    <div className="meetingAvailability">
+                      <div className="form-row form-row-detail">
+                        <div className="form-group col-md-6">
+                          <SelectDate
+                            value={values.date}
+                            initialDate={
                         values.Meeting_Date_and_Time
                           ? values.Meeting_Date_and_Time.split('T')[0]
                           : ''
                       }
-                      onDateChange={date => this.onDateChange(date, setFieldValue)}
-                    />
-                  </div>
-                  <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
-                    <SelectTime
-                      initialTime={
+                            onDateChange={date => this.onDateChange(date, setFieldValue)}
+                          />
+                        </div>
+                        <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
+                          <SelectTime
+                            initialTime={
                         values.Meeting_Date_and_Time
                           ? values.Meeting_Date_and_Time.split('T')[1]
                           : ''
                       }
-                      value={values.time}
-                      onTimeChange={time => this.onTimeChange(time, setFieldValue)}
-                    />
+                            value={values.time}
+                            onTimeChange={time => this.onTimeChange(time, setFieldValue)}
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+
                   </div>
+
                 </div>
                 <h2 className="page-title">Broadcast Options</h2>
                 <div className="form-title">
@@ -630,7 +640,7 @@ class SalesDetail extends Component<Props> {
                   )}
                 </div>
                 <div className="form-row form-row-detail">
-                  <div className="form-group col-md-12">
+                  <div className="col-md-12">
                     <RadioButton
                       label="All Designers in 1MG Experience Center"
                       options={RADIO_DESIGNER}
@@ -640,11 +650,11 @@ class SalesDetail extends Component<Props> {
                     />
                   </div>
                 </div>
-                <Footer isValid={isValid} dateTime={values.Meeting_Date_and_Time} />
-              </form>
-            )}
-          </Formik>
-        </div>
+              </div>
+              <Footer isValid={isValid} dateTime={values.Meeting_Date_and_Time} />
+            </form>
+          )}
+        </Formik>
         <Notification isOpen={isOpen}>
           <NotificationContainer />
         </Notification>

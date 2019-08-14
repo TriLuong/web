@@ -50,4 +50,8 @@ button:focus {
 .btn-toolbar {
   flex-wrap: nowrap;
   align-items: center;
+  .wrap-select__control {
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    border: transparent;
+  }
 }

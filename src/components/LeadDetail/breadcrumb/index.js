@@ -18,7 +18,7 @@ class BreadCrumb extends PureComponent<Props> {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <a href="/">Manage Leads</a>
+            <a href="/leads">Manage Leads</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             {lead.Full_Name}
