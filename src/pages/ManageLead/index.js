@@ -11,13 +11,13 @@ import Checking from 'components/common/checking';
 import ModalDesignerAvailable from 'components/modal/ManageLead/ModalDesignerAvailable';
 import ModalAssignDesigner from 'components/modal/ModalAssignDesigner';
 import Notification from 'components/common/notification';
-import { getBranches } from 'pages/ManageUser/actions';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
+import { getBranchesState } from 'pages/App/selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { getLeads, deleteLead, getLeadByID } from './actions';
-import { getLeadsState, getFetchingState, getBranchesState, getLeadState } from './selectors';
+import { getLeads, deleteLead } from './actions';
+import { getLeadsState, getFetchingState } from './selectors';
 import DatatablePage from './DatatablePage';
 
 import { LEADS_FILTER, RADIO_QUALIFIELD, RADIO_BROADCAST } from './constants';
@@ -26,8 +26,6 @@ import './styles.scss';
 type Props = {
   doGetLeads: () => {},
   doDeleteLead: () => {},
-  doGetBranches: () => {},
-  doGetLeadByID: () => {},
   dataLeads: {
     leads: {},
     page: Number,
@@ -44,8 +42,8 @@ class SalesPage extends Component<Props> {
       isOpenAssignDesigner: false,
       lead: {},
       params: {
-        status: 'qualifiedLeads',
-        filter: 'all',
+        // status: 'qualifiedLeads',
+        // filter: 'all',
         orderBy: null,
         orderType: null,
       },
@@ -53,15 +51,14 @@ class SalesPage extends Component<Props> {
   }
 
   componentDidMount() {
-    const { doGetBranches } = this.props;
     this.gotoPage(1);
-    doGetBranches();
   }
 
   gotoPage = page => {
     const { doGetLeads } = this.props;
     const { params } = this.state;
     doGetLeads({ ...params, page });
+    // doGetLeads({ page });
   };
 
   handleOnChangeRadioButton = ({ value }) => {
@@ -131,11 +128,8 @@ class SalesPage extends Component<Props> {
 
   /* eslint react/prop-types: 0 */
   onSchedule = (typeAction, lead) => {
-    const { doGetLeadByID, dataLeads } = this.props;
-    const leadFind = dataLeads.leads.find(item => item.id === lead.id);
-    this.setState({ lead });
-    doGetLeadByID(leadFind);
     // console.log('leadFind', leadFind);
+    this.setState({ lead });
     if (typeAction === 'broadcast') {
       this.toggleCheckDesigner();
     } else if (typeAction === 'assignDesigner') {
@@ -258,14 +252,11 @@ const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   dataLeads: getLeadsState(store),
   branches: getBranchesState(store),
-  lead: getLeadState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
   doGetLeads: evt => dispatch(getLeads(evt)),
   doDeleteLead: evt => dispatch(deleteLead(evt)),
-  doGetBranches: evt => dispatch(getBranches(evt)),
-  doGetLeadByID: evt => dispatch(getLeadByID(evt)),
 });
 
 const withConnect = connect(

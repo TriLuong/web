@@ -42,4 +42,8 @@ export const RADIO_DESIGNER = [
   { name: 'designers', label: 'All Designers in 1MG Experience Center', value: 'all' },
 ];
 
+export const GET_LEAD_BY_ID_REQUEST = 'GET_LEAD_BY_ID/REQUEST';
+export const GET_LEAD_BY_ID_SUCCESS = 'GET_LEAD_BY_ID/SUCCESS';
+export const GET_LEAD_BY_ID_FAILURE = 'GET_LEAD_BY_ID/FAILURE';
+
 export default {};

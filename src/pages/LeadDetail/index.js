@@ -6,6 +6,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import 'react-dates/initialize';
 import moment from 'moment';
+import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
 import Header from 'components/common/header';
 import Footer from 'components/LeadDetail/footer';
 import BreadCrumb from 'components/LeadDetail/breadcrumb';
@@ -16,8 +18,13 @@ import SelectDate from 'components/LeadDetail/time/SelectDate';
 import SelectTime from 'components/LeadDetail/time/SelectTime';
 import RadioButton from 'components/common/form/RadioButton';
 import Notification from 'components/common/notification';
-import { getBranchesState, getLeadState, getFetchingState } from 'pages/ManageLead/selectors';
+import { getBranchesState } from 'pages/App/selectors';
 import { updateLead } from 'pages/ManageLead/actions';
+import { getLeadById } from './actions';
+import { getFetchingState, getLeadByIdState } from './selectors';
+import reducer from './reducer';
+/* eslint  import/no-cycle: 0 */
+import saga from './saga';
 import {
   CONTRIES_NAME,
   STATES_NAME,
@@ -56,12 +63,12 @@ class SalesDetail extends Component<Props> {
 
   /* eslint  react/prop-types: 0 */
   componentDidMount() {
-    const { lead } = this.props;
-    console.log(lead);
-    this.setState({
-      firstName: lead.Owner.name.split(' ')[0],
-      lastName: lead.Owner.name.split(' ')[1],
-    });
+    const { doGetLeadById, match } = this.props;
+    doGetLeadById({ id: match.params.id });
+    // this.setState({
+    //   firstName: lead.Owner.name.split(' ')[0],
+    //   lastName: lead.Owner.name.split(' ')[1],
+    // });
   }
 
   /* This function handleOnChange for common component */
@@ -178,7 +185,7 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, branchId: value.id };
     this.setState({ params: newParams });
     setFieldValue(name, value.id);
-  }
+  };
 
   toggle = () => {
     this.setState(
@@ -205,16 +212,22 @@ class SalesDetail extends Component<Props> {
 
   onSubmit = values => {
     const { doUpdateLead } = this.props;
-    doUpdateLead({ data: values });
+    const { params } = this.state;
+    // const newParams = {...params, status: "broadcasted" };
+    // this.setState({ params: newParams });
+    doUpdateLead({ data: { ...values, status: 'broadcasted' } });
     this.toggle();
-    // console.log('this.state.params', params);
-    console.log('this.state', this.state);
+    console.log('this.state.params', params);
+    // console.log('this.state', this.state);
     console.log('onSubmit', values);
   };
 
   render() {
     const { isOpen } = this.state;
-    const { branches, lead } = this.props;
+    const { branches, lead, isFetching } = this.props;
+    if (isFetching) {
+      return null;
+    }
     return (
       <div className="document">
         <Header />
@@ -258,7 +271,7 @@ class SalesDetail extends Component<Props> {
                       <InputGroup
                         label="First Name"
                         name="firstName"
-                        value={values.Owner.name.split(' ')[0]}
+                        value={values.Owner ? values.Owner.name.split(' ')[0] : ''}
                         onChange={event => this.onHandleChangeName(event, setFieldValue)}
                       />
                     </div>
@@ -273,7 +286,7 @@ class SalesDetail extends Component<Props> {
                       <InputGroup
                         label="Last Name"
                         name="lastName"
-                        value={values.Owner.name.split(' ')[1]}
+                        value={values.Owner ? values.Owner.name.split(' ')[1] : ''}
                         onChange={event => this.onHandleChangeName(event, setFieldValue)}
                       />
                     </div>
@@ -536,8 +549,8 @@ class SalesDetail extends Component<Props> {
                   <div className="form-group col-md-7">
                     <InputGroup
                       label="Special instructions (optional)"
-                      name="servicesSpecial"
-                      value={values.servicesSpecial}
+                      name="serviceOption"
+                      value={values.serviceOption}
                       onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
@@ -586,13 +599,21 @@ class SalesDetail extends Component<Props> {
                   <div className="form-group col-md-6">
                     <SelectDate
                       value={values.date}
-                      initialDate={values.Meeting_Date_and_Time ? values.Meeting_Date_and_Time.split('T')[0] : ''}
+                      initialDate={
+                        values.Meeting_Date_and_Time
+                          ? values.Meeting_Date_and_Time.split('T')[0]
+                          : ''
+                      }
                       onDateChange={date => this.onDateChange(date, setFieldValue)}
                     />
                   </div>
                   <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
                     <SelectTime
-                      initialTime={values.Meeting_Date_and_Time ? values.Meeting_Date_and_Time.split('T')[1] : ''}
+                      initialTime={
+                        values.Meeting_Date_and_Time
+                          ? values.Meeting_Date_and_Time.split('T')[1]
+                          : ''
+                      }
                       value={values.time}
                       onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                     />
@@ -635,10 +656,11 @@ class SalesDetail extends Component<Props> {
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   branches: getBranchesState(store),
-  lead: getLeadState(store),
+  lead: getLeadByIdState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
+  doGetLeadById: evt => dispatch(getLeadById(evt)),
   doUpdateLead: evt => dispatch(updateLead(evt)),
 });
 
@@ -647,4 +669,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(SalesDetail);
+const withReducer = injectReducer({ key: 'leadDetailReducer', reducer });
+const withSaga = injectSaga({ key: 'leadDetailSaga', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(SalesDetail);
