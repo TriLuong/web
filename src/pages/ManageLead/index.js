@@ -140,7 +140,6 @@ class SalesPage extends Component<Props> {
   onSubmitAssignDesigner = values => {
     this.toggleAssignDesigner();
     this.onOpenNotification();
-    console.log('onSubmitAssignDesigner', values);
   };
 
   /* eslint react/prop-types: 0 */

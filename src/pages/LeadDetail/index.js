@@ -65,10 +65,6 @@ class SalesDetail extends Component<Props> {
   componentDidMount() {
     const { doGetLeadById, match } = this.props;
     doGetLeadById({ id: match.params.id });
-    // this.setState({
-    //   firstName: lead.Owner.name.split(' ')[0],
-    //   lastName: lead.Owner.name.split(' ')[1],
-    // });
   }
 
   /* This function handleOnChange for common component */
@@ -85,20 +81,16 @@ class SalesDetail extends Component<Props> {
     const { firstName, lastName, params } = this.state;
     const valueFirstName = name === 'firstName' ? value : firstName;
     const valueLastName = name === 'lastName' ? value : lastName;
-
     const newOwnerName = { ...params.Owner, name: `${valueFirstName} ${valueLastName}` };
     const newParams = { ...params, Owner: newOwnerName };
     this.setState({ [name]: value, params: newParams });
-
     setFieldValue('Owner', newOwnerName);
-    // console.info('onHandleChangeName');
   };
 
   onDateChange = (dateValue, setFieldValue) => {
     const { params, time } = this.state;
     const newDate = dateValue.format('YYYY-MM-DD');
     const newDateTime = `${newDate}T${time}`;
-
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, date: newDate });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
@@ -161,10 +153,8 @@ class SalesDetail extends Component<Props> {
   };
 
   onHandleChangeRadioButton = (value, setFieldValue) => {
-    // console.log('onHandleChangeRadioButton', value);
     const { params } = this.state;
     const newParams = { ...params, designers: value.value };
-    // console.log('newParams', newParams);
     this.setState({ params: newParams });
     setFieldValue('broadcastType', value.value);
   };
@@ -173,7 +163,6 @@ class SalesDetail extends Component<Props> {
     const { name, value } = event.target;
     const { params } = this.state;
     const newBudget = { ...params.budget, [name]: value };
-    // console.log('newBudget', newBudget);
     const newParams = { ...params, budget: newBudget };
     this.setState({ params: newParams });
     setFieldValue('budget', newBudget);
@@ -398,7 +387,7 @@ class SalesDetail extends Component<Props> {
                     <GroupSelectField
                       label="Country"
                       name="Country"
-                      value={{ values: values.Country, label: values.Country }}
+                      value={{ value: values.Country, label: values.Country }}
                       options={CONTRIES_NAME}
                       onChange={event => this.onChangeCountry(event, setFieldValue)}
                     />

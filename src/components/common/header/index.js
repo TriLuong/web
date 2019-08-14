@@ -72,7 +72,6 @@ class Header extends PureComponent<Props> {
   }
 
   onSubmitChangePassword = values => {
-    // console.info('onSubmitChangePassword', values);
     const { doChangePassword } = this.props;
     if (values.oldPassword !== values.reNewPassword
       && values.newPassword === values.reNewPassword) {
