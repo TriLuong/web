@@ -16,10 +16,9 @@ import {
   updateUser,
   requestBulkUpload,
   requestDeleteUser,
-  getBranches,
 } from './actions';
 import { USER_FILTER } from './constants';
-import { getFetchingState, getUsersState, getBranchesState } from './selectors';
+import { getFetchingState, getUsersState } from './selectors';
 
 import DatatablePage from './DatatablePage';
 
@@ -30,7 +29,6 @@ type Props = {
   doUpdateUser: () => {},
   doRequestBulkUpload: () => {},
   doRequestDeleteUser: () => {},
-  doGetBranches: () => {},
   branches: [],
   isFetching: Boolean,
 };
@@ -54,8 +52,6 @@ class DashBoard extends Component<Props> {
 
   componentDidMount() {
     this.gotoPage(1);
-    const { doGetBranches } = this.props;
-    doGetBranches();
   }
 
   toggleModal = ({ isEdit } = {}) => {
@@ -273,12 +269,10 @@ class DashBoard extends Component<Props> {
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   dataUsers: getUsersState(store),
-  branches: getBranchesState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
   doGetUsers: evt => dispatch(getUsers(evt)),
-  doGetBranches: evt => dispatch(getBranches(evt)),
   doAddUser: evt => dispatch(addUser(evt)),
   doUpdateUser: evt => dispatch(updateUser(evt)),
   doRequestBulkUpload: evt => dispatch(requestBulkUpload(evt)),

@@ -45,7 +45,3 @@ export const bulkUploadFailure = createAction(BULK_UPLOAD_FAILURE);
 export const requestDeleteUser = createAction(DELETE_USER_REQUEST);
 export const deleteUserSuccess = createAction(DELETE_USER_SUCCESS);
 export const deleteUserFailure = createAction(DELETE_USER_FAILURE);
-
-export const getBranches = createAction(GET_BRANCHES_REQUEST);
-export const getBranchesSuccess = createAction(GET_BRANCHES_SUCCESS);
-export const getBranchesFailure = createAction(GET_BRANCHES_FAILURE);
