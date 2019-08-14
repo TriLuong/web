@@ -75,7 +75,7 @@
   font-family: Helvetica, sans-serif;
   &[aria-disabled="true"]{
     opacity: 0.5;
-    font-weight: normal !important;
+    font-weight: 200 !important;
   }
 }
 .CalendarDay__today {
