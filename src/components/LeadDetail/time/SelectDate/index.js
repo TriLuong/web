@@ -85,7 +85,7 @@ class SelectDate extends PureComponent<Props> {
           numberOfMonths={1}
           autoFocus
           onDateChange={onDateChange}
-          daySize={50}
+          daySize={70}
           initialDate={initialDate ? moment(initialDate) : moment()}
           renderMonthElement={this.renderMonthElement}
         />
