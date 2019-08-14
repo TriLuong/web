@@ -259,7 +259,7 @@ class SalesPage extends Component<Props> {
 
           <ModalDesignerAvailable
             user={lead}
-            title="Designer Available"
+            title="No Designers Availble"
             isOpen={isDesignerAvailable}
             toggle={this.toggleDesignerAvailable}
             onSubmit={this.onSubmitDesignerAvailable}
