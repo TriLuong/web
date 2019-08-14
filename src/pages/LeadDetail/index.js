@@ -55,8 +55,9 @@ class SalesDetail extends Component<Props> {
       },
       firstName: '',
       lastName: '',
-      date: moment().format('YYYY-MM-DD'),
-      time: '10:00',
+      date: '',
+      time: '',
+      isInitDateTime: false,
       isOpen: false,
     };
   }
@@ -88,9 +89,24 @@ class SalesDetail extends Component<Props> {
   };
 
   onDateChange = (dateValue, setFieldValue) => {
-    const { params, time } = this.state;
+    const { params, isInitDateTime, time } = this.state;
+    const { lead } = this.props;
     const newDate = dateValue.format('YYYY-MM-DD');
-    const newDateTime = `${newDate}T${time}`;
+
+    let oldTime = '';
+    if (!isInitDateTime) {
+      if (lead.Meeting_Date_and_Time) {
+        oldTime = lead.Meeting_Date_and_Time.split('T')[1];
+      } else {
+        oldTime = '10:00';
+      }
+      this.setState(prevState => ({ isInitDateTime: !prevState.isInitDateTime, time: oldTime }));
+    } else {
+      oldTime = time;
+    }
+
+    const newDateTime = `${newDate}T${oldTime}`;
+
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, date: newDate });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
@@ -98,7 +114,8 @@ class SalesDetail extends Component<Props> {
 
   /* eslint radix: 0 */
   onTimeChange = (timeValue, setFieldValue) => {
-    const { params, date } = this.state;
+    const { params, date, isInitDateTime } = this.state;
+    const { lead } = this.props;
     const timeArr = timeValue.split(' ');
     const typeTime = timeArr[1];
     let hour = timeArr[0].split(':')[0];
@@ -108,8 +125,20 @@ class SalesDetail extends Component<Props> {
     }
     const newTime = `${hour}:${minute}`;
 
-    const newDateTime = `${date}T${newTime}`;
+    let oldDate = '';
 
+    if (!isInitDateTime) {
+      if (lead.Meeting_Date_and_Time) {
+        oldDate = lead.Meeting_Date_and_Time.split('T')[0];
+      } else {
+        oldDate = moment().format('YYYY-MM-DD');
+      }
+      this.setState(prevState => ({ isInitDateTime: !prevState.isInitDateTime, date: oldDate }));
+    } else {
+      oldDate = date;
+    }
+
+    const newDateTime = `${oldDate}T${newTime}`;
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, time: newTime });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
@@ -560,7 +589,6 @@ class SalesDetail extends Component<Props> {
                       value={values.branch}
                       onChange={event => this.onHandleChangeBranch(event, setFieldValue)}
                       isOptionSelected={option => values.branch === option.id}
-
                     />
                   </div>
                   <div className="form-group col-md-5">
@@ -589,30 +617,30 @@ class SalesDetail extends Component<Props> {
                           <SelectDate
                             value={values.date}
                             initialDate={
-                        values.Meeting_Date_and_Time
-                          ? values.Meeting_Date_and_Time.split('T')[0]
-                          : ''
-                      }
+                              values.Meeting_Date_and_Time
+                                ? values.Meeting_Date_and_Time.split('T')[0]
+                                : ''
+                            }
                             onDateChange={date => this.onDateChange(date, setFieldValue)}
                           />
                         </div>
-                        <div className="form-group col-md-6" style={{ borderLeft: '1px solid  #a5a7aa' }}>
+                        <div
+                          className="form-group col-md-6"
+                          style={{ borderLeft: '1px solid  #a5a7aa' }}
+                        >
                           <SelectTime
                             initialTime={
-                        values.Meeting_Date_and_Time
-                          ? values.Meeting_Date_and_Time.split('T')[1]
-                          : ''
-                      }
+                              values.Meeting_Date_and_Time
+                                ? values.Meeting_Date_and_Time.split('T')[1]
+                                : ''
+                            }
                             value={values.time}
                             onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                           />
                         </div>
                       </div>
-
                     </div>
-
                   </div>
-
                 </div>
                 <h2 className="page-title">Broadcast Options</h2>
                 <div className="form-title">
