@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
-import { MENU_POPOVER_ITEMS_BROADCASR, MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
+import { MENU_POPOVER_ITEMS_BROADCASR, MENU_POPOVER_ITEMS_ASSIGN_DESIGNER } from './constants';
 /* eslint react/prop-types: 0 */
 const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
   const [sortBy, setSortby] = useState('');
@@ -69,7 +69,7 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
                 ASSIGN DESIGNER
               </button>
               <MenuPopover
-                menuItems={MENU_POPOVER_ITEMS_QUALIFILED}
+                menuItems={MENU_POPOVER_ITEMS_ASSIGN_DESIGNER}
                 onClick={name => onClick({ actionLead: name, lead })}
               />
             </div>

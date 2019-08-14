@@ -165,8 +165,11 @@ class SalesPage extends Component<Props> {
   };
 
   onClick = ({ actionLead, lead }) => {
+    const { history } = this.props;
     if (actionLead === 'deleteLead') {
       this.handleDeleteLead(lead);
+    } else if (actionLead === 'assignDiffBranch') {
+      history.push(`/lead-detail/${lead.id}`);
     }
   };
 
