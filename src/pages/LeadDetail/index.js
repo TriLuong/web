@@ -184,7 +184,7 @@ class SalesDetail extends Component<Props> {
     const { params } = this.state;
     const newParams = { ...params, branchId: value.id };
     this.setState({ params: newParams });
-    setFieldValue(name, value.id);
+    setFieldValue(name, value);
   };
 
   toggle = () => {
@@ -212,14 +212,9 @@ class SalesDetail extends Component<Props> {
 
   onSubmit = values => {
     const { doUpdateLead } = this.props;
-    const { params } = this.state;
-    // const newParams = {...params, status: "broadcasted" };
-    // this.setState({ params: newParams });
-    doUpdateLead({ data: { ...values, status: 'broadcasted' } });
+    const { branch } = values;
+    doUpdateLead({ data: { ...values, status: 'broadcasted', branchId: branch.id } });
     this.toggle();
-    console.log('this.state.params', params);
-    // console.log('this.state', this.state);
-    console.log('onSubmit', values);
   };
 
   render() {
@@ -559,8 +554,8 @@ class SalesDetail extends Component<Props> {
                 <div className="form-title">
                   Experience Center
                   {' '}
-                  {errors.branchId && touched.branchId ? (
-                    <div className="invalid-feedback d-inline">{errors.branchId}</div>
+                  {errors.branch && touched.branch ? (
+                    <div className="invalid-feedback d-inline">{errors.branch}</div>
                   ) : (
                     ''
                   )}
@@ -569,13 +564,14 @@ class SalesDetail extends Component<Props> {
                   <div className="form-group col-md-4">
                     <GroupSelectField
                       label="Select Branch"
-                      name="branchId"
+                      name="branch"
                       options={branches}
                       getOptionLabel={option => option.name}
                       getOptionValue={option => option.id}
                       value={values.branch}
                       onChange={event => this.onHandleChangeBranch(event, setFieldValue)}
                       isOptionSelected={option => values.branch === option.id}
+
                     />
                   </div>
                   <div className="form-group col-md-5">
