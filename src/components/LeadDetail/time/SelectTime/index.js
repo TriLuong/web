@@ -63,7 +63,7 @@ class SelectTime extends PureComponent<Props> {
     this.activeTime(event, name);
 
     let hourState = '';
-    let minuteState = '';
+    let minuteState = '00';
     let typeState = '';
     let newTime = {};
     if (name === 'hour') {

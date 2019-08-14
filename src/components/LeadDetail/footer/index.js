@@ -12,14 +12,10 @@ class Footer extends PureComponent<Props> {
   }
 
   /* eslint radix: 0 */
-  render() {
-    const { isValid, dateTime } = this.props;
-    let date;
-    let timeStart;
-    let timeEnd;
+  displayTime = dateTime => {
     if (dateTime) {
       const dateTimeArr = dateTime.split('T');
-      date = dateTimeArr[0];
+      const date = dateTime.split('T')[0];
       const hourInt = parseInt(dateTimeArr[1].split(':')[0]);
       const hour = hourInt <= 12 ? hourInt : hourInt - 12;
       const typeTime = hourInt < 12 ? 'AM' : 'PM';
@@ -28,9 +24,21 @@ class Footer extends PureComponent<Props> {
       const typeTimeEnd = hourInt + 1 < 12 ? 'AM' : 'PM';
 
       const minute = dateTimeArr[1].split(':')[1];
-      timeStart = `${hour}:${minute} ${typeTime}`;
-      timeEnd = `${hourEnd}:${minute} ${typeTimeEnd}`;
+
+      /* eslint no-restricted-globals: 0 */
+      if (!isNaN(hour) && minute !== 'undefined') {
+        const timeStart = `${hour}:${minute} ${typeTime}`;
+        const timeEnd = `${hourEnd}:${minute} ${typeTimeEnd}`;
+        return { date, time: `from ${timeStart} to ${timeEnd}` };
+      }
     }
+    return { date: '', time: '' };
+  };
+
+  render() {
+    const { isValid, dateTime } = this.props;
+
+    const showDateTime = this.displayTime(dateTime);
 
     return (
       <div className="footer">
@@ -38,9 +46,11 @@ class Footer extends PureComponent<Props> {
           <div className="footer__content">
             <div>
               Slot will be booked for
-              <span className="footer__date-update">{!date ? null : date}</span>
               <span className="footer__date-update">
-                {!dateTime ? null : `from ${timeStart} to ${timeEnd}`}
+                {showDateTime.date ? showDateTime.date : ''}
+              </span>
+              <span className="footer__date-update">
+                {showDateTime.time ? showDateTime.time : ''}
               </span>
             </div>
             <button type="submit" className="btn btn-primary" disabled={!isValid}>
