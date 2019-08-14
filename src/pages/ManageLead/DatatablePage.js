@@ -13,30 +13,36 @@ const DatatablePage = ({
   onClick,
   branches,
   onSort,
-}) => (
-  <div className="table-sort">
-    {!status ? (
-      <QualifiedTable
-        data={data.leads || []}
-        onSchedule={onSchedule}
-        onClick={onClick}
-        filter={filter}
-        onSort={onSort}
-      />
-    ) : (
-      <BroadcastTable
-        data={data.leads || []}
-        onSchedule={onSchedule}
-        onClick={onClick}
-        branches={branches}
-        filter={filter}
-        onSort={onSort}
-      />
-    )}
-    <div className="table-sort__paginate">
-      <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
+}) => {
+  const dataLead = (data && data.leads) || [];
+
+  return (
+    <div className="table-sort">
+      {!status ? (
+        <QualifiedTable
+          data={dataLead}
+          onSchedule={onSchedule}
+          onClick={onClick}
+          filter={filter}
+          onSort={onSort}
+        />
+      ) : (
+        <BroadcastTable
+          data={dataLead}
+          onSchedule={onSchedule}
+          onClick={onClick}
+          branches={branches}
+          filter={filter}
+          onSort={onSort}
+        />
+      )}
+      {data && (
+      <div className="table-sort__paginate">
+        <Pagination pages={data.pages} page={data.page} gotoPage={gotoPage} />
+      </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export default DatatablePage;
