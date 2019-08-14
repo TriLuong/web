@@ -13,6 +13,6 @@ axios.interceptors.response.use(
     if (status === 401) {
       store.dispatch(requestLogout());
     }
-    Promise.reject(error);
+    return Promise.reject(error);
   },
 );
