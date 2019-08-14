@@ -5,20 +5,20 @@ import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_BROADCASR } from './constants';
 /* eslint react/prop-types: 0 */
-const BroadcastTable = ({ data, onSchedule, onClick, branches, filter, onSort }) => {
+const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
   const [sortBy, setSortby] = useState('');
 
-  let dataFilter = {};
+  // let dataFilter = {};
 
-  if (filter === 'all') {
-    dataFilter = data;
-  } else if (filter === 'scheduled') {
-    dataFilter = data.filter(l => l.broadcastType);
-  } else {
-    dataFilter = data.filter(l => !l.broadcastType);
-  }
+  // if (filter === 'all') {
+  //   dataFilter = data;
+  // } else if (filter === 'scheduled') {
+  //   dataFilter = data.filter(l => l.broadcastType);
+  // } else {
+  //   dataFilter = data.filter(l => !l.broadcastType);
+  // }
 
-  const elemtLeads = dataFilter.map(lead => {
+  const elemtLeads = data.map(lead => {
     let branch = null;
     let date;
     let time;

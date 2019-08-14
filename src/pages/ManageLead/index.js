@@ -42,11 +42,12 @@ class SalesPage extends Component<Props> {
       isOpenAssignDesigner: false,
       lead: {},
       params: {
-        // status: 'qualifiedLeads',
+        status: null,
         // filter: 'all',
         orderBy: null,
         orderType: null,
       },
+      filter: null,
     };
   }
 
@@ -56,27 +57,41 @@ class SalesPage extends Component<Props> {
 
   gotoPage = page => {
     const { doGetLeads } = this.props;
-    const { params } = this.state;
-    doGetLeads({ ...params, page });
+    const { params, filter } = this.state;
+    const newParams = { ...params, page };
+    this.setState({ params: newParams });
+    doGetLeads({ ...newParams, page, ...filter });
     // doGetLeads({ page });
   };
 
   handleOnChangeRadioButton = ({ value }) => {
     // console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
-    const newParams = { ...params, filter: value };
-    // const { doGetLeads } = this.props;
-    this.setState({ params: newParams });
-    // doGetLeads({ ...newParams });
+    // let newParams = {};
+    let newFilter = null;
+    console.log(value);
+    if (!value) {
+      newFilter = null;
+    } else if (value === 'noDate') {
+      newFilter = { noDate: true };
+    } else {
+      newFilter = { meetingStatus: value };
+    }
+    // newParams = { ...params, ...filter };
+    // console.log(newParams);
+    const { doGetLeads } = this.props;
+    // this.setState({ params: newParams, filter });
+    this.setState({ filter: newFilter });
+    doGetLeads({ ...params, ...newFilter });
   };
 
   handleOnChangeSelectField = event => {
     const { value } = event;
     const { params } = this.state;
-    // const { doGetLeads, dataLeads } = this.props;
-    const newParams = { ...params, status: value, filter: 'all' };
-    this.setState({ params: newParams });
-    // doGetLeads({ ...newParams, page: dataLeads.page });
+    const { doGetLeads, dataLeads } = this.props;
+    const newParams = { ...params, status: value };
+    this.setState({ params: newParams, filter: null });
+    doGetLeads({ ...newParams, page: dataLeads.page });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
 
@@ -179,6 +194,7 @@ class SalesPage extends Component<Props> {
       isDesignerAvailable,
       isOpenAssignDesigner,
       isOpen,
+      filter,
     } = this.state;
     const { dataLeads, branches } = this.props;
 
@@ -192,9 +208,9 @@ class SalesPage extends Component<Props> {
               className="ml-auto"
               classNameRadio="ml-5"
               id="radioButton"
-              options={params.status === 'qualifiedLeads' ? RADIO_QUALIFIELD : RADIO_BROADCAST}
+              options={!params.status ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
-              selectedOption={params.filter}
+              selectedOption={filter}
             />
             <div
               className="btn-toolbar ml-5"

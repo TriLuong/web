@@ -10,7 +10,6 @@ import {
   updateLeadFailure,
 } from './actions';
 import { GET_LEADS_REQUEST, DELETE_LEAD_REQUEST, UPDATE_LEAD_REQUEST } from './constants';
-import data from './data';
 
 function* getLeadsSaga({ payload }) {
   yield put(isConnecting());

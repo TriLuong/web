@@ -1,16 +1,16 @@
 export const LEADS_FILTER = [
-  { value: 'qualifiedLeads', label: 'Qualified Leads' },
-  { value: 'broadcastLeads', label: 'Broadcast Leads' },
+  { value: null, label: 'Qualified Leads' },
+  { value: 'broadcasted', label: 'Broadcast Leads' },
 ];
 
 export const RADIO_QUALIFIELD = [
-  { name: 'qualifiedLeads', label: 'All', value: 'all' },
-  { name: 'qualifiedLeads', label: 'Without Date & Time', value: 'unScheduled' },
+  { name: 'qualifiedLeads', label: 'All', value: null },
+  { name: 'qualifiedLeads', label: 'Without Date & Time', value: 'noDate' },
 ];
 export const RADIO_BROADCAST = [
-  { name: 'broadcastLeads', label: 'All', value: 'all' },
-  { name: 'broadcastLeads', label: 'Scheduled', value: 'scheduled' },
-  { name: 'broadcastLeads', label: 'Unscheduled', value: 'unScheduled' },
+  { name: 'broadcastLeads', label: 'All', value: null },
+  { name: 'broadcastLeads', label: 'Scheduled', value: 'schedule' },
+  { name: 'broadcastLeads', label: 'Unscheduled', value: 'unSchedule' },
 ];
 
 export const MENU_POPOVER_ITEMS_QUALIFILED = [

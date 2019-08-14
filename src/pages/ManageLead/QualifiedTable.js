@@ -5,16 +5,17 @@ import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_QUALIFILED, MENU_POPOVER_ITEMS_SCHEDULE } from './constants';
 
 /* eslint react/prop-types: 0 */
-const QualifiledTable = ({ data, onSchedule, onClick, filter, onSort }) => {
+const QualifiledTable = ({ data, onSchedule, onClick, onSort }) => {
   const [sortBy, setSortby] = useState('');
 
-  let dataFilter = [];
-  if (filter === 'all') {
-    dataFilter = [...data];
-  } else {
-    dataFilter = data.filter(lead => !lead.Meeting_Date_and_Time);
-  }
-  const elemtLeads = dataFilter.map(lead => {
+  // let dataFilter = [];
+  // if (filter === 'all') {
+  //   dataFilter = [...data];
+  // } else {
+  //   dataFilter = data.filter(lead => !lead.Meeting_Date_and_Time);
+  // }
+
+  const elemtLeads = data.map(lead => {
     let date;
     let time;
     if (lead.Meeting_Date_and_Time) {
