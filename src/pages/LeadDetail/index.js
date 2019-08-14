@@ -642,7 +642,6 @@ class SalesDetail extends Component<Props> {
                 <div className="form-row form-row-detail">
                   <div className="col-md-12">
                     <RadioButton
-                      label="All Designers in 1MG Experience Center"
                       options={RADIO_DESIGNER}
                       value={values.broadcastType}
                       onChange={value => this.onHandleChangeRadioButton(value, setFieldValue)}

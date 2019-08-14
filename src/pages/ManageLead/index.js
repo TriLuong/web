@@ -47,7 +47,7 @@ class SalesPage extends Component<Props> {
         orderBy: null,
         orderType: null,
       },
-      filter: null,
+      filter: '',
     };
   }
 
@@ -65,7 +65,7 @@ class SalesPage extends Component<Props> {
   };
 
   handleOnChangeRadioButton = ({ value }) => {
-    // console.log('handleOnChangeRadioButton', value);
+    console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
     // let newParams = {};
     let newFilter = null;
@@ -81,7 +81,7 @@ class SalesPage extends Component<Props> {
     // console.log(newParams);
     const { doGetLeads } = this.props;
     // this.setState({ params: newParams, filter });
-    this.setState({ filter: newFilter });
+    this.setState({ filter: value });
     doGetLeads({ ...params, ...newFilter });
   };
 
@@ -90,7 +90,7 @@ class SalesPage extends Component<Props> {
     const { params } = this.state;
     const { doGetLeads, dataLeads } = this.props;
     const newParams = { ...params, status: value };
-    this.setState({ params: newParams, filter: null });
+    this.setState({ params: newParams, filter: '' });
     doGetLeads({ ...newParams, page: dataLeads.page });
     // console.log('handleOnChangeRadioButton', value, this.state);
   };
@@ -207,7 +207,6 @@ class SalesPage extends Component<Props> {
             <RadioButton
               className="ml-auto"
               classNameRadio="ml-5"
-              id="radioButton"
               options={!params.status ? RADIO_QUALIFIELD : RADIO_BROADCAST}
               onChange={this.handleOnChangeRadioButton}
               selectedOption={filter}
