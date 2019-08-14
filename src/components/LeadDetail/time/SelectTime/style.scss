@@ -4,12 +4,15 @@
   .titleTable {
     font-size: 20px;
     color: #8e8e93;
-    padding: 15px 10px 0;
+    padding: 0;
+    p {
+      margin-top: 7px;
+    }
   }
   table {
     text-align: center;
     border-collapse: separate;
-    border-spacing: 10px;
+    border-spacing: 10px 20px;
     td {
       padding: 5px 15px;
       border-radius: 18px;

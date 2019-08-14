@@ -59,8 +59,26 @@
         &__selected {
           background-color: #11a6b0;
           transition: all 0.3s;
+          color: #fff;
         }
       }
     }
   }
+}
+.SingleDatePicker .DayPicker_weekHeader_li small {
+  color: #66696c;
+  opacity: 0.6;
+  font-family: Helvetica, sans-serif;
+}
+.CalendarDay__default {
+  color: #66696c;
+  font-family: Helvetica, sans-serif;
+  &[aria-disabled="true"]{
+    opacity: 0.5;
+    font-weight: normal !important;
+  }
+}
+.CalendarDay__today {
+  background: #e4e7e7;
+  color: inherit;
 }
