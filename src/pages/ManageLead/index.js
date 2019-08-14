@@ -46,6 +46,7 @@ class SalesPage extends Component<Props> {
         // filter: 'all',
         orderBy: null,
         orderType: null,
+        keyword: null,
       },
       filter: '',
     };
@@ -58,22 +59,22 @@ class SalesPage extends Component<Props> {
   gotoPage = page => {
     const { doGetLeads } = this.props;
     const { params, filter } = this.state;
-    const newParams = { ...params, page };
-    this.setState({ params: newParams });
-    doGetLeads({ ...newParams, page, ...filter });
+    doGetLeads({ ...params, page, ...filter });
     // doGetLeads({ page });
   };
 
   handleOnChangeRadioButton = ({ value }) => {
-    console.log('handleOnChangeRadioButton', value);
+    // console.log('handleOnChangeRadioButton', value);
     const { params } = this.state;
     // let newParams = {};
     let newFilter = null;
-    console.log(value);
+    // console.log(value);
     if (!value) {
-      newFilter = null;
+      newFilter = '';
     } else if (value === 'noDate') {
       newFilter = { noDate: true };
+    } else if (value === 'unSchedule') {
+      newFilter = { meetingStatus: null };
     } else {
       newFilter = { meetingStatus: value };
     }
@@ -186,6 +187,19 @@ class SalesPage extends Component<Props> {
     doGetLeads(newPrams);
   };
 
+  onSearch = event => {
+    const { doGetLeads, isFetching } = this.props;
+    if (isFetching) {
+      return null;
+    }
+    const { params, filter } = this.state;
+    const searchText = event.target.value;
+    const newParams = { ...params, ...filter, keyword: searchText };
+    this.setState({ params: newParams });
+    setTimeout(() => doGetLeads(newParams), 500);
+    return null;
+  };
+
   render() {
     const {
       lead,
@@ -223,7 +237,13 @@ class SalesPage extends Component<Props> {
                 onChange={this.handleOnChangeSelectField}
               />
               <div className="top-control__search">
-                <input type="text" placeholder="Search" className="form-control" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="form-control"
+                  value={params.keyword || ''}
+                  onChange={this.onSearch}
+                />
                 <IconSearch className="top-control__search__icon" />
               </div>
             </div>

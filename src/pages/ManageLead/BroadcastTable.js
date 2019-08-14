@@ -37,14 +37,14 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
         <td>{lead.Full_Name}</td>
         <td>{!branch ? '_' : branch.name}</td>
         <td>
-          {lead.broadcastType ? 'Scheduled' : 'Unscheduled'}
+          {lead.meetingStatus ? 'Scheduled' : 'Unscheduled'}
           <br />
           {lead.Meeting_Date_and_Time ? `${date} • ${time}` : ''}
         </td>
-        <td>{lead.broadcastType ? lead.broadcastType : '_'}</td>
+        <td>_</td>
 
         <td>
-          {lead.broadcastType ? (
+          {lead.broadcastType !== 'all' ? (
             <div className="d-flex">
               <Link to={`/lead-detail/${lead.id}`} className="w-100">
                 <button
@@ -110,12 +110,12 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
           <th
             className="sorting"
             onClick={() => {
-              setSortby('broadcastType');
-              onSort({ orderBy: 'broadcastType' });
+              setSortby('meetingStatus');
+              onSort({ orderBy: 'meetingStatus' });
             }}
           >
             Metting status
-            <IconSort className="ml-2" fill={sortBy === 'broadcastType' ? '#05486c' : 'white'} />
+            <IconSort className="ml-2" fill={sortBy === 'meetingStatus' ? '#05486c' : 'white'} />
           </th>
           <th
             className="sorting"
