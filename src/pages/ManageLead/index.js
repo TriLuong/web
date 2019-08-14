@@ -137,10 +137,14 @@ class SalesPage extends Component<Props> {
     }
   };
 
-  handleDeleteLead = lead => {
+  handleDeleteLead = ({ id }) => {
     const { doDeleteLead } = this.props;
-    const { params } = this.state;
-    doDeleteLead({ lead, ...params });
+    doDeleteLead({
+      id,
+      cb: () => {
+        this.gotoPage(1);
+      },
+    });
   };
 
   onClick = ({ actionLead, lead }) => {

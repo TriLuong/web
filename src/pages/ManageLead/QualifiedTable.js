@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import IconEdit from 'components/common/icon/IconEdit';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
-import { MENU_POPOVER_ITEMS_QUALIFILED } from './constants';
+import { MENU_POPOVER_ITEMS_QUALIFILED, MENU_POPOVER_ITEMS_SCHEDULE } from './constants';
 
 /* eslint react/prop-types: 0 */
 const QualifiledTable = ({ data, onSchedule, onClick, filter, onSort }) => {
@@ -64,13 +63,10 @@ const QualifiledTable = ({ data, onSchedule, onClick, filter, onSort }) => {
                 </button>
               </Link>
 
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                style={{ marginLeft: '10px' }}
-              >
-                <IconEdit />
-              </button>
+              <MenuPopover
+                menuItems={MENU_POPOVER_ITEMS_SCHEDULE}
+                onClick={name => onClick({ actionLead: name, lead })}
+              />
             </div>
           )}
         </td>

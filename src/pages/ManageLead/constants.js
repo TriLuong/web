@@ -23,6 +23,7 @@ export const MENU_POPOVER_ITEMS_BROADCASR = [
   { label: 'Cancel Meeting', name: 'cancelMeeting' },
   { label: 'Delete Lead', name: 'deleteLead' },
 ];
+export const MENU_POPOVER_ITEMS_SCHEDULE = [{ label: 'Delete Lead', name: 'deleteLead' }];
 
 export const GET_LEADS_REQUEST = 'GET_LEADS/REQUEST';
 export const GET_LEADS_SUCCESS = 'GET_LEADS/SUCCESS';

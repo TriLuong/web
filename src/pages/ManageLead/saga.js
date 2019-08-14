@@ -35,13 +35,13 @@ function* getLeadsSaga({ payload }) {
 function* deleteLeadSaga({ payload }) {
   yield put(isConnecting());
   try {
-    const { lead, filter, status } = payload;
-    const leads = filter === 'all'
-      ? data[`${status}`]
-      : data[`${status}`].filter(item => item.status === filter);
-    const leadDeleteIdex = leads.findIndex(item => item.id === lead.id);
-    leads.splice(leadDeleteIdex, 1);
-    yield put(deleteLeadSuccess(leads));
+    const { id, cb } = payload;
+    const res = yield call(Leads.deleteLeadById, id);
+    if (res.data.status === 'failed') {
+      throw new Error(res.message);
+    }
+    cb();
+    yield put(deleteLeadSuccess());
     yield put(isEndConnecting());
   } catch (error) {
     yield put(deleteLeadFailure(error));
