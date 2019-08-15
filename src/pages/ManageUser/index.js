@@ -8,6 +8,7 @@ import { ModalUser, ModalBulkUpload } from 'components/modal';
 import './styles.scss';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
+import { getBranchesState } from 'pages/App/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {
@@ -269,6 +270,7 @@ class DashBoard extends Component<Props> {
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
   dataUsers: getUsersState(store),
+  branches: getBranchesState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
