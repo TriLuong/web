@@ -126,7 +126,7 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
             Designer
             <IconSort className="ml-2" fill={sortBy === 'broadcastType' ? '#05486c' : 'white'} />
           </th>
-          <th className="sorting" />
+          <th className="sorting" style={{ width: '250px' }} />
         </tr>
       </thead>
       <tbody>{elemtLeads}</tbody>
