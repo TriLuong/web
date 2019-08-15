@@ -39,7 +39,6 @@ class Footer extends PureComponent<Props> {
     const { isValid, dateTime } = this.props;
 
     const showDateTime = this.displayTime(dateTime);
-
     return (
       <div className="footer">
         <div className="container">

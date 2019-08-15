@@ -43,9 +43,8 @@ type Props = {
   branches: {},
 };
 class SalesDetail extends Component<Props> {
-  constructor(props) {
-    super(props);
-    console.info('leadDetail', this.props);
+  constructor() {
+    super();
     this.state = {
       params: {
         Full_Name: '',
@@ -70,6 +69,46 @@ class SalesDetail extends Component<Props> {
     doGetLeadById({ id: match.params.id });
   }
 
+  /* Init time date from lead,  */
+  /* lead.Meeting_Date_and_Time === false => date=today, time=10:00  */
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!nextState.isInitDateTime && !nextProps.isFetching) {
+      // console.log('shouldComponentUpdate', nextState.isInitDateTime);
+      let newDateTime = '';
+      let date = '';
+      let time = '';
+
+      if (nextProps.lead.Meeting_Date_and_Time) {
+        newDateTime = nextProps.lead.Meeting_Date_and_Time;
+        date = newDateTime.split('T')[0];
+        time = newDateTime.split('T')[1];
+      } else {
+        date = moment().format('YYYY-MM-DD');
+        time = '10:00';
+        newDateTime = `${date}T${time}`;
+      }
+      const newParams = { ...nextState.params, Meeting_Date_and_Time: newDateTime };
+      this.setState(prevState => ({
+        isInitDateTime: !prevState.isInitDateTime,
+        params: newParams,
+        date,
+        time,
+      }));
+      return false;
+    }
+    // console.log('shouldComponentUpdate', nextState.isInitDateTime);
+
+    return true;
+  }
+
+  /* Update Meeting_Date_and_Time to values when having any change on Field of Formik */
+  /* date & time -> selected ==> Meeting_Date_and_Time = lead.Meeting_Date_and_Time */
+  /* date & time -> not selected ==> Meeting_Date_and_Time = default (date: today, time: 10:00) */
+  setMeetingDateTime = setFieldValue => {
+    const { params } = this.state;
+    setFieldValue('Meeting_Date_and_Time', params.Meeting_Date_and_Time);
+  }
+
   /* This function handleOnChange for common component */
   onHandleChangeCommon = (event, setFieldValue) => {
     const { name, value } = event.target;
@@ -77,6 +116,7 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, [name]: value };
     this.setState({ params: newParams });
     setFieldValue(name, value);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onHandleChangeName = (event, setFieldValue) => {
@@ -88,26 +128,14 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, Owner: newOwnerName };
     this.setState({ [name]: value, params: newParams });
     setFieldValue('Owner', newOwnerName);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onDateChange = (dateValue, setFieldValue) => {
-    const { params, isInitDateTime, time } = this.state;
-    const { lead } = this.props;
+    const { params, time } = this.state;
     const newDate = dateValue.format('YYYY-MM-DD');
 
-    let oldTime = '';
-    if (!isInitDateTime) {
-      if (lead.Meeting_Date_and_Time) {
-        oldTime = lead.Meeting_Date_and_Time.split('T')[1];
-      } else {
-        oldTime = '10:00';
-      }
-      this.setState(prevState => ({ isInitDateTime: !prevState.isInitDateTime, time: oldTime }));
-    } else {
-      oldTime = time;
-    }
-
-    const newDateTime = `${newDate}T${oldTime}`;
+    const newDateTime = `${newDate}T${time}`;
 
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, date: newDate });
@@ -116,8 +144,7 @@ class SalesDetail extends Component<Props> {
 
   /* eslint radix: 0 */
   onTimeChange = (timeValue, setFieldValue) => {
-    const { params, date, isInitDateTime } = this.state;
-    const { lead } = this.props;
+    const { params, date } = this.state;
     const timeArr = timeValue.split(' ');
     const typeTime = timeArr[1];
     let hour = timeArr[0].split(':')[0];
@@ -127,20 +154,7 @@ class SalesDetail extends Component<Props> {
     }
     const newTime = `${hour}:${minute}`;
 
-    let oldDate = '';
-
-    if (!isInitDateTime) {
-      if (lead.Meeting_Date_and_Time) {
-        oldDate = lead.Meeting_Date_and_Time.split('T')[0];
-      } else {
-        oldDate = moment().format('YYYY-MM-DD');
-      }
-      this.setState(prevState => ({ isInitDateTime: !prevState.isInitDateTime, date: oldDate }));
-    } else {
-      oldDate = date;
-    }
-
-    const newDateTime = `${oldDate}T${newTime}`;
+    const newDateTime = `${date}T${newTime}`;
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, time: newTime });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
@@ -167,6 +181,7 @@ class SalesDetail extends Component<Props> {
     this.setState({ params: newParams });
 
     setFieldValue(name, newService);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onChangeCountry = (event, setFieldValue) => {
@@ -175,12 +190,14 @@ class SalesDetail extends Component<Props> {
     setFieldValue('City', '');
     setFieldValue('State', '');
     getStatesOfCountry(value);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onChangeState = (event, setFieldValue) => {
     const { value } = event.target;
     this.onHandleChangeCommon(event, setFieldValue);
     getCitiesOfState(value);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onHandleChangeRadioButton = (value, setFieldValue) => {
@@ -188,6 +205,7 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, designers: value.value };
     this.setState({ params: newParams });
     setFieldValue('broadcastType', value.value);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onHandleChangeBudget = (event, setFieldValue) => {
@@ -197,6 +215,7 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, budget: newBudget };
     this.setState({ params: newParams });
     setFieldValue('budget', newBudget);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   onHandleChangeBranch = (event, setFieldValue) => {
@@ -205,6 +224,7 @@ class SalesDetail extends Component<Props> {
     const newParams = { ...params, branchId: value.id };
     this.setState({ params: newParams });
     setFieldValue(name, value);
+    this.setMeetingDateTime(setFieldValue);
   };
 
   toggle = () => {
@@ -236,16 +256,36 @@ class SalesDetail extends Component<Props> {
   onSubmit = values => {
     const { doUpdateLead } = this.props;
     const { branch } = values;
+
     doUpdateLead({ data: { ...values, status: 'broadcasted', branchId: branch.id } });
     this.toggle();
   };
 
   render() {
-    const { isOpen } = this.state;
+    const { isOpen, params } = this.state;
     const { branches, lead, isFetching } = this.props;
     if (isFetching) {
       return null;
     }
+
+    const schema = Yup.object().shape({
+      Full_Name: Yup.string().required('Required'),
+      Email: Yup.string()
+        .email('Invalid email address')
+        .required('Required'),
+      Phone: Yup.string().required('Required'),
+      Street: Yup.string().required('Required'),
+      Country: Yup.string().required('Required'),
+      State: Yup.string().required('Required'),
+      City: Yup.string().required('Required'),
+      Zip_Code: Yup.number().required('Required'),
+      budget: Yup.string().required('Required'),
+      service: Yup.string().required('Required'),
+      branch: Yup.string().required('Required'),
+      Meeting_Date_and_Time: Yup.string().required('Required'),
+      broadcastType: Yup.string().required('Required'),
+    });
+
     return (
       <div className="document">
         <Header />
@@ -253,25 +293,8 @@ class SalesDetail extends Component<Props> {
         <Formik
           initialValues={lead}
           onSubmit={this.onSubmit}
-          validationSchema={Yup.object().shape({
-            // Full_Name: Yup.string().required('Required'),
-            // lastName: Yup.string().required('Required'),
-            // Email: Yup.string()
-            //   .email('Invalid email address')
-            //   .required('Required'),
-            // Phone: Yup.string().required('Required'),
-            // Street: Yup.string().required('Required'),
-            // Country: Yup.string().required('Required'),
-            // State: Yup.string().required('Required'),
-            // City: Yup.string().required('Required'),
-            // Zip_Code: Yup.number().required('Required'),
-            // budget: Yup.string().required('Required'),
-            // services: Yup.string().required('Required'),
-            // branch: Yup.string().required('Required'),
-            // date: Yup.string().required('Required'),
-            // time: Yup.string().required('Required'),
-            // designers: Yup.string().required('Required'),
-          })}
+          validationSchema={schema}
+          isInitialValid={schema.isValidSync(lead)}
         >
           {({ handleSubmit, values, setFieldValue, isValid, errors, touched }) => (
             <form onSubmit={handleSubmit}>
@@ -622,8 +645,8 @@ class SalesDetail extends Component<Props> {
                           <SelectDate
                             value={values.date}
                             initialDate={
-                              values.Meeting_Date_and_Time
-                                ? values.Meeting_Date_and_Time.split('T')[0]
+                              params.Meeting_Date_and_Time
+                                ? params.Meeting_Date_and_Time.split('T')[0]
                                 : ''
                             }
                             onDateChange={date => this.onDateChange(date, setFieldValue)}
@@ -635,8 +658,8 @@ class SalesDetail extends Component<Props> {
                         >
                           <SelectTime
                             initialTime={
-                              values.Meeting_Date_and_Time
-                                ? values.Meeting_Date_and_Time.split('T')[1]
+                              params.Meeting_Date_and_Time
+                                ? params.Meeting_Date_and_Time.split('T')[1]
                                 : ''
                             }
                             value={values.time}
@@ -669,7 +692,7 @@ class SalesDetail extends Component<Props> {
                   </div>
                 </div>
               </div>
-              <Footer isValid={isValid} dateTime={values.Meeting_Date_and_Time} />
+              <Footer isValid={isValid} dateTime={params.Meeting_Date_and_Time} />
             </form>
           )}
         </Formik>

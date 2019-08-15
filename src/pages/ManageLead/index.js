@@ -150,9 +150,9 @@ class SalesPage extends Component<Props> {
   };
 
   onSubmitAssignDesigner = values => {
-    // this.toggleAssignDesigner();
+    this.toggleAssignDesigner();
     console.log('onSubmitAssignDesigner', values);
-    // this.onOpenNotification();
+    this.onOpenNotification();
   };
 
   /* eslint react/prop-types: 0 */
