@@ -93,7 +93,8 @@ class Header extends PureComponent<Props> {
     const { user } = this.props;
     const { showMenu, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
     const userInfo = user || {};
-    const { role } = userInfo;
+    const { role, firstName, lastName } = userInfo;
+    const avatarName = `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
     return (
       <div className="header fixed-top">
         <nav className="navbar">
@@ -106,7 +107,7 @@ class Header extends PureComponent<Props> {
           </a>
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
-              {role === 'admin' ? 'AD' : role === 'sale' ? 'SL' : 'DE'}
+              {avatarName}
             </button>
             <div
               className={
