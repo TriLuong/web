@@ -88,6 +88,7 @@ class Header extends PureComponent<Props> {
     }
   };
 
+  /* eslint no-nested-ternary: 0 */
   render() {
     const { user } = this.props;
     const { showMenu, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
@@ -105,7 +106,7 @@ class Header extends PureComponent<Props> {
           </a>
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
-              AD
+              {role === 'admin' ? 'AD' : role === 'sale' ? 'SL' : 'DE'}
             </button>
             <div
               className={
