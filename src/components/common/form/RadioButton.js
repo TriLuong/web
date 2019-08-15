@@ -4,6 +4,9 @@ import InputGroup from './GroupInput';
 type Props = {
   onChange: () => {},
   onReset: () => {},
+  branch: {
+    name: String,
+  },
   className: String,
   classNameRadio: String,
   options: [],
@@ -19,7 +22,7 @@ class RadioButton extends PureComponent<Props> {
   };
 
   render() {
-    const { options, selectedOption, className, classNameRadio, ...rest } = this.props;
+    const { options, selectedOption, className, branch, classNameRadio, ...rest } = this.props;
     return (
       <div className={`${className} form-inline`}>
         {options.map((option, index) => (
@@ -31,7 +34,7 @@ class RadioButton extends PureComponent<Props> {
               value={option.value}
               onChange={this.handleChange}
               checked={selectedOption === option.value}
-              label={option.label}
+              label={`${option.label} ${branch ? `in ${branch.name}` : ''}`}
             />
           </div>
         ))}

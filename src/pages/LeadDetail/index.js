@@ -661,6 +661,7 @@ class SalesDetail extends Component<Props> {
                   <div className="col-md-12">
                     <RadioButton
                       options={RADIO_DESIGNER}
+                      branch={values.branch}
                       value={values.broadcastType}
                       onChange={value => this.onHandleChangeRadioButton(value, setFieldValue)}
                       selectedOption={values.broadcastType}
