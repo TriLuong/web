@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import logo from 'assets/images/login/logo.svg';
 import { makeGetUser } from 'pages/App/selectors';
 import { requestLogout } from 'pages/Login/actions';
@@ -69,12 +68,15 @@ class Header extends PureComponent<Props> {
         }
       },
     });
-  }
+  };
 
   onSubmitChangePassword = values => {
+    // console.info('onSubmitChangePassword', values);
     const { doChangePassword } = this.props;
-    if (values.oldPassword !== values.reNewPassword
-      && values.newPassword === values.reNewPassword) {
+    if (
+      values.oldPassword !== values.reNewPassword
+      && values.newPassword === values.reNewPassword
+    ) {
       doChangePassword({
         form: { password: values.oldPassword, newPassword: values.newPassword },
         cb: status => {
@@ -84,13 +86,13 @@ class Header extends PureComponent<Props> {
         },
       });
     }
-  }
+  };
 
   render() {
     const { user } = this.props;
     const { showMenu, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
     const userInfo = user || {};
-
+    const { role } = userInfo;
     return (
       <div className="header fixed-top">
         <nav className="navbar">
@@ -116,7 +118,11 @@ class Header extends PureComponent<Props> {
                 <h5 className="dropdown-user__name">{`${userInfo.firstName} ${userInfo.lastName}`}</h5>
                 <p className="dropdown-user__email">{userInfo.email}</p>
                 <div className="dropdown-divider" />
-                <button className="dropdown-item" type="button" onClick={this.toggleModalEditProfile}>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={this.toggleModalEditProfile}
+                >
                   Edit Profile
                 </button>
                 <ModalEditProfile
@@ -126,7 +132,11 @@ class Header extends PureComponent<Props> {
                   onSubmit={this.onSubmitEditProfile}
                   user={userInfo}
                 />
-                <button className="dropdown-item" onClick={this.toggleModalChangePassword} type="button">
+                <button
+                  className="dropdown-item"
+                  onClick={this.toggleModalChangePassword}
+                  type="button"
+                >
                   Change Password
                 </button>
                 <ModalChangePassword
@@ -140,17 +150,19 @@ class Header extends PureComponent<Props> {
                   Logout
                 </button>
               </div>
-              <div className="dropdown-user dropdown-user--role">
-                <Link to="/users" className="dropdown-item">
-                  Super Admin Dashboard
-                </Link>
-                <Link to="/leads" className="dropdown-item">
-                  Sales Dashboard
-                </Link>
-                <a className="dropdown-item" href="#">
-                  Designer Dashboard
-                </a>
-              </div>
+              {role === 'admin' && (
+                <div className="dropdown-user dropdown-user--role">
+                  <a className="dropdown-item" href="#">
+                    Super Admin Dashboard
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    Sales Dashboard
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    Designer Dashboard
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </nav>
