@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import IconSort from 'components/common/icon/IconSort';
 import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_QUALIFILED, MENU_POPOVER_ITEMS_SCHEDULE } from './constants';
@@ -54,15 +53,13 @@ const QualifiledTable = ({ data, onSchedule, onClick, onSort }) => {
             </div>
           ) : (
             <div className="d-flex">
-              <Link to={`/lead-detail/${lead.id}`} className="w-100">
-                <button
-                  type="button"
-                  className="btn btn-primary w-100"
-                  onClick={() => onSchedule('schedule', lead)}
-                >
-                  SCHEDULE
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-primary w-100"
+                onClick={() => onSchedule('schedule', lead)}
+              >
+                SCHEDULE
+              </button>
 
               <MenuPopover
                 menuItems={MENU_POPOVER_ITEMS_SCHEDULE}

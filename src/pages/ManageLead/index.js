@@ -54,7 +54,18 @@ class SalesPage extends Component<Props> {
   }
 
   componentDidMount() {
-    this.gotoPage(1);
+    // console.log('manageLead', this.props);
+    const { doGetLeads, location } = this.props;
+    if (!location.state) {
+      this.gotoPage(1);
+    } else {
+      doGetLeads({ ...location.state.params, ...location.state.filter, page: location.state.page });
+      this.setState({
+        params: location.state.params,
+        filter: location.state.filter,
+        typeLead: location.state.typeLead,
+      });
+    }
   }
 
   gotoPage = page => {
@@ -66,6 +77,7 @@ class SalesPage extends Component<Props> {
 
   handleOnChangeRadioButton = ({ value }) => {
     // console.log('handleOnChangeRadioButton', value);
+    const { dataLeads } = this.props;
     const { params } = this.state;
     // let newParams = {};
     let newFilter = null;
@@ -84,7 +96,7 @@ class SalesPage extends Component<Props> {
     const { doGetLeads } = this.props;
     // this.setState({ params: newParams, filter });
     this.setState({ filter: value });
-    doGetLeads({ ...params, ...newFilter });
+    doGetLeads({ ...params, ...newFilter, page: dataLeads.page });
   };
 
   handleOnChangeSelectField = event => {
@@ -138,18 +150,25 @@ class SalesPage extends Component<Props> {
   };
 
   onSubmitAssignDesigner = values => {
-    this.toggleAssignDesigner();
-    this.onOpenNotification();
+    // this.toggleAssignDesigner();
+    console.log('onSubmitAssignDesigner', values);
+    // this.onOpenNotification();
   };
 
   /* eslint react/prop-types: 0 */
   onSchedule = (typeAction, lead) => {
     // console.log('leadFind', leadFind);
-    this.setState({ lead });
+    const { history, dataLeads } = this.props;
+    const { params, filter, typeLead } = this.state;
     if (typeAction === 'broadcast') {
       this.toggleCheckDesigner();
     } else if (typeAction === 'assignDesigner') {
       this.toggleAssignDesigner();
+    } else if (typeAction === 'schedule') {
+      history.push({
+        pathname: `/lead-detail/${lead.id}`,
+        state: { params, filter, typeLead, page: dataLeads.page },
+      });
     }
   };
 
@@ -165,10 +184,14 @@ class SalesPage extends Component<Props> {
 
   onClick = ({ actionLead, lead }) => {
     const { history } = this.props;
+    const { params, filter, typeLead } = this.state;
     if (actionLead === 'deleteLead') {
       this.handleDeleteLead(lead);
     } else if (actionLead === 'assignDiffBranch') {
-      history.push(`/lead-detail/${lead.id}`);
+      history.push({
+        pathname: `/lead-detail/${lead.id}`,
+        state: { params, filter, typeLead },
+      });
     }
   };
 

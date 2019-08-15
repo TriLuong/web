@@ -17,6 +17,7 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
   //   dataFilter = data.filter(l => !l.broadcastType);
   // }
 
+  /* eslint radix: 0 */
   const elemtLeads = data.map(lead => {
     let branch = null;
     let date;
@@ -24,9 +25,11 @@ const BroadcastTable = ({ data, onSchedule, onClick, branches, onSort }) => {
     if (lead.Meeting_Date_and_Time) {
       const dateTimeArr = lead.Meeting_Date_and_Time.split('T');
       date = dateTimeArr[0];
-      const hour = dateTimeArr[1].split(':')[0];
+      const hourInt = parseInt(dateTimeArr[1].split(':')[0]);
+      const typeTime = hourInt < 12 ? 'AM' : 'PM';
+      const hour = hourInt <= 12 ? hourInt : hourInt - 12;
       const minute = dateTimeArr[1].split(':')[1];
-      time = `${hour}:${minute}`;
+      time = `${hour}:${minute} ${typeTime}`;
     }
     if (lead.broadcastType) {
       branch = branches.find(br => br.id === lead.branchId);

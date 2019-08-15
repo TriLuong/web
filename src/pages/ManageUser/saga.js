@@ -1,17 +1,16 @@
+/* eslint import/no-cycle: 0 */
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { Users, User, Branches } from 'api';
+import { Users, User } from 'api';
 import { isConnecting, isEndConnecting } from 'pages/Loader/actions';
 import {
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
-  GET_USERS_FAILURE,
   ADD_USERS_REQUEST,
   UPDATE_USERS_REQUEST,
   EDIT_PROFILE_REQUEST,
   CHANGE_PASSWORD_REQUEST,
   BULK_UPLOAD_REQUEST,
   DELETE_USER_REQUEST,
-  GET_BRANCHES_REQUEST,
 } from './constants';
 import {
   addUserSuccess,

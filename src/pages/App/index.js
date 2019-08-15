@@ -6,7 +6,8 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React, { useEffect } from 'react';
+/* eslint import/no-cycle: 0 */
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -24,7 +25,11 @@ import saga from './saga';
 import { getBranches } from './actions';
 import { makeGetToken } from './selectors';
 
-class App extends React.PureComponent {
+type Props = {
+  token: String,
+  doGetBranches: () => {},
+};
+class App extends React.PureComponent<Props> {
   componentDidMount() {
     const { token, doGetBranches } = this.props;
     if (token) {

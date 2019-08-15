@@ -19,9 +19,6 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAILURE,
-  GET_BRANCHES_REQUEST,
-  GET_BRANCHES_SUCCESS,
-  GET_BRANCHES_FAILURE,
 } from './constants';
 
 export const getUsers = createAction(GET_USERS_REQUEST);

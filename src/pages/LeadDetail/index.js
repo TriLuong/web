@@ -43,8 +43,9 @@ type Props = {
   branches: {},
 };
 class SalesDetail extends Component<Props> {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.info('leadDetail', this.props);
     this.state = {
       params: {
         Full_Name: '',
@@ -64,6 +65,7 @@ class SalesDetail extends Component<Props> {
 
   /* eslint  react/prop-types: 0 */
   componentDidMount() {
+    // console.log('leadDetail', this.props);
     const { doGetLeadById, match } = this.props;
     doGetLeadById({ id: match.params.id });
   }
@@ -225,7 +227,10 @@ class SalesDetail extends Component<Props> {
   onCloseNotification = () => {
     this.toggle();
     const { history } = this.props;
-    history.goBack();
+    history.push({
+      pathname: '/leads',
+      state: history.location.state,
+    });
   };
 
   onSubmit = values => {
