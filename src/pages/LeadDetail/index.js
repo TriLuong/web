@@ -273,7 +273,7 @@ class SalesDetail extends Component<Props> {
       Email: Yup.string()
         .email('Invalid email address')
         .required('Required'),
-      Phone: Yup.string().required('Required'),
+      Phone: Yup.number().required('Required'),
       Street: Yup.string().required('Required'),
       Country: Yup.string().required('Required'),
       State: Yup.string().required('Required'),
@@ -359,7 +359,8 @@ class SalesDetail extends Component<Props> {
                         <br />
                       )}
                       <InputGroup
-                        type="text"
+                        type="tel"
+                        pattern="+[0-9]"
                         label="Mobile Number"
                         name="Phone"
                         value={values.Phone}
