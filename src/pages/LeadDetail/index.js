@@ -119,6 +119,18 @@ class SalesDetail extends Component<Props> {
     this.setMeetingDateTime(setFieldValue);
   };
 
+  /* eslint no-restricted-globals: 0 */
+  onHandleChangePhone = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { params } = this.state;
+    this.setMeetingDateTime(setFieldValue);
+    if (!isNaN(value) || value === '+') {
+      const newParams = { ...params, [name]: value };
+      this.setState({ params: newParams });
+      setFieldValue(name, `${value}`);
+    }
+  };
+
   onHandleChangeName = (event, setFieldValue) => {
     const { name, value } = event.target;
     const { firstName, lastName, params } = this.state;
@@ -254,11 +266,13 @@ class SalesDetail extends Component<Props> {
   };
 
   onSubmit = values => {
-    const { doUpdateLead } = this.props;
+    const { doUpdateLead, isFetching } = this.props;
     const { branch } = values;
 
     doUpdateLead({ data: { ...values, status: 'broadcasted', branchId: branch.id } });
-    this.toggle();
+    if (!isFetching) {
+      this.toggle();
+    }
   };
 
   render() {
@@ -360,11 +374,10 @@ class SalesDetail extends Component<Props> {
                       )}
                       <InputGroup
                         type="tel"
-                        pattern="+[0-9]"
                         label="Mobile Number"
                         name="Phone"
                         value={values.Phone}
-                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                        onChange={event => this.onHandleChangePhone(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -496,6 +509,7 @@ class SalesDetail extends Component<Props> {
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
                     <InputGroup
+                      type="number"
                       label="Enter budget amount (if available)"
                       name="amount"
                       value={values.budget ? values.budget.amount : ''}
