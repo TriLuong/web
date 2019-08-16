@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
+import moment from 'moment';
 import { MEETING_HOUR, MEETING_MINUTE } from './constants';
 import './style.scss';
 
@@ -12,43 +13,108 @@ type Props = {
 };
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/no-noninteractive-element-interactions: 0 react/prop-types: 0 */
-class SelectTime extends PureComponent<Props> {
+class SelectTime extends Component<Props> {
   state = {
+    date: '',
     time: {},
   };
 
   /* eslint radix: 0 */
   componentDidMount() {
-    const { initialTime } = this.props;
-    if (initialTime) {
-      const timeSplit = initialTime.split(':');
-      const houtInt = parseInt(timeSplit[0]);
-      const initHour = houtInt > 12 ? houtInt - 12 : houtInt;
-      const initMinute = timeSplit[1];
-      const hourElemtArr = document.getElementsByName('hour');
-      const minuteElemtArr = document.getElementsByName('minute');
-      const initType = houtInt >= 12 ? 'PM' : 'AM';
+    this.processTime();
+  }
 
-      const inintInnerHour = `${initHour} ${initType}`;
-      const initInnerMinute = `:${initMinute}`;
+  // componentWillReceiveProps() {
+  //   // console.log('props', props);
+  //   // this.processTime();
+  // }
+
+  shouldComponentUpdate(nextProps, nexState) {
+    const prevState = this.state;
+    if (nextProps.dateSelect !== nexState.date) {
+      this.processTime();
+    }
+    if (nexState.time !== prevState.time) {
+      const timeUpdate = `${nexState.time.hour}:${nexState.time.minute} ${nexState.time.type}`;
+      // console.log('timeUpdate', timeUpdate);
+      nextProps.onTimeChange(timeUpdate);
+    }
+    return true;
+  }
+
+  processTime = () => {
+    const { dateSelect, initialTime } = this.props;
+    const { time } = this.state;
+    const hourCurrent = moment().format('h A');
+    const today = moment().format('YYYY-MM-DD');
+
+    const hourElemtArr = document.getElementsByName('hour');
+    const minuteElemtArr = document.getElementsByName('minute');
+
+    /* RESET TIME */
+    for (let i = 0; i < hourElemtArr.length; i++) {
+      hourElemtArr[i].classList.remove('notActive', 'active');
+    }
+    for (let i = 0; i < minuteElemtArr.length; i++) {
+      minuteElemtArr[i].classList.remove('notActive', 'active');
+    }
+
+    let initTime;
+    let indexHour = null;
+
+    this.setState({ time: initTime });
+    if (today === dateSelect) {
       for (let i = 0; i < hourElemtArr.length; i++) {
-        if (hourElemtArr[i].innerText === inintInnerHour) {
+        if (hourElemtArr[i].innerText === hourCurrent) {
+          indexHour = i;
+        }
+      }
+    }
+
+    if (indexHour !== null) {
+      for (let i = 0; i < indexHour; i++) {
+        hourElemtArr[i].classList.add('notActive');
+      }
+
+      hourElemtArr[indexHour].classList.add('active');
+      minuteElemtArr[0].classList.add('active');
+      initTime = {
+        hour: moment().format('h'),
+        minute: '00',
+        type: moment().format('A'),
+      };
+    } else {
+      const hourInt = parseInt(initialTime.split(':')[0]);
+      const initHour = hourInt <= 12 ? hourInt : hourInt - 12;
+      const type = hourInt < 12 ? 'AM' : 'PM';
+      const initMinute = initialTime.split(':')[1];
+      initTime = {
+        hour: `${initHour}`,
+        minute: `${initMinute}`,
+        type,
+      };
+      const hourFormat = `${initTime.hour} ${initTime.type}`;
+      for (let i = 0; i < hourElemtArr.length; i++) {
+        if (hourElemtArr[i].innerText === hourFormat) {
           hourElemtArr[i].classList.add('active');
         }
       }
 
       for (let i = 0; i < minuteElemtArr.length; i++) {
-        if (minuteElemtArr[i].innerText === initInnerMinute) {
+        if (minuteElemtArr[i].innerText === `:${initTime.minute}`) {
           minuteElemtArr[i].classList.add('active');
         }
       }
-
-      const initTime = { hour: initHour, minute: initMinute, type: initType };
-      this.setState({ time: initTime });
     }
-  }
+    const newTime = { ...time, ...initTime };
+    this.setState({ time: newTime, date: dateSelect });
+    // const timeUpdate = `${newTime.hour}:${newTime.minute} ${newTime.type}`;
+    // console.log('timeUpdate', timeUpdate);
+    // onTimeChange(timeUpdate);
+  };
 
-  activeTime = (event, name) => {
+  activeTime = event => {
+    const name = event.target.getAttribute('name');
     const elemt = document.getElementsByName(name);
     for (let i = 0; i < elemt.length; i++) {
       elemt[i].classList.remove('active');
@@ -56,16 +122,14 @@ class SelectTime extends PureComponent<Props> {
     event.target.classList.add('active');
   };
 
-  onClick = (event, timeValue) => {
-    const { onTimeChange } = this.props;
+  convertTime = (event, timeValue) => {
     const { time } = this.state;
-    const name = event.target.getAttribute('name');
-    this.activeTime(event, name);
-
     let hourState = '';
     let minuteState = '00';
     let typeState = '';
     let newTime = {};
+    const name = event.target.getAttribute('name');
+
     if (name === 'hour') {
       const hourSplit = timeValue.split(' ');
       hourState = hourSplit[0];
@@ -76,9 +140,16 @@ class SelectTime extends PureComponent<Props> {
       newTime = { ...time, minute: minuteState };
     }
     this.setState({ time: newTime });
+    // console.log(this.state);
     const timeString = `${newTime.hour}:${newTime.minute} ${newTime.type}`;
+    return timeString;
+  };
 
-    onTimeChange(timeString);
+  onClick = (event, timeValue) => {
+    const { onTimeChange } = this.props;
+    this.activeTime(event);
+    const time = this.convertTime(event, timeValue);
+    onTimeChange(time);
   };
 
   render() {

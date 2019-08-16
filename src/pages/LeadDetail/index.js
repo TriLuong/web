@@ -84,9 +84,10 @@ class SalesDetail extends Component<Props> {
         time = newDateTime.split('T')[1];
       } else {
         date = moment().format('YYYY-MM-DD');
-        time = '10:00';
+        time = `${moment().format('H')}:00`;
         newDateTime = `${date}T${time}`;
       }
+      // console.log('newDateTime', newDateTime);
       const newParams = { ...nextState.params, Meeting_Date_and_Time: newDateTime };
       this.setState(prevState => ({
         isInitDateTime: !prevState.isInitDateTime,
@@ -156,6 +157,7 @@ class SalesDetail extends Component<Props> {
 
   /* eslint radix: 0 */
   onTimeChange = (timeValue, setFieldValue) => {
+    // console.log("onTimeChange",timeValue);
     const { params, date } = this.state;
     const timeArr = timeValue.split(' ');
     const typeTime = timeArr[1];
@@ -269,6 +271,7 @@ class SalesDetail extends Component<Props> {
     const { doUpdateLead, isFetching } = this.props;
     const { branch } = values;
 
+    // console.log('onSubmit', values);
     doUpdateLead({ data: { ...values, status: 'broadcasted', branchId: branch.id } });
     if (!isFetching) {
       this.toggle();
@@ -672,12 +675,13 @@ class SalesDetail extends Component<Props> {
                           style={{ borderLeft: '1px solid  #a5a7aa' }}
                         >
                           <SelectTime
+                            dateSelect={params.Meeting_Date_and_Time.split('T')[0]}
                             initialTime={
                               params.Meeting_Date_and_Time
                                 ? params.Meeting_Date_and_Time.split('T')[1]
                                 : ''
                             }
-                            value={values.time}
+                            value={params.time}
                             onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                           />
                         </div>
