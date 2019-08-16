@@ -9,6 +9,39 @@
       font-size: 14px;
     }
   }
+  .menu-control {
+    .nav-tabs {
+      border-bottom: 0;
+      .nav-item {
+        .nav-link {
+          border: transparent;
+          position: relative;
+          transition: all 0.3s;
+          cursor: pointer;
+          &::after {
+            content: '';
+            height: 4px;
+            position: absolute;
+            left: 0;
+            background: transparent;
+            bottom: -10px;
+            width: 100%;
+            transition: all 0.3s;
+          }
+          &:hover,
+          &.active {
+            color: #11a4ae;
+            &::after {
+              background: #11a4ae;
+            }
+          }
+          &:hover {
+            border: transparent;
+          }
+        }
+      }
+    }
+  }
 }
 .avatar {
   width: 40px;
