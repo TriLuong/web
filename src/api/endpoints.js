@@ -6,6 +6,7 @@ export const endPoints = {
   user: 'user',
   branches: 'branches',
   leads: 'leads',
+  designer: 'designer',
 };
 
 export const getEndPoint = endpoint => `${API_URL}/${endpoint}`;
