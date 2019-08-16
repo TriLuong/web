@@ -107,7 +107,7 @@ class SalesDetail extends Component<Props> {
   setMeetingDateTime = setFieldValue => {
     const { params } = this.state;
     setFieldValue('Meeting_Date_and_Time', params.Meeting_Date_and_Time);
-  }
+  };
 
   /* This function handleOnChange for common component */
   onHandleChangeCommon = (event, setFieldValue) => {
@@ -384,18 +384,19 @@ class SalesDetail extends Component<Props> {
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.City && touched.City ? (
-                        <div className="invalid-feedback d-block">{errors.City}</div>
+                      {errors.Country && touched.Country ? (
+                        <div className="invalid-feedback d-block">{errors.Country}</div>
                       ) : (
                         <br />
                       )}
                     </div>
+
                     <GroupSelectField
-                      label="City"
-                      name="City"
-                      value={{ value: values.City, label: values.City }}
-                      options={CITIES_NAME}
-                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                      label="Country"
+                      name="Country"
+                      value={{ value: values.Country, label: values.Country }}
+                      options={CONTRIES_NAME}
+                      onChange={event => this.onChangeCountry(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -434,19 +435,18 @@ class SalesDetail extends Component<Props> {
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.Country && touched.Country ? (
-                        <div className="invalid-feedback d-block">{errors.Country}</div>
+                      {errors.City && touched.City ? (
+                        <div className="invalid-feedback d-block">{errors.City}</div>
                       ) : (
                         <br />
                       )}
                     </div>
-
                     <GroupSelectField
-                      label="Country"
-                      name="Country"
-                      value={{ value: values.Country, label: values.Country }}
-                      options={CONTRIES_NAME}
-                      onChange={event => this.onChangeCountry(event, setFieldValue)}
+                      label="City"
+                      name="City"
+                      value={{ value: values.City, label: values.City }}
+                      options={CITIES_NAME}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
