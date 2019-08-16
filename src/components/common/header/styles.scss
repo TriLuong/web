@@ -18,6 +18,28 @@
           position: relative;
           transition: all 0.3s;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          color: #a5a7aa;
+          font-weight: normal;
+          svg {
+            margin-right: 10px;
+            font-size: 20px;
+          }
+          .badge{
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 200;
+            position: relative;
+            top: -8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            right: -5px;
+          }
           &::after {
             content: '';
             height: 4px;
@@ -33,6 +55,9 @@
             color: #11a4ae;
             &::after {
               background: #11a4ae;
+            }
+            svg path{
+              fill: #11a4ae;
             }
           }
           &:hover {

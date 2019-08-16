@@ -4,3 +4,7 @@ export { default as IconHand } from './IconHand';
 export { default as IconSearch } from './IconSearch';
 export { default as IconSort } from './IconSort';
 export { default as IconLoading } from './IconLoading';
+export { default as IconSchedule } from './IconSchedule';
+export { default as IconIncoming } from './IconIncoming';
+export { default as IconMylead } from './IconMylead';
+export { default as IconCheck } from './IconCheck';

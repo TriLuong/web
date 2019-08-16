@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Nav, NavItem, NavLink } from 'reactstrap';
+import IconSchedule from 'components/common/icon/IconSchedule';
+import IconIncoming from 'components/common/icon/IconIncoming';
+import IconMylead from 'components/common/icon/IconMylead';
+import IconCheck from 'components/common/icon/IconCheck';
 import classnames from 'classnames';
 import './styles.scss';
 
@@ -42,7 +46,7 @@ class MenuDesignerControl extends PureComponent<Props> {
                 this.toggle('1');
               }}
             >
-              <span className="icon lnr lnr-list" />
+              <IconSchedule />
               Scheduled
             </NavLink>
           </NavItem>
@@ -55,8 +59,9 @@ class MenuDesignerControl extends PureComponent<Props> {
                 this.toggle('2');
               }}
             >
-              <span className="icon lnr lnr-chart-bars" />
+              <IconIncoming />
               Incoming Leads
+              <span className="badge badge-primary">5</span>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -68,7 +73,7 @@ class MenuDesignerControl extends PureComponent<Props> {
                 this.toggle('3');
               }}
             >
-              <span className="icon lnr lnr-chart-bars" />
+              <IconMylead />
               My Leads
             </NavLink>
           </NavItem>
@@ -81,7 +86,7 @@ class MenuDesignerControl extends PureComponent<Props> {
                 this.toggle('4');
               }}
             >
-              <span className="icon lnr lnr-chart-bars" />
+              <IconCheck />
               Availability
             </NavLink>
           </NavItem>

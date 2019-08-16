@@ -4,6 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
+import ManageDesigner from 'pages/ManageDesigner';
 import LeadDetail from 'pages/LeadDetail';
 import { makeGetUser } from './selectors';
 /* eslint-disable */
@@ -29,6 +30,11 @@ const permisstionList = [
     path: '/lead-detail/:id',
     component: LeadDetail,
     role: 'sale',
+  },
+  {
+    path: '/designer',
+    component: ManageDesigner,
+    role: 'designer',
   },
 ];
 

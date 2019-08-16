@@ -23,7 +23,7 @@ class Header extends PureComponent<Props> {
 
     this.state = {
       showMenu: false,
-      // activeTab: '1',
+      activeTab: '1',
       modalIsOpenEditProfile: false,
       modalIsOpenChangePassword: false,
     };
@@ -90,9 +90,9 @@ class Header extends PureComponent<Props> {
     }
   };
 
-  // onActiveTabChange = activeTab => {
-  //   this.setState({ activeTab });
-  // };
+  onActiveTabChange = activeTab => {
+    this.setState({ activeTab });
+  };
 
   render() {
     const { user } = this.props;
@@ -109,7 +109,7 @@ class Header extends PureComponent<Props> {
               CAFE
             </span>
           </a>
-          <MenuDesignerControl />
+          <MenuDesignerControl onActiveTabChange={this.onActiveTabChange} />
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
               AD
