@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import './styles.scss';
 import { ModalEditProfile, ModalChangePassword } from 'components/modal';
 import { editProfile, changePassword } from 'pages/ManageUser/actions';
+import MenuDesignerControl from './MenuDesignerControl';
 
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 type Props = {
@@ -22,6 +23,7 @@ class Header extends PureComponent<Props> {
 
     this.state = {
       showMenu: false,
+      // activeTab: '1',
       modalIsOpenEditProfile: false,
       modalIsOpenChangePassword: false,
     };
@@ -69,12 +71,14 @@ class Header extends PureComponent<Props> {
         }
       },
     });
-  }
+  };
 
   onSubmitChangePassword = values => {
     const { doChangePassword } = this.props;
-    if (values.oldPassword !== values.reNewPassword
-      && values.newPassword === values.reNewPassword) {
+    if (
+      values.oldPassword !== values.reNewPassword
+      && values.newPassword === values.reNewPassword
+    ) {
       doChangePassword({
         form: { password: values.oldPassword, newPassword: values.newPassword },
         cb: status => {
@@ -84,7 +88,11 @@ class Header extends PureComponent<Props> {
         },
       });
     }
-  }
+  };
+
+  // onActiveTabChange = activeTab => {
+  //   this.setState({ activeTab });
+  // };
 
   render() {
     const { user } = this.props;
@@ -101,6 +109,7 @@ class Header extends PureComponent<Props> {
               CAFE
             </span>
           </a>
+          <MenuDesignerControl />
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
               AD
@@ -116,7 +125,11 @@ class Header extends PureComponent<Props> {
                 <h5 className="dropdown-user__name">{`${userInfo.firstName} ${userInfo.lastName}`}</h5>
                 <p className="dropdown-user__email">{userInfo.email}</p>
                 <div className="dropdown-divider" />
-                <button className="dropdown-item" type="button" onClick={this.toggleModalEditProfile}>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={this.toggleModalEditProfile}
+                >
                   Edit Profile
                 </button>
                 <ModalEditProfile
@@ -126,7 +139,11 @@ class Header extends PureComponent<Props> {
                   onSubmit={this.onSubmitEditProfile}
                   user={userInfo}
                 />
-                <button className="dropdown-item" onClick={this.toggleModalChangePassword} type="button">
+                <button
+                  className="dropdown-item"
+                  onClick={this.toggleModalChangePassword}
+                  type="button"
+                >
                   Change Password
                 </button>
                 <ModalChangePassword
