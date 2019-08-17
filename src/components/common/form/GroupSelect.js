@@ -12,14 +12,21 @@ type Props = {
   id: String,
 };
 
-/* eslint jsx-a11y/click-events-have-key-events: 0 jsx-a11y/no-static-element-interactions: 0 */
-/* eslint jsx-a11y/label-has-for: 0 */
+/* eslint jsx-a11y/click-events-have-key-events: 0 */
+/* eslint jsx-a11y/label-has-for: 0 jsx-a11y/no-static-element-interactions: 0 */
 class GroupSelectField extends PureComponent<Props> {
+  static getDerivedStateFromProps(props, state) {
+    const isSelect = state.isInputChange
+      || (props.value && (props.value.value || props.value.id)) || false;
+    return { isSelect };
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       isSelect: (props.value && (props.value.value || props.value.id)) || false,
       menuIsOpen: false,
+      isInputChange: false,
     };
   }
 
@@ -47,7 +54,19 @@ class GroupSelectField extends PureComponent<Props> {
   };
 
   onMenuClose = () => {
-    this.setState({ menuIsOpen: false });
+    this.setState({ menuIsOpen: false, isInputChange: false });
+  };
+
+  onMenuOpen = () => {
+    this.setState({ menuIsOpen: true });
+  };
+
+  onInputChange = value => {
+    if (value) {
+      this.setState({ isInputChange: true });
+    } else {
+      this.setState({ isInputChange: false });
+    }
   };
 
   render() {
@@ -69,11 +88,10 @@ class GroupSelectField extends PureComponent<Props> {
           className="group-select__inner"
           placeholder={null}
           classNamePrefix="group-select"
-          isSearchable={false}
           menuIsOpen={menuIsOpen}
           onMenuClose={this.onMenuClose}
-          onMenuOpen={this.onMenuClose}
-          onInputChange={this.onMenuClose}
+          onMenuOpen={this.onMenuOpen}
+          onInputChange={this.onInputChange}
           isDisabled={isDisabled}
         />
       </div>

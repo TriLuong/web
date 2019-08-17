@@ -39,6 +39,10 @@
         color: white;
         font-weight: bold;
       }
+      &.notActive {
+        opacity: 0.3;
+        pointer-events:none;
+      }
     }
   }
 }

@@ -68,6 +68,7 @@ class ModalUser extends React.PureComponent {
                     onChange={event => this.onHandleChange(event, setFieldValue)}
                     value={values.branch}
                     isOptionSelected={option => values.branch === option.id}
+                    isSearchable={false}
                   />
                 </div>
               </div>
@@ -79,6 +80,7 @@ class ModalUser extends React.PureComponent {
                     label="User Type"
                     value={{ value: values.role, label: values.role }}
                     onChange={event => this.onHandleChange(event, setFieldValue)}
+                    isSearchable={false}
                   />
                 </div>
                 <div className="form-group col-md-6">
@@ -89,6 +91,7 @@ class ModalUser extends React.PureComponent {
                       options={TYPE_DESIGNER}
                       value={{ value: values.type, label: values.type }}
                       onChange={event => this.onHandleChange(event, setFieldValue)}
+                      isSearchable={false}
                     />
                   )}
                 </div>

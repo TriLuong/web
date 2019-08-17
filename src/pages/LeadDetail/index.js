@@ -84,9 +84,10 @@ class SalesDetail extends Component<Props> {
         time = newDateTime.split('T')[1];
       } else {
         date = moment().format('YYYY-MM-DD');
-        time = '10:00';
+        time = `${moment().format('H')}:00`;
         newDateTime = `${date}T${time}`;
       }
+      // console.log('newDateTime', newDateTime);
       const newParams = { ...nextState.params, Meeting_Date_and_Time: newDateTime };
       this.setState(prevState => ({
         isInitDateTime: !prevState.isInitDateTime,
@@ -107,7 +108,7 @@ class SalesDetail extends Component<Props> {
   setMeetingDateTime = setFieldValue => {
     const { params } = this.state;
     setFieldValue('Meeting_Date_and_Time', params.Meeting_Date_and_Time);
-  }
+  };
 
   /* This function handleOnChange for common component */
   onHandleChangeCommon = (event, setFieldValue) => {
@@ -117,6 +118,18 @@ class SalesDetail extends Component<Props> {
     this.setState({ params: newParams });
     setFieldValue(name, value);
     this.setMeetingDateTime(setFieldValue);
+  };
+
+  /* eslint no-restricted-globals: 0 */
+  onHandleChangePhone = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { params } = this.state;
+    this.setMeetingDateTime(setFieldValue);
+    if (!isNaN(value) || value === '+') {
+      const newParams = { ...params, [name]: value };
+      this.setState({ params: newParams });
+      setFieldValue(name, `${value}`);
+    }
   };
 
   onHandleChangeName = (event, setFieldValue) => {
@@ -144,6 +157,7 @@ class SalesDetail extends Component<Props> {
 
   /* eslint radix: 0 */
   onTimeChange = (timeValue, setFieldValue) => {
+    // console.log("onTimeChange",timeValue);
     const { params, date } = this.state;
     const timeArr = timeValue.split(' ');
     const typeTime = timeArr[1];
@@ -254,11 +268,14 @@ class SalesDetail extends Component<Props> {
   };
 
   onSubmit = values => {
-    const { doUpdateLead } = this.props;
+    const { doUpdateLead, isFetching } = this.props;
     const { branch } = values;
 
+    // console.log('onSubmit', values);
     doUpdateLead({ data: { ...values, status: 'broadcasted', branchId: branch.id } });
-    this.toggle();
+    if (!isFetching) {
+      this.toggle();
+    }
   };
 
   render() {
@@ -273,7 +290,7 @@ class SalesDetail extends Component<Props> {
       Email: Yup.string()
         .email('Invalid email address')
         .required('Required'),
-      Phone: Yup.string().required('Required'),
+      Phone: Yup.number().required('Required'),
       Street: Yup.string().required('Required'),
       Country: Yup.string().required('Required'),
       State: Yup.string().required('Required'),
@@ -359,11 +376,11 @@ class SalesDetail extends Component<Props> {
                         <br />
                       )}
                       <InputGroup
-                        type="text"
+                        type="tel"
                         label="Mobile Number"
                         name="Phone"
                         value={values.Phone}
-                        onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                        onChange={event => this.onHandleChangePhone(event, setFieldValue)}
                       />
                     </div>
                   </div>
@@ -384,18 +401,19 @@ class SalesDetail extends Component<Props> {
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.City && touched.City ? (
-                        <div className="invalid-feedback d-block">{errors.City}</div>
+                      {errors.Country && touched.Country ? (
+                        <div className="invalid-feedback d-block">{errors.Country}</div>
                       ) : (
                         <br />
                       )}
                     </div>
+
                     <GroupSelectField
-                      label="City"
-                      name="City"
-                      value={{ value: values.City, label: values.City }}
-                      options={CITIES_NAME}
-                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
+                      label="Country"
+                      name="Country"
+                      value={{ value: values.Country, label: values.Country }}
+                      options={CONTRIES_NAME}
+                      onChange={event => this.onChangeCountry(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -434,19 +452,18 @@ class SalesDetail extends Component<Props> {
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.Country && touched.Country ? (
-                        <div className="invalid-feedback d-block">{errors.Country}</div>
+                      {errors.City && touched.City ? (
+                        <div className="invalid-feedback d-block">{errors.City}</div>
                       ) : (
                         <br />
                       )}
                     </div>
-
                     <GroupSelectField
-                      label="Country"
-                      name="Country"
-                      value={{ value: values.Country, label: values.Country }}
-                      options={CONTRIES_NAME}
-                      onChange={event => this.onChangeCountry(event, setFieldValue)}
+                      label="City"
+                      name="City"
+                      value={{ value: values.City, label: values.City }}
+                      options={CITIES_NAME}
+                      onChange={event => this.onHandleChangeCommon(event, setFieldValue)}
                     />
                   </div>
                 </div>
@@ -495,6 +512,7 @@ class SalesDetail extends Component<Props> {
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
                     <InputGroup
+                      type="number"
                       label="Enter budget amount (if available)"
                       name="amount"
                       value={values.budget ? values.budget.amount : ''}
@@ -657,12 +675,13 @@ class SalesDetail extends Component<Props> {
                           style={{ borderLeft: '1px solid  #a5a7aa' }}
                         >
                           <SelectTime
+                            dateSelect={params.Meeting_Date_and_Time.split('T')[0]}
                             initialTime={
                               params.Meeting_Date_and_Time
                                 ? params.Meeting_Date_and_Time.split('T')[1]
                                 : ''
                             }
-                            value={values.time}
+                            value={params.time}
                             onTimeChange={time => this.onTimeChange(time, setFieldValue)}
                           />
                         </div>

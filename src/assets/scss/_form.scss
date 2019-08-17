@@ -18,7 +18,8 @@
   .form-control[type='text'],
   .form-control[type='number'],
   .form-control[type='email'],
-  .form-control[type='password'] {
+  .form-control[type='password'],
+  .form-control[type='tel'] {
     border-radius: 4px;
     height: auto;
     padding-top: 30px;
