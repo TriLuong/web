@@ -8,9 +8,9 @@ type Props = {
 /* eslint jsx-a11y/label-has-associated-control: 0 jsx-a11y/label-has-for: 0 */
 class Switches extends PureComponent<Props> {
   handleChange = event => {
-    const { value, name } = event.target;
+    const { name, checked } = event.target;
     // const { onChange } = this.props;
-    console.log('event', name, value);
+    console.log(name, checked);
 
     // onChange({ value });
   };
