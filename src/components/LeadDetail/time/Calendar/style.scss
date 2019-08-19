@@ -11,7 +11,7 @@
   .DayPicker {
     box-shadow: none;
     &_weekHeader {
-      top: 50px;
+      top: 0px;
       font-size: 14px;
       text-transform: uppercase;
       &_li {
@@ -33,6 +33,9 @@
     }
   }
   .CalendarMonth {
+    &_caption {
+      padding: 10px,
+    }
     &_table {
       .CalendarDay {
         border: none;

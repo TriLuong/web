@@ -10,6 +10,7 @@ type Props = {
   onSort: () => {},
   gotoPage: () => {},
   onSearch: () => {},
+  onClick: () => {},
   data: [],
   params: {
     keyword: String,
@@ -29,7 +30,7 @@ class ScheduledMeeting extends Component<Props> {
   };
 
   render() {
-    const { data, onSort, gotoPage, onSearch, params } = this.props;
+    const { data, onSort, gotoPage, onSearch, onClick, params } = this.props;
     const { filter } = this.state;
     return (
       <>
@@ -54,7 +55,7 @@ class ScheduledMeeting extends Component<Props> {
             <IconSearch className="top-control__search__icon" />
           </div>
         </div>
-        <DatatablePage data={data} onSort={onSort} gotoPage={gotoPage} />
+        <DatatablePage data={data} onSort={onSort} gotoPage={gotoPage} onClick={onClick} />
       </>
     );
   }

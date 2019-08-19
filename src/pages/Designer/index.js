@@ -6,7 +6,8 @@ import Header from 'components/common/header';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import ScheduledMeeting from 'pages/ScheduledMeeting';
-import { getLeadsScheduled } from './actions';
+import ModalReschedule from 'components/modal/Designer/ModalReschedule';
+import { getLeadsScheduled, reScheduleLead } from './actions';
 import { getFetchingState, getLeadsScheduledState } from './selectors';
 import saga from './saga';
 import reducer from './reducers';
@@ -14,11 +15,14 @@ import './styles.scss';
 
 type Props = {
   doGetLeadsScheduled: () => {},
+  doRescheduleLead: () => {},
   leadsScheduled: [],
   isFetching: Boolean,
 };
 class Designer extends Component<Props> {
   state = {
+    isOpenReschedule: false,
+    lead: {},
     filter: '',
     params: {
       status: 'broadcasted',
@@ -75,9 +79,27 @@ class Designer extends Component<Props> {
     return null;
   };
 
+  onClick = ({ actionLead, lead }) => {
+    if (actionLead === 'reSchedule') {
+      this.setState({ lead }, () => this.toggleReschedule());
+    }
+  };
+
+  toggleReschedule = () => {
+    this.setState(prexState => ({ isOpenReschedule: !prexState.isOpenReschedule }));
+  };
+
+  onSubmitReschedule = values => {
+    const { doRescheduleLead } = this.props;
+    const { lead } = this.state;
+    doRescheduleLead({ data: { ...lead, ...values } });
+    this.toggleReschedule();
+    // console.log('onSubmit', { data: { ...values } });
+  };
+
   render() {
     const { leadsScheduled } = this.props;
-    const { params } = this.state;
+    const { params, isOpenReschedule, lead } = this.state;
     return (
       <div className="document">
         <Header />
@@ -88,9 +110,17 @@ class Designer extends Component<Props> {
             onSort={this.onSort}
             gotoPage={this.gotoPage}
             onSearch={this.onSearch}
+            onClick={this.onClick}
             params={params}
           />
         </div>
+        <ModalReschedule
+          title="Reschedule Meeting"
+          isOpen={isOpenReschedule}
+          toggle={this.toggleReschedule}
+          onSubmit={this.onSubmitReschedule}
+          lead={lead}
+        />
       </div>
     );
   }
@@ -103,6 +133,7 @@ const mapStateToProps = store => ({
 
 const mapDispatchToProps = dispatch => ({
   doGetLeadsScheduled: evt => dispatch(getLeadsScheduled(evt)),
+  doRescheduleLead: evt => dispatch(reScheduleLead(evt)),
 });
 
 const withConnect = connect(
