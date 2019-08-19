@@ -160,9 +160,9 @@ class Header extends PureComponent<Props> {
                   <Link to="/leads" className="dropdown-item">
                     Sales Dashboard
                   </Link>
-                  <a className="dropdown-item" href="#">
+                  <Link to="/designer" className="dropdown-item" href="#">
                     Designer Dashboard
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>

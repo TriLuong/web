@@ -1,3 +1,4 @@
+/* eslint import/no-cycle: 0 */
 import { put, takeLatest, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { Auth } from 'api';
@@ -23,8 +24,10 @@ function* signInSaga(action) {
     yield put(getBranches());
     if (user.role === 'admin') {
       yield put(push('/'));
-    } else {
+    } else if (user.role === 'sale') {
       yield put(push('/leads'));
+    } else {
+      yield put(push('/designer'));
     }
   } catch (err) {
     alert(err.response.data.message);
