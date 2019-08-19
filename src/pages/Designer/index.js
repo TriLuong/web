@@ -18,6 +18,9 @@ type Props = {
   doRescheduleLead: () => {},
   leadsScheduled: [],
   isFetching: Boolean,
+  history: {
+    push: () =>{},
+  }
 };
 class Designer extends Component<Props> {
   state = {
@@ -85,6 +88,14 @@ class Designer extends Component<Props> {
     }
   };
 
+  onMeetingInfo = (typeAction, lead) => {
+    const { history } = this.props;
+    if (typeAction === 'meetingInfo') {
+      this.setState({ lead });
+      history.push({ pathname: `/meetingInfo/${lead.id}` });
+    }
+  };
+
   toggleReschedule = () => {
     this.setState(prexState => ({ isOpenReschedule: !prexState.isOpenReschedule }));
   };
@@ -111,6 +122,7 @@ class Designer extends Component<Props> {
             gotoPage={this.gotoPage}
             onSearch={this.onSearch}
             onClick={this.onClick}
+            onMeetingInfo={this.onMeetingInfo}
             params={params}
           />
         </div>

@@ -5,7 +5,7 @@ import MenuPopover from 'components/common/popover/MenuPopover';
 import { MENU_POPOVER_ITEMS_SCHEDULED_MEETING } from 'pages/Designer/constants';
 
 /* eslint react/prop-types: 0 */
-const DatatablePage = ({ gotoPage, onSort, onSchedule, onClick, data }) => {
+const DatatablePage = ({ gotoPage, onSort, onMeetingInfo, onClick, data }) => {
   const [sortBy, setSortby] = useState('');
   const dataScheduled = (data && data.leads) || [];
   const elemtLeads = dataScheduled.map(lead => {
@@ -34,7 +34,7 @@ const DatatablePage = ({ gotoPage, onSort, onSchedule, onClick, data }) => {
             <button
               type="button"
               className="btn btn-primary w-100"
-              onClick={() => onSchedule('meetingInfo', lead)}
+              onClick={() => onMeetingInfo('meetingInfo', lead)}
             >
               MEETING INFO
             </button>

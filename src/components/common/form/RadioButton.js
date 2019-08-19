@@ -26,7 +26,7 @@ class RadioButton extends PureComponent<Props> {
     return (
       <div className={`${className} form-inline`}>
         {options.map((option, index) => (
-          <div className={`${classNameRadio} form-group`} key={index}>
+          <div className={`${index === 0 ? '' : classNameRadio} form-group`} key={index}>
             <InputGroup
               {...rest}
               type="radio"

@@ -306,7 +306,7 @@ class SalesDetail extends Component<Props> {
     return (
       <div className="document">
         <Header />
-        <BreadCrumb lead={lead} />
+        <BreadCrumb breadcrumbFirst="Manage Leads" pathName="/leads" lead={lead} />
         <Formik
           initialValues={lead}
           onSubmit={this.onSubmit}

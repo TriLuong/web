@@ -5,6 +5,8 @@ type Props = {
   lead: {
     Full_Name: String,
   },
+  breadcrumbFirst: String,
+  pathName: String,
 };
 class BreadCrumb extends PureComponent<Props> {
   constructor() {
@@ -13,12 +15,12 @@ class BreadCrumb extends PureComponent<Props> {
   }
 
   render() {
-    const { lead } = this.props;
+    const { lead, breadcrumbFirst, pathName } = this.props;
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <a href="/leads">Manage Leads</a>
+            <a href={pathName}>{breadcrumbFirst}</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             {lead.Full_Name}

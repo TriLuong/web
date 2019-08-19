@@ -7,6 +7,7 @@ import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
 import LeadDetail from 'pages/LeadDetail';
 import Designer from 'pages/Designer';
+import MeetingInfo from 'pages/MeetingInfo';
 import { makeGetUser } from './selectors';
 /* eslint-disable */
 
@@ -35,6 +36,11 @@ const permisstionList = [
   {
     path: '/designer',
     component: Designer,
+    role: 'designer',
+  },
+  {
+    path: '/meetingInfo/:id',
+    component: MeetingInfo,
     role: 'designer',
   },
 ];
