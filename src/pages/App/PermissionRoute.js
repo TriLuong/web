@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
+import ManageDesigner from 'pages/ManageDesigner';
 import LeadDetail from 'pages/LeadDetail';
 import Designer from 'pages/Designer';
 import MeetingInfo from 'pages/MeetingInfo';
@@ -40,7 +41,7 @@ const permisstionList = [
   },
   {
     path: '/meetingInfo/:id',
-    component: MeetingInfo,
+    component: ManageDesigner,
     role: 'designer',
   },
 ];

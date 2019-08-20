@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect';
 import './styles.scss';
 import { ModalEditProfile, ModalChangePassword } from 'components/modal';
 import { editProfile, changePassword } from 'pages/ManageUser/actions';
+import MenuDesignerControl from './MenuDesignerControl';
 
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 type Props = {
@@ -22,6 +23,7 @@ class Header extends PureComponent<Props> {
 
     this.state = {
       showMenu: false,
+      activeTab: '1',
       modalIsOpenEditProfile: false,
       modalIsOpenChangePassword: false,
     };
@@ -88,6 +90,10 @@ class Header extends PureComponent<Props> {
     }
   };
 
+  onActiveTabChange = activeTab => {
+    this.setState({ activeTab });
+  };
+
   /* eslint no-nested-ternary: 0 */
   render() {
     const { user } = this.props;
@@ -105,6 +111,7 @@ class Header extends PureComponent<Props> {
               CAFE
             </span>
           </a>
+          <MenuDesignerControl onActiveTabChange={this.onActiveTabChange} />
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
               {avatarName}
