@@ -1,37 +1,9 @@
-.top-control {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  &__header {
-    font-size: 22px;
-    font-weight: bold;
-    color: #282828;
-    margin-bottom: 0;
+.scheduledMeeting {
+  .menu-popover {
+    width: 210px;
   }
-  .form-control {
-    & ~ label {
-      white-space: nowrap;
-    }
-  }
-  &__search {
-    position: relative;
-    width: 220px;
-    .form-control {
-      border-radius: 20px;
-      padding-left: 40px;
-      color: #3f3f3f;
-      &::placeholder {
-        color: #a5a7aa;
-        font-size: 16px;
-        font-weight: 200;
-      }
-    }
-    .top-control__search__icon {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
+}
+.content-Meeting{
+  line-height: 10px;
+  margin-bottom: 30px;
 }

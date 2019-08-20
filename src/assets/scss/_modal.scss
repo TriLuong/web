@@ -19,6 +19,15 @@
   .modal-body {
     padding: 30px 40px 10px;
   }
+  .linkTop {
+    position: absolute;
+    right: 80px;
+    font-size: 20px;
+    button {
+      border: none;
+      color: #05486c;
+    }
+  }
 }
 .modal-assign {
   max-width: 915px;

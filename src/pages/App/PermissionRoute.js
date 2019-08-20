@@ -5,9 +5,8 @@ import { createStructuredSelector } from 'reselect';
 import { Route, Switch } from 'react-router-dom';
 import ManageUser from 'pages/ManageUser';
 import ManageLead from 'pages/ManageLead';
-import ManageDesigner from 'pages/ManageDesigner';
 import LeadDetail from 'pages/LeadDetail';
-import Designer from 'pages/Designer';
+import ManageDesigner from 'pages/ManageDesigner';
 import MeetingInfo from 'pages/MeetingInfo';
 import { makeGetUser } from './selectors';
 /* eslint-disable */
@@ -36,12 +35,12 @@ const permisstionList = [
   },
   {
     path: '/designer',
-    component: Designer,
+    component: ManageDesigner,
     role: 'designer',
   },
   {
     path: '/meetingInfo/:id',
-    component: ManageDesigner,
+    component: MeetingInfo,
     role: 'designer',
   },
 ];

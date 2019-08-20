@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import IconSort from 'components/common/icon/IconSort';
 import Pagination from 'components/common/pagination';
 import MenuPopover from 'components/common/popover/MenuPopover';
-import { MENU_POPOVER_ITEMS_SCHEDULED_MEETING } from 'pages/Designer/constants';
+import { MENU_POPOVER_ITEMS_SCHEDULED_MEETING } from 'pages/ManageDesigner/constants';
 
 /* eslint react/prop-types: 0 */
 const DatatablePage = ({ gotoPage, onSort, onMeetingInfo, onClick, data }) => {

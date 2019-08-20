@@ -250,8 +250,8 @@
       &::before {
         height: 18px;
         width: 38px;
-        background-color: #bbb;
-        border: 5px solid #bbb;
+        background-color: white;
+        border: 1px solid #bbb;
         border-radius: 9px;
         box-shadow: none;
       }
@@ -268,7 +268,7 @@
     }
     &:focus:not(:checked) ~ label::before {
       border: 1px solid #bbb;
-      background-color: #bbb;
+      background-color: white;
     }
     &:checked ~ label::after {
       transform: translateX(1.2rem) !important;

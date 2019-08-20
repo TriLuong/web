@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RADIO_SCHEDULED_MEETING } from 'pages/Designer/constants';
+import { RADIO_SCHEDULED_MEETING } from 'pages/ManageDesigner/constants';
 import RadioButton from 'components/common/form/RadioButton';
 import IconSearch from 'components/common/icon/IconSearch';
 import Switches from 'components/common/form/Switches';

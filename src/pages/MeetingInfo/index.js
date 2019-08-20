@@ -35,7 +35,6 @@ type Props = {
       name: String,
     },
     Meeting_Date_and_Time: String,
-
   },
   match: {
     params: {
@@ -58,7 +57,7 @@ class MeetingInfo extends PureComponent<Props> {
     }
     return (
       <div className="document">
-        <Header />
+        <Header activeMenuDesigner="true" onActiveTabChange={this.onActiveTabChange} />
         <BreadCrumb breadcrumbFirst="Scheduled" pathName="/designer" lead={lead} />
         <div className="container">
           <h2 className="page-title">Meeting Info</h2>

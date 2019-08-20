@@ -13,9 +13,11 @@ import MenuDesignerControl from './MenuDesignerControl';
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 type Props = {
   user: {},
+  activeMenuDesigner: Boolean,
   doEditProfile: () => {},
   doChangePassword: () => {},
   doRequestLogout: () => {},
+  onActiveTabChange: () => {},
 };
 class Header extends PureComponent<Props> {
   constructor() {
@@ -23,7 +25,6 @@ class Header extends PureComponent<Props> {
 
     this.state = {
       showMenu: false,
-      activeTab: '1',
       modalIsOpenEditProfile: false,
       modalIsOpenChangePassword: false,
     };
@@ -91,12 +92,14 @@ class Header extends PureComponent<Props> {
   };
 
   onActiveTabChange = activeTab => {
-    this.setState({ activeTab });
+    const { onActiveTabChange } = this.props;
+    // this.setState({ activeTab });
+    onActiveTabChange(activeTab);
   };
 
   /* eslint no-nested-ternary: 0 */
   render() {
-    const { user } = this.props;
+    const { user, activeMenuDesigner } = this.props;
     const { showMenu, modalIsOpenEditProfile, modalIsOpenChangePassword } = this.state;
     const userInfo = user || {};
     const { role, firstName, lastName } = userInfo;
@@ -111,7 +114,11 @@ class Header extends PureComponent<Props> {
               CAFE
             </span>
           </a>
-          <MenuDesignerControl onActiveTabChange={this.onActiveTabChange} />
+          {activeMenuDesigner ? (
+            <MenuDesignerControl onActiveTabChange={this.onActiveTabChange} />
+          ) : (
+            ''
+          )}
           <div className="dropdown">
             <button className="avatar" onClick={this.showMenu} type="button">
               {avatarName}

@@ -1,13 +1,15 @@
 import { createSelector } from 'reselect';
 
-const manageUserReducer = state => state.get('manageUserReducer');
+const leadsScheduledReducer = state => state.get('leadsScheduledReducer');
 
 export const getFetchingState = createSelector(
-  manageUserReducer,
+  leadsScheduledReducer,
   fetching => fetching.get('isFetching'),
 );
 
-export const getUsersState = createSelector(
-  manageUserReducer,
-  dataUsers => dataUsers.get('dataUsers'),
+export const getLeadsScheduledState = createSelector(
+  leadsScheduledReducer,
+  leads => leads.get('leadsScheduled'),
 );
+
+export default {};

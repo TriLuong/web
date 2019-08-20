@@ -8,11 +8,12 @@ import moment from 'moment';
 type Props = {
   toggle: () => {},
   onSubmit: () => {},
+  onHandleChange: () => {},
   lead: {
     Meeting_Date_and_Time: '',
   },
 };
-class ModalReschedule extends Component<Props> {
+class ModalChangeDateTime extends Component<Props> {
   state = {
     params: {
       Meeting_Date_and_Time: '',
@@ -25,7 +26,6 @@ class ModalReschedule extends Component<Props> {
   shouldComponentUpdate(nextProps, nextState) {
     const prevProps = this.props;
     if (!nextState.isInitDateTime && nextProps.lead !== prevProps.lead) {
-      // console.log('shouldComponentUpdate', nextState.isInitDateTime);
       let newDateTime = '';
       let date = '';
       let time = '';
@@ -57,6 +57,7 @@ class ModalReschedule extends Component<Props> {
 
   onDateChange = (dateValue, setFieldValue) => {
     const { params, time } = this.state;
+    const { onHandleChange } = this.props;
     const newDate = dateValue.format('YYYY-MM-DD');
 
     const newDateTime = `${newDate}T${time}`;
@@ -64,12 +65,14 @@ class ModalReschedule extends Component<Props> {
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, date: newDate });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
+    onHandleChange('Meeting_Date_and_Time', newDateTime);
   };
 
   /* eslint radix: 0 */
   onTimeChange = (timeValue, setFieldValue) => {
     // console.log("onTimeChange",timeValue);
     const { params, date } = this.state;
+    const { onHandleChange } = this.props;
     const timeArr = timeValue.split(' ');
     const typeTime = timeArr[1];
     let hour = timeArr[0].split(':')[0];
@@ -83,6 +86,7 @@ class ModalReschedule extends Component<Props> {
     const newParams = { ...params, Meeting_Date_and_Time: newDateTime };
     this.setState({ params: newParams, time: newTime });
     setFieldValue('Meeting_Date_and_Time', newDateTime);
+    onHandleChange('Meeting_Date_and_Time', newDateTime);
   };
 
   toggle = () => {
@@ -137,4 +141,4 @@ class ModalReschedule extends Component<Props> {
   }
 }
 
-export default ModalReschedule;
+export default ModalChangeDateTime;

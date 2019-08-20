@@ -69,13 +69,12 @@ class SelectTime extends Component<Props> {
           indexHour = i;
         }
       }
-    }
-
-    if (indexHour !== null) {
       for (let i = 0; i < indexHour; i++) {
         hourElemtArr[i].classList.add('notActive');
       }
-
+    }
+    // console.log('processTime', !initialTime);
+    if (!initialTime && indexHour !== null) {
       hourElemtArr[indexHour].classList.add('active');
       minuteElemtArr[0].classList.add('active');
       initTime = {

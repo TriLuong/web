@@ -1,50 +1,22 @@
-export const GET_USERS_REQUEST = 'GET_USERS/REQUEST';
-export const GET_USERS_SUCCESS = 'GET_USERS/SUCCESS';
-export const GET_USERS_FAILURE = 'GET_USERS/FAILURE';
-
-export const ADD_USERS_REQUEST = 'ADD_USERS/REQUEST';
-export const ADD_USERS_SUCCESS = 'ADD_USERS/SUCCESS';
-export const ADD_USERS_FAILURE = 'ADD_USERS/FAILURE';
-
-export const UPDATE_USERS_REQUEST = 'UPDATE_USERS/REQUEST';
-export const UPDATE_USERS_SUCCESS = 'UPDATE_USERS/SUCCESS';
-export const UPDATE_USERS_FAILURE = 'UPDATE_USERS/FAILURE';
-
-export const EDIT_PROFILE_REQUEST = 'EDIT_PROFILE/REQUEST';
-export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE/SUCCESS';
-export const EDIT_PROFILE_FAILURE = 'EDIT_PROFILE/FAILURE';
-
-export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD/REQUEST';
-export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD/SUCCESS';
-export const CHANGE_PASSWORD_FAILURE = 'CHANGE_PASSWORD/FAILURE';
-
-export const GET_BRANCHES_REQUEST = 'GET_BRANCHES/REQUEST';
-export const GET_BRANCHES_SUCCESS = 'GET_BRANCHES/SUCCESS';
-export const GET_BRANCHES_FAILURE = 'GET_BRANCHES/FAILURE';
-
-export const MENU_POPOVER_ITEMS_MANAGE_USER = [{ label: 'Delete Lead', name: 'deleteLead' }];
-
-export const USER_FILTER = [
-  { value: 'all', label: 'All Users' },
-  { value: 'role=designer&type=Design Partner', label: 'Design Partner' },
-  { value: 'role=designer&type=In-house', label: 'In house designer ' },
-  { value: 'role=sale', label: 'Sales' },
+export const MENU_POPOVER_ITEMS_SCHEDULED_MEETING = [
+  { label: 'Resend Confirmation Email', name: 'resendConfirmEmail' },
+  { label: 'Reschedule', name: 'reSchedule' },
+  { label: 'Cancel Meeting', name: 'cancelMeeting' },
 ];
 
-export const TYPE_DESIGNER = [
-  { value: 'In-house', label: 'In house' },
-  { value: 'Design Partner', label: 'Design Partner' },
+export const RADIO_SCHEDULED_MEETING = [
+  { name: 'scheduledMeeting', label: 'All', value: '' },
+  { name: 'scheduledMeeting', label: 'Today', value: 'today' },
+  { name: 'scheduledMeeting', label: 'This Week', value: 'thisWeek' },
 ];
 
-export const USER_TYPE = [
-  { value: 'sale', label: 'Sale' },
-  { value: 'designer', label: 'Designer' },
-];
+/* RESCHEDULE */
+export const GET_LEADS_SCHEDULED_REQUEST = 'GET_LEADS_SCHEDULED/REQUEST';
+export const GET_LEADS_SCHEDULED_SUCCESS = 'GET_LEADS_SCHEDULED/SUCCESS';
+export const GET_LEADS_SCHEDULED_FAILURE = 'GET_LEADS_SCHEDULED/FAILURE';
 
-export const BULK_UPLOAD_REQUEST = 'MANAGE_USER/BULK_UPLOAD_REQUEST';
-export const BULK_UPLOAD_SUCCESS = 'MANAGE_USER/BULK_UPLOAD_SUCCESS';
-export const BULK_UPLOAD_FAILURE = 'MANAGE_USER/BULK_UPLOAD_FAILURE';
+export const RESCHEDULE_LEAD_REQUEST = 'RESCHEDULE_LEAD/REQUEST';
+export const RESCHEDULE_LEAD_SUCCESS = 'RESCHEDULE_LEAD/SUCCESS';
+export const RESCHEDULE_LEAD_FAILURE = 'RESCHEDULE_LEAD/FAILURE';
 
-export const DELETE_USER_REQUEST = 'MANAGE_USER/DELETE_USER_REQUEST';
-export const DELETE_USER_SUCCESS = 'MANAGE_USER/DELETE_USER_SUCCESS';
-export const DELETE_USER_FAILURE = 'MANAGE_USER/DELETE_USER_FAILURE';
+export default {};

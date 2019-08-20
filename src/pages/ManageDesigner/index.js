@@ -1,273 +1,208 @@
+/* eslint import/no-cycle: 0 */
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Header from 'components/common/header';
-import IconSearch from 'components/common/icon/IconSearch';
-import SelectField from 'components/common/form/Select';
-import { ModalUser, ModalBulkUpload } from 'components/modal';
-import './styles.scss';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
+import ScheduledMeeting from 'pages/ScheduledMeeting';
+import ModalChangeDateTime from 'components/modal/Designer/ModalChangeDateTime';
+import ModalChangeBranch from 'components/modal/Designer/ModalChangeBranch';
 import { getBranchesState } from 'pages/App/selectors';
-import reducer from './reducer';
+import { getLeadsScheduled, reScheduleLead } from './actions';
+import { getFetchingState, getLeadsScheduledState } from './selectors';
 import saga from './saga';
-import {
-  getUsers,
-  addUser,
-  updateUser,
-  requestBulkUpload,
-  requestDeleteUser,
-} from './actions';
-import { USER_FILTER } from './constants';
-import { getFetchingState, getUsersState } from './selectors';
-
-import DatatablePage from './DatatablePage';
+import reducer from './reducers';
+import './styles.scss';
 
 type Props = {
-  dataUsers: {},
-  doGetUsers: () => {},
-  doAddUser: () => {},
-  doUpdateUser: () => {},
-  doRequestBulkUpload: () => {},
-  doRequestDeleteUser: () => {},
-  branches: [],
+  doGetLeadsScheduled: () => {},
+  doRescheduleLead: () => {},
+  leadsScheduled: [],
   isFetching: Boolean,
+  history: {
+    push: () => {},
+  },
+  branches: [],
 };
-class DashBoard extends Component<Props> {
+class ManageDesigner extends Component<Props> {
   state = {
-    modalIsOpen: false,
+    isOpenChangeDateTime: false,
+    isOpenChangeBranch: false,
+    lead: {},
+    filter: '',
     activeTab: '1',
-    modalBulkUpload: false,
     params: {
+      status: 'broadcasted',
       orderBy: null,
       orderType: null,
-      role: null,
-      type: null,
-      keyword: null,
+      keyword: '',
     },
   };
-
-  constructor(props) {
-    super(props);
-    this.pointer = {};
-  }
 
   componentDidMount() {
     this.gotoPage(1);
   }
 
+  gotoPage = page => {
+    const { doGetLeadsScheduled } = this.props;
+    const { params, filter } = this.state;
+    doGetLeadsScheduled({ ...params, page, ...filter });
+    // doGetLeads({ page });
+  };
+
   onActiveTabChange = activeTab => {
     this.setState({ activeTab });
   };
 
-  toggleModal = ({ isEdit } = {}) => {
-    if (!isEdit) {
-      this.userEdit = null;
-    }
-    this.setState(prevState => ({
-      modalIsOpen: !prevState.modalIsOpen,
-    }));
-  };
-
-  toggleModalBulkUpload = () => {
-    this.setState(prevState => ({
-      modalBulkUpload: !prevState.modalBulkUpload,
-    }));
-  };
-
-  gotoPage = page => {
-    const { doGetUsers } = this.props;
-    const { params } = this.state;
-    doGetUsers({ ...params, page });
-  };
-
-  onAddUser = values => {
-    const { doAddUser, doUpdateUser } = this.props;
-
-    if (this.userEdit) {
-      doUpdateUser({
-        form: { data: values },
-        cb: status => {
-          if (status) {
-            this.toggleModal();
-          }
-        },
-      });
-    } else {
-      doAddUser({
-        form: { data: values },
-        cb: status => {
-          if (status) {
-            this.toggleModal();
-          }
-        },
-      });
-    }
-    return null;
-  };
-
-  onBulkUpload = values => {
-    const file = values.file;
-    if (!file) return null;
-    const { doRequestBulkUpload } = this.props;
-    const formData = new FormData();
-    formData.append('file', file);
-    doRequestBulkUpload({
-      form: formData,
-      cb: () => {
-        this.gotoPage(1);
-        this.toggleModalBulkUpload();
-      },
-    });
-    return null;
-  };
-
-  onEdit = user => {
-    this.userEdit = user;
-    this.toggleModal({ isEdit: true });
+  handleOnChangeRadioButton = ({ filter }) => {
+    // console.log(this.state);
+    this.setState({ filter });
   };
 
   /* Sorting */
   onSort = sort => {
-    const { doGetUsers } = this.props;
+    const { doGetLeadsScheduled } = this.props;
     const { params } = this.state;
     const orderType = params.orderType;
-    let neworderType = '';
+    let newOrderType = '';
     if (orderType === null) {
-      neworderType = 'asc';
+      newOrderType = 'asc';
     } else if (orderType === 'asc') {
-      neworderType = 'desc';
+      newOrderType = 'desc';
     } else {
-      neworderType = 'asc';
+      newOrderType = 'asc';
     }
-    const newPrams = { ...params, orderType: neworderType, orderBy: sort.orderBy };
+    const newPrams = { ...params, orderType: newOrderType, orderBy: sort.orderBy };
     this.setState({ params: newPrams });
-    doGetUsers(newPrams);
+    doGetLeadsScheduled(newPrams);
   };
 
-  /* Select Field */
-  handleOnChangeSelectField = event => {
-    const { doGetUsers } = this.props;
-    const { params } = this.state;
-    const { value } = event;
-    let newParams = '';
-    if (value === 'all') {
-      newParams = { ...params, role: null, type: null };
-    } else {
-      const decodeValue = decodeURI(value)
-        .replace(/"/g, '""')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"');
-      const parseValue = JSON.parse(`{"${decodeValue}"}`);
-
-      newParams = { ...params, role: parseValue.role, type: parseValue.type };
-    }
-    this.setState({ params: newParams });
-    doGetUsers(newParams);
-  };
-
-  doSearch = evt => {
-    const { doGetUsers, isFetching } = this.props;
+  onSearch = event => {
+    const { doGetLeadsScheduled, isFetching } = this.props;
     if (isFetching) {
       return null;
     }
-    const searchText = evt.target.value;
-    const { params } = this.state;
-    const newPrams = { ...params, keyword: searchText };
-    this.setState({ params: newPrams });
-    if (this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      doGetUsers(newPrams);
-    }, 500);
+    const { params, filter } = this.state;
+    const searchText = event.target.value;
+    const newParams = { ...params, ...filter, keyword: searchText };
+    this.setState({ params: newParams });
+    setTimeout(() => doGetLeadsScheduled(newParams), 500);
     return null;
   };
 
-  onClickItem = id => {
-    const { doRequestDeleteUser } = this.props;
-    doRequestDeleteUser({
-      id,
-      cb: () => {
-        const { doGetUsers } = this.props;
-        const { params } = this.state;
-        doGetUsers({ ...params });
-      },
-    });
+  onClick = ({ actionLead, lead }) => {
+    if (actionLead === 'reSchedule') {
+      this.setState({ lead }, () => this.toggleChangeDateTime());
+    }
+  };
+
+  onMeetingInfo = (typeAction, lead) => {
+    const { history } = this.props;
+    if (typeAction === 'meetingInfo') {
+      this.setState({ lead });
+      history.push({ pathname: `/meetingInfo/${lead.id}` });
+    }
+  };
+
+  toggleChangeDateTime = () => {
+    this.setState(prexState => ({ isOpenChangeDateTime: !prexState.isOpenChangeDateTime }));
+  };
+
+  toggleChangeBranch = () => {
+    this.setState(prexState => ({ isOpenChangeBranch: !prexState.isOpenChangeBranch }));
+  };
+
+  onClickLinkTop = () => {
+    this.toggleChangeDateTime();
+    this.toggleChangeBranch();
+  };
+
+  onHandleChange = (name, value) => {
+    const { lead } = this.state;
+    let newValues;
+    if (name === 'branch') {
+      newValues = { ...lead, [name]: value, branchId: value.id };
+    } else {
+      newValues = { ...lead, [name]: value };
+    }
+    this.setState({ lead: newValues });
+  };
+
+  onSubmitReschedule = values => {
+    const { doRescheduleLead } = this.props;
+    const { lead } = this.state;
+    doRescheduleLead({ data: { ...values, ...lead } });
+    this.setState({ isOpenChangeDateTime: false, isOpenChangeBranch: false });
+  };
+
+  renderActiveTab = active => {
+    const { params } = this.state;
+    const { leadsScheduled } = this.props;
+    switch (active) {
+      case '1':
+        return (
+          <ScheduledMeeting
+            data={leadsScheduled}
+            handleOnChangeRadioButton={this.handleOnChangeRadioButton}
+            onSort={this.onSort}
+            gotoPage={this.gotoPage}
+            onSearch={this.onSearch}
+            onClick={this.onClick}
+            onMeetingInfo={this.onMeetingInfo}
+            params={params}
+          />
+        );
+      case '2':
+        return <div>{`TAB ${active}`}</div>;
+      case '3':
+        return <div>{`TAB ${active}`}</div>;
+      case '4':
+        return <div>{`TAB ${active}`}</div>;
+      default:
+        return (
+          <ScheduledMeeting
+            data={leadsScheduled}
+            handleOnChangeRadioButton={this.handleOnChangeRadioButton}
+            onSort={this.onSort}
+            gotoPage={this.gotoPage}
+            onSearch={this.onSearch}
+            onClick={this.onClick}
+            onMeetingInfo={this.onMeetingInfo}
+            params={params}
+          />
+        );
+    }
   };
 
   render() {
-    const { dataUsers, branches } = this.props;
-    const {
-      modalIsOpen,
-      activeTab,
-      modalBulkUpload,
-      params: { keyword },
-    } = this.state;
+    const { branches } = this.props;
+    const { isOpenChangeDateTime, isOpenChangeBranch, lead, activeTab } = this.state;
     return (
       <div className="document">
-        <Header onActiveTabChange={this.onActiveTabChange} />
-        <div className="container">
-          <div className="top-control">
-            <h1 className="top-control__header">Manage Users</h1>
-            <div
-              className="btn-toolbar ml-auto"
-              role="toolbar"
-              aria-label="Toolbar with button groups"
-            >
-              <div className="top-control__search mr-2">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="form-control"
-                  value={keyword || ''}
-                  onChange={this.doSearch}
-                />
-                <IconSearch className="top-control__search__icon" />
-              </div>
-              <SelectField
-                className="mr-2"
-                options={USER_FILTER}
-                placeholder={null}
-                onChange={this.handleOnChangeSelectField}
-                defaultValue={USER_FILTER[0]}
-              />
-              <div className="btn-group mr-2" role="group" aria-label="Second group">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={this.toggleModalBulkUpload}
-                >
-                  BULK UPLOAD
-                </button>
-              </div>
-              <div className="btn-group" role="group" aria-label="Third group">
-                <button type="button" className="btn btn-primary" onClick={this.toggleModal}>
-                  ADD NEW
-                </button>
-                <ModalUser
-                  title={this.userEdit ? 'Edit User' : 'Add New User'}
-                  branches={branches}
-                  isOpen={modalIsOpen}
-                  toggle={this.toggleModal}
-                  onSubmit={this.onAddUser}
-                  user={this.userEdit}
-                />
-                <ModalBulkUpload
-                  isOpen={modalBulkUpload}
-                  toggle={this.toggleModalBulkUpload}
-                  onSubmit={this.onBulkUpload}
-                  user={this.userEdit}
-                />
-              </div>
-            </div>
-          </div>
-          <DatatablePage
-            data={dataUsers}
-            gotoPage={this.gotoPage}
-            onEdit={this.onEdit}
-            onSort={this.onSort}
-            onClickItem={this.onClickItem}
-          />
-        </div>
+        <Header activeMenuDesigner="true" onActiveTabChange={this.onActiveTabChange} />
+        <div className="container">{this.renderActiveTab(activeTab)}</div>
+        <ModalChangeDateTime
+          title="Reschedule Meeting"
+          isOpen={isOpenChangeDateTime}
+          toggle={this.toggleChangeDateTime}
+          onSubmit={this.onSubmitReschedule}
+          lead={lead}
+          LinkTopTitle="Change Branch"
+          onClickLinkTop={this.onClickLinkTop}
+          onHandleChange={this.onHandleChange}
+        />
+        <ModalChangeBranch
+          title="Change Branch Meeting"
+          isOpen={isOpenChangeBranch}
+          toggle={this.toggleChangeBranch}
+          onSubmit={this.onSubmitReschedule}
+          lead={lead}
+          branches={branches}
+          LinkTopTitle="Change Date/Time"
+          onClickLinkTop={this.onClickLinkTop}
+          onHandleChange={this.onHandleChange}
+        />
       </div>
     );
   }
@@ -275,27 +210,25 @@ class DashBoard extends Component<Props> {
 
 const mapStateToProps = store => ({
   isFetching: getFetchingState(store),
-  dataUsers: getUsersState(store),
+  leadsScheduled: getLeadsScheduledState(store),
   branches: getBranchesState(store),
 });
 
 const mapDispatchToProps = dispatch => ({
-  doGetUsers: evt => dispatch(getUsers(evt)),
-  doAddUser: evt => dispatch(addUser(evt)),
-  doUpdateUser: evt => dispatch(updateUser(evt)),
-  doRequestBulkUpload: evt => dispatch(requestBulkUpload(evt)),
-  doRequestDeleteUser: evt => dispatch(requestDeleteUser(evt)),
+  doGetLeadsScheduled: evt => dispatch(getLeadsScheduled(evt)),
+  doRescheduleLead: evt => dispatch(reScheduleLead(evt)),
 });
 
 const withConnect = connect(
   mapStateToProps,
   mapDispatchToProps,
 );
-const withReducer = injectReducer({ key: 'manageUserReducer', reducer });
-const withSaga = injectSaga({ key: 'manageUserSaga', saga });
+
+const withReducer = injectReducer({ key: 'leadsScheduledReducer', reducer });
+const withSaga = injectSaga({ key: 'leadsScheduledSaga', saga });
 
 export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(DashBoard);
+)(ManageDesigner);
