@@ -25,4 +25,11 @@
       }
     }
   }
+  &-children {
+    position: absolute;
+    right: 30px;
+    li {
+      padding: 0 5px;
+    }
+  }
 }

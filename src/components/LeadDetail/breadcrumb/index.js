@@ -7,7 +7,10 @@ type Props = {
   },
   breadcrumbFirst: String,
   pathName: String,
+  children: {},
 };
+
+/* eslint react/prop-types: 0 */
 class BreadCrumb extends PureComponent<Props> {
   constructor() {
     super();
@@ -15,7 +18,7 @@ class BreadCrumb extends PureComponent<Props> {
   }
 
   render() {
-    const { lead, breadcrumbFirst, pathName } = this.props;
+    const { lead, breadcrumbFirst, pathName, children } = this.props;
     return (
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
@@ -25,6 +28,11 @@ class BreadCrumb extends PureComponent<Props> {
           <li className="breadcrumb-item active" aria-current="page">
             {lead.Full_Name}
           </li>
+          <div className="d-flex breadcrumb-children">
+            {children.map(child => (
+              <li>{child}</li>
+            ))}
+          </div>
         </ol>
       </nav>
     );
