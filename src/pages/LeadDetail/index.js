@@ -53,8 +53,6 @@ class SalesDetail extends Component<Props> {
         service: [],
         Meeting_Date_and_Time: '',
       },
-      firstName: '',
-      lastName: '',
       date: '',
       time: '',
       isInitDateTime: false,
@@ -84,11 +82,20 @@ class SalesDetail extends Component<Props> {
         time = newDateTime.split('T')[1];
       } else {
         date = moment().format('YYYY-MM-DD');
-        time = `${moment().format('H')}:00`;
+        time = `${moment().format('H')}`;
+        if (parseInt(time) < 10) {
+          time = '10:00';
+        } else {
+          time = `${time}:00`;
+        }
         newDateTime = `${date}T${time}`;
       }
       // console.log('newDateTime', newDateTime);
-      const newParams = { ...nextState.params, Meeting_Date_and_Time: newDateTime };
+      const newParams = {
+        ...nextState.params,
+        ...nextProps.lead,
+        Meeting_Date_and_Time: newDateTime,
+      };
       this.setState(prevState => ({
         isInitDateTime: !prevState.isInitDateTime,
         params: newParams,
@@ -134,13 +141,33 @@ class SalesDetail extends Component<Props> {
 
   onHandleChangeName = (event, setFieldValue) => {
     const { name, value } = event.target;
-    const { firstName, lastName, params } = this.state;
-    const valueFirstName = name === 'firstName' ? value : firstName;
-    const valueLastName = name === 'lastName' ? value : lastName;
-    const newOwnerName = { ...params.Owner, name: `${valueFirstName} ${valueLastName}` };
+    const { params } = this.state;
+    const newOwnerName = { ...params.Owner, name: value };
     const newParams = { ...params, Owner: newOwnerName };
-    this.setState({ [name]: value, params: newParams });
-    setFieldValue('Owner', newOwnerName);
+    this.setState({ params: newParams });
+    setFieldValue(name, newOwnerName);
+    this.setMeetingDateTime(setFieldValue);
+  };
+
+  onHandleChangeNameLead = (event, setFieldValue) => {
+    const { name, value } = event.target;
+    const { params } = this.state;
+    const valueFirstName = name === 'First_Name' ? value : params.First_Name;
+    const valueLastName = name === 'Last_Name' ? value : params.Last_Name;
+    let newFullName = '';
+    if (valueFirstName && valueLastName) {
+      newFullName = `${valueFirstName} ${valueLastName}`;
+    } else if (valueFirstName && !valueLastName) {
+      newFullName = `${valueFirstName}`;
+    } else if (valueLastName && !valueFirstName) {
+      newFullName = `${valueLastName}`;
+    } else {
+      newFullName = '';
+    }
+    const newParams = { ...params, [name]: value, Full_Name: newFullName };
+    this.setState({ params: newParams });
+    setFieldValue(name, value);
+    setFieldValue('Full_Name', newFullName);
     this.setMeetingDateTime(setFieldValue);
   };
 
@@ -286,7 +313,9 @@ class SalesDetail extends Component<Props> {
     }
 
     const schema = Yup.object().shape({
-      Full_Name: Yup.string().required('Required'),
+      Owner: Yup.string().required('Required'),
+      First_Name: Yup.string().required('Required'),
+      Last_Name: Yup.string().required('Required'),
       Email: Yup.string()
         .email('Invalid email address')
         .required('Required'),
@@ -318,7 +347,7 @@ class SalesDetail extends Component<Props> {
               <div className="container">
                 <h2 className="page-title">Client Requirements</h2>
 
-                <div className="form-title">Contact Info</div>
+                <div className="form-title">Lead Owner</div>
                 <div className="form-row form-row-detail">
                   <div className="form-group col-md-4">
                     <div>
@@ -328,25 +357,44 @@ class SalesDetail extends Component<Props> {
                         <br />
                       )}
                       <InputGroup
-                        label="First Name"
-                        name="firstName"
-                        value={values.Owner ? values.Owner.name.split(' ')[0] : ''}
+                        label="Name"
+                        name="Owner"
+                        value={values.Owner ? values.Owner.name : ''}
                         onChange={event => this.onHandleChangeName(event, setFieldValue)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-title">Lead Info</div>
+                <div className="form-row form-row-detail">
+                  <div className="form-group col-md-4">
+                    <div>
+                      {errors.First_Name && touched.First_Name ? (
+                        <div className="invalid-feedback d-block">{errors.First_Name}</div>
+                      ) : (
+                        <br />
+                      )}
+                      <InputGroup
+                        label="First Name"
+                        name="First_Name"
+                        value={values.First_Name}
+                        onChange={event => this.onHandleChangeNameLead(event, setFieldValue)}
                       />
                     </div>
                   </div>
                   <div className="form-group col-md-4">
                     <div>
-                      {errors.Owner && touched.Owner ? (
-                        <div className="invalid-feedback d-block">{errors.Owner}</div>
+                      {errors.Last_Name && touched.Last_Name ? (
+                        <div className="invalid-feedback d-block">{errors.Last_Name}</div>
                       ) : (
                         <br />
                       )}
                       <InputGroup
                         label="Last Name"
-                        name="lastName"
-                        value={values.Owner ? values.Owner.name.split(' ')[1] : ''}
-                        onChange={event => this.onHandleChangeName(event, setFieldValue)}
+                        name="Last_Name"
+                        value={values.Last_Name}
+                        onChange={event => this.onHandleChangeNameLead(event, setFieldValue)}
                       />
                     </div>
                   </div>
